@@ -3,6 +3,7 @@ import {
   useEffect,
   useRef,
   useState,
+  type CSSProperties,
   type HTMLAttributes,
   type MouseEvent as ReactMouseEvent,
   type ReactNode,
@@ -16,19 +17,55 @@ const SERVICES: { icon: string; label: string }[] = [
   { icon: 'fa-windows', label: 'Windows Installation & Support' },
 ]
 
-const SKILLS = [
-  'HTML',
-  'CSS',
-  'JavaScript',
-  'React',
-  'Python',
-  'PHP',
-  'MySQL',
-  'Windows Administration',
-  'Hardware Troubleshooting',
+const SKILLS: { name: string; description: string }[] = [
+  {
+    name: 'HTML',
+    description:
+      'HTML (HyperText Markup Language) is used to structure web pages: headings, paragraphs, links, images, forms, and sections. It tells the browser what each part of the page means so content is organized and accessible.',
+  },
+  {
+    name: 'CSS',
+    description:
+      'CSS (Cascading Style Sheets) controls how web pages look: colors, fonts, spacing, layout, and responsive design. It separates presentation from structure so sites can adapt to different screen sizes and brands.',
+  },
+  {
+    name: 'JavaScript',
+    description:
+      'JavaScript runs in the browser (and on servers with Node.js) to add interactivity: menus, validation, animations, and fetching data without reloading the page. It is the main language for dynamic web behavior.',
+  },
+  {
+    name: 'React',
+    description:
+      'React is a JavaScript library for building user interfaces from reusable components. It helps manage state and updates the UI efficiently, which is ideal for modern single-page applications and complex dashboards.',
+  },
+  {
+    name: 'Python',
+    description:
+      'Python is a versatile language used for scripting, automation, data work, APIs, and web backends. Its clear syntax makes it strong for prototypes, tools, and services that need to integrate with databases and other systems.',
+  },
+  {
+    name: 'PHP',
+    description:
+      'PHP is a server-side language widely used for web applications and content systems. It generates HTML, talks to databases, and handles forms and sessions—common in hosting environments and many existing websites.',
+  },
+  {
+    name: 'MySQL',
+    description:
+      'MySQL is a relational database system used to store and query structured data: users, products, records, and reports. It works with languages like PHP and Python to persist information safely behind web applications.',
+  },
+  {
+    name: 'Windows Administration',
+    description:
+      'Windows administration covers managing user accounts, permissions, updates, networking, and services on Windows PCs and servers. It keeps systems secure, backed up, and running smoothly for organizations and clients.',
+  },
+  {
+    name: 'Hardware Troubleshooting',
+    description:
+      'Hardware troubleshooting means diagnosing physical computer issues: memory, storage, displays, power, and peripherals. It involves testing components, replacing faulty parts, and restoring reliable machines for everyday use.',
+  },
 ]
 
-const PROJECTS: { title: string; description: string }[] = [
+const PROJECTS: { title: string; description: string; href?: string }[] = [
   {
     title: 'SortiFy App',
     description:
@@ -38,8 +75,113 @@ const PROJECTS: { title: string; description: string }[] = [
     title: 'Attendify App',
     description:
       'A digital attendance system that simplifies tracking and managing attendance, making it faster, more accurate, and accessible through a modern interface.',
+    href: 'https://mut-stars.web.app/home',
   },
 ]
+
+/** CSS 3D block robot with walk cycle; lane sets `--robot-color` and motion vars. */
+function SkillModalRobot3D() {
+  return (
+    <div className="skill-modal-robot-3d">
+      <div className="skill-modal-robot-3d-shadow" />
+      <div className="skill-modal-robot-3d-legs">
+        <div className="skill-modal-robot-3d-leg skill-modal-robot-3d-leg-l" />
+        <div className="skill-modal-robot-3d-leg skill-modal-robot-3d-leg-r" />
+      </div>
+      <div className="skill-modal-robot-3d-torso" />
+      <div className="skill-modal-robot-3d-arm skill-modal-robot-3d-arm-l" />
+      <div className="skill-modal-robot-3d-arm skill-modal-robot-3d-arm-r" />
+      <div className="skill-modal-robot-3d-head">
+        <span className="skill-modal-robot-3d-eye skill-modal-robot-3d-eye-l" />
+        <span className="skill-modal-robot-3d-eye skill-modal-robot-3d-eye-r" />
+      </div>
+      <div className="skill-modal-robot-3d-antenna" />
+    </div>
+  )
+}
+
+const SKILL_MODAL_ROBOT_LANES = [
+  {
+    '--robot-bottom': '4%',
+    '--robot-w': '40px',
+    '--robot-duration': '26s',
+    '--robot-delay': '-1s',
+    '--bob-delay': '0s',
+    '--robot-scale': 0.88,
+    '--robot-opacity': 0.45,
+    '--robot-color': '#ffffff',
+  },
+  {
+    '--robot-bottom': '8%',
+    '--robot-w': '52px',
+    '--robot-duration': '19s',
+    '--robot-delay': '-11s',
+    '--bob-delay': '-0.6s',
+    '--robot-scale': 1,
+    '--robot-opacity': 0.65,
+    '--robot-color': '#7dd3fc',
+  },
+  {
+    '--robot-bottom': '11%',
+    '--robot-w': '46px',
+    '--robot-duration': '22s',
+    '--robot-delay': '-4s',
+    '--bob-delay': '-1.2s',
+    '--robot-scale': 0.92,
+    '--robot-opacity': 0.55,
+    '--robot-color': '#38bdf8',
+  },
+  {
+    '--robot-bottom': '14%',
+    '--robot-w': '58px',
+    '--robot-duration': '16s',
+    '--robot-delay': '-7s',
+    '--bob-delay': '-0.2s',
+    '--robot-scale': 1.05,
+    '--robot-opacity': 0.72,
+    '--robot-color': '#2563eb',
+  },
+  {
+    '--robot-bottom': '17%',
+    '--robot-w': '44px',
+    '--robot-duration': '24s',
+    '--robot-delay': '-14s',
+    '--bob-delay': '-0.9s',
+    '--robot-scale': 0.9,
+    '--robot-opacity': 0.5,
+    '--robot-color': '#e0f2fe',
+  },
+  {
+    '--robot-bottom': '20%',
+    '--robot-w': '50px',
+    '--robot-duration': '20s',
+    '--robot-delay': '-2s',
+    '--bob-delay': '-1.5s',
+    '--robot-scale': 0.98,
+    '--robot-opacity': 0.68,
+    '--robot-color': '#ffffff',
+  },
+  {
+    '--robot-bottom': '6%',
+    '--robot-w': '36px',
+    '--robot-duration': '28s',
+    '--robot-delay': '-18s',
+    '--bob-delay': '-0.4s',
+    '--robot-scale': 0.82,
+    '--robot-opacity': 0.4,
+    '--robot-color': '#bae6fd',
+  },
+  {
+    '--robot-bottom': '22%',
+    '--robot-w': '54px',
+    '--robot-duration': '17s',
+    '--robot-delay': '-9s',
+    '--bob-delay': '-2s',
+    '--robot-scale': 1,
+    '--robot-opacity': 0.6,
+    '--robot-color': '#3b82f6',
+  },
+] as unknown as CSSProperties[]
 
 function setBodyCursorActive(active: boolean) {
   if (active) document.body.classList.add('cursor-active')
@@ -101,6 +243,7 @@ function RippleBox({
 
 export default function Portfolio() {
   const [glow, setGlow] = useState({ x: 0, y: 0 })
+  const [selectedSkill, setSelectedSkill] = useState<(typeof SKILLS)[number] | null>(null)
 
   useEffect(() => {
     const onMove = (e: globalThis.MouseEvent) => {
@@ -109,6 +252,20 @@ export default function Portfolio() {
     document.addEventListener('mousemove', onMove)
     return () => document.removeEventListener('mousemove', onMove)
   }, [])
+
+  useEffect(() => {
+    if (!selectedSkill) return
+    const onKey = (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Escape') setSelectedSkill(null)
+    }
+    document.addEventListener('keydown', onKey)
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = prevOverflow
+    }
+  }, [selectedSkill])
 
   return (
     <>
@@ -188,7 +345,7 @@ export default function Portfolio() {
           </RippleBox>
         </div>
 
-        <section className="mt-[50px]">
+        <section className="mt-[50px]" aria-label="Technologies and skills">
           <h2 className="mb-6 flex items-center justify-center gap-3 text-center text-[1.8rem] text-primary">
             <i className="fas fa-code" aria-hidden />
             Technologies &amp; Skills
@@ -196,10 +353,22 @@ export default function Portfolio() {
           <div className="flex flex-wrap justify-center gap-3">
             {SKILLS.map((skill) => (
               <RippleBox
-                key={skill}
+                key={skill.name}
+                role="button"
+                tabIndex={0}
+                aria-haspopup="dialog"
+                aria-expanded={selectedSkill?.name === skill.name}
+                aria-label={`${skill.name}: view description`}
                 className="rounded-full border border-primary/35 bg-primary/10 px-6 py-2.5 text-base text-primary transition-all duration-[180ms] ease-in-out hover:-translate-y-0.5 hover:scale-[1.04] hover:bg-primary hover:text-[#111] hover:shadow-[0_10px_20px_rgba(0,255,157,0.2)]"
+                onClick={() => setSelectedSkill(skill)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    setSelectedSkill(skill)
+                  }
+                }}
               >
-                {skill}
+                {skill.name}
               </RippleBox>
             ))}
           </div>
@@ -208,13 +377,31 @@ export default function Portfolio() {
         <section className="mt-[60px]">
           <h2 className="mb-8 flex items-center justify-center gap-3 text-center text-[1.8rem] text-primary">
             <i className="fas fa-folder-open" aria-hidden />
-            My Projects
+            Projects
           </h2>
           <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-[25px]">
             {PROJECTS.map((p) => (
               <RippleBox
                 key={p.title}
-                className="overflow-hidden rounded-2xl border border-primary/20 bg-[rgba(20,20,20,0.7)] transition-all duration-[280ms] ease-in-out hover:-translate-y-2 hover:scale-[1.01] hover:border-primary hover:shadow-[0_22px_44px_rgba(0,255,157,0.24)]"
+                role={p.href ? 'link' : undefined}
+                tabIndex={p.href ? 0 : undefined}
+                aria-label={p.href ? `${p.title}: open live site in a new tab` : undefined}
+                className={`overflow-hidden rounded-2xl border border-primary/20 bg-[rgba(20,20,20,0.7)] transition-all duration-[280ms] ease-in-out hover:-translate-y-2 hover:scale-[1.01] hover:border-primary hover:shadow-[0_22px_44px_rgba(0,255,157,0.24)] ${p.href ? '' : 'cursor-default'}`}
+                onClick={
+                  p.href
+                    ? () => window.open(p.href, '_blank', 'noopener,noreferrer')
+                    : undefined
+                }
+                onKeyDown={
+                  p.href
+                    ? (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault()
+                          window.open(p.href, '_blank', 'noopener,noreferrer')
+                        }
+                      }
+                    : undefined
+                }
               >
                 <div className="p-5">
                   <h3 className="mb-2 text-primary">{p.title}</h3>
@@ -225,6 +412,50 @@ export default function Portfolio() {
           </div>
         </section>
       </div>
+
+      {selectedSkill ? (
+        <div className="fixed inset-0 z-[200] flex items-end justify-center p-4 pb-10 sm:items-center sm:pb-4">
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/65 backdrop-blur-[6px]"
+            aria-label="Close skill description"
+            onClick={() => setSelectedSkill(null)}
+          />
+          <div
+            className="skill-modal-robots-layer pointer-events-none absolute inset-0 z-0 overflow-hidden"
+            aria-hidden
+          >
+            {SKILL_MODAL_ROBOT_LANES.map((laneStyle, i) => (
+              <div key={i} className="skill-modal-robot-lane" style={laneStyle}>
+                <div className="skill-modal-robot-mover">
+                  <div className="skill-modal-robot-mover-inner">
+                    <SkillModalRobot3D />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="skill-dialog-title"
+            className="relative z-[1] max-h-[min(85vh,520px)] w-full max-w-lg overflow-y-auto rounded-2xl border border-primary/40 bg-[rgba(12,14,18,0.92)] p-6 shadow-[0_0_48px_rgba(0,255,157,0.18),0_24px_48px_rgba(0,0,0,0.55)] backdrop-blur-[18px]"
+          >
+            <button
+              type="button"
+              className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-lg border border-primary/30 text-portfolio-muted transition-colors hover:border-primary hover:text-primary"
+              aria-label="Close"
+              onClick={() => setSelectedSkill(null)}
+            >
+              <i className="fas fa-times" aria-hidden />
+            </button>
+            <h3 id="skill-dialog-title" className="pr-12 text-xl font-semibold text-primary">
+              {selectedSkill.name}
+            </h3>
+            <p className="mt-4 leading-relaxed text-portfolio-text">{selectedSkill.description}</p>
+          </div>
+        </div>
+      ) : null}
 
       <div
         className="fixed bottom-6 right-6 z-[100] rounded-2xl border border-primary bg-[rgba(10,10,10,0.93)] px-6 py-[18px] text-[0.97rem] leading-[2] shadow-[0_15px_35px_rgba(0,255,157,0.25)] backdrop-blur-[14px] transition-all duration-[180ms] ease-in-out hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,255,157,0.3)] max-md:relative max-md:bottom-auto max-md:right-auto max-md:mx-auto max-md:mt-12 max-md:max-w-[360px] max-md:text-center"
@@ -237,7 +468,7 @@ export default function Portfolio() {
             onPointerEnter={() => setBodyCursorActive(true)}
             onPointerLeave={() => setBodyCursorActive(false)}
           >
-            Ndulukomesuli02@gmail.com |{' '}
+            Ndulukomesuli02@gmail.com | {' '}
           </a>
         </span>
         <span className="inline-flex items-center gap-1.5">
@@ -261,7 +492,7 @@ export default function Portfolio() {
             onPointerEnter={() => setBodyCursorActive(true)}
             onPointerLeave={() => setBodyCursorActive(false)}
           >
-            GitHub: MesuliN |{' '}
+            GitHub: MesuliN | {' '}
           </a>
         </span>
         <span className="inline-flex items-center gap-1.5">
