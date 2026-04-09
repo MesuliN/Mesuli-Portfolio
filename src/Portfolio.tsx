@@ -7,6 +7,7 @@ import {
   type MouseEvent as ReactMouseEvent,
   type ReactNode,
 } from 'react'
+import mesuliImage from './assets/Mesuli Image.jpg'
 
 const SERVICES: { icon: string; label: string }[] = [
   { icon: 'fa-globe', label: 'Website Development' },
@@ -119,6 +120,18 @@ export default function Portfolio() {
 
       <div className="mx-auto max-w-[1200px] px-6 pb-28 pt-14 max-md:pb-24 max-md:pt-12">
         <header className="mb-[68px] text-center max-md:mb-10">
+          <div className="mb-7 flex justify-center max-md:mb-6">
+            <img
+              src={mesuliImage}
+              alt="Mesuli Nduluko"
+              width={640}
+              height={640}
+              sizes="(max-width: 768px) min(92vw, 280px), 320px"
+              decoding="async"
+              fetchPriority="high"
+              className="aspect-square h-auto w-[min(92vw,280px)] rounded-full border-2 border-primary/45 object-cover object-center shadow-[0_0_36px_rgba(0,255,157,0.35),0_0_24px_rgba(0,240,255,0.15)] ring-2 ring-secondary/20 md:w-80 transform-gpu"
+            />
+          </div>
           <h1 className="mb-2.5 text-[2.6rem] font-bold leading-tight drop-shadow-[0_0_40px_rgba(0,255,157,0.5)] md:text-[3.5rem] md:leading-none">
             <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
               Mesuli Nduluko
