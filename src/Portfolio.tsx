@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from 'react'
 import mesuliImage from './assets/Mesuli Image.jpg'
+import skillTechModalBg from './assets/skill-tech-modal-bg.png'
 
 const SERVICES: { icon: string; label: string }[] = [
   { icon: 'fa-globe', label: 'Website Development' },
@@ -65,6 +66,17 @@ const SKILLS: { name: string; description: string }[] = [
   },
 ]
 
+/** CSS vars for the skill modal’s single walking 3D robot (marquee + bob / leg cycle). */
+const SKILL_MODAL_ROBOT_MARQUEE_STYLE = {
+  '--robot-w': '58px',
+  '--robot-duration': '22s',
+  '--robot-delay': '0s',
+  '--bob-delay': '0s',
+  '--robot-scale': '1',
+  '--robot-opacity': '0.78',
+  '--robot-color': '#7dd3fc',
+} as CSSProperties
+
 const PROJECTS: { title: string; description: string; href?: string }[] = [
   {
     title: 'SortiFy App',
@@ -74,7 +86,7 @@ const PROJECTS: { title: string; description: string; href?: string }[] = [
   {
     title: 'Attendify App',
     description:
-      'A digital attendance system that simplifies tracking and managing attendance, making it faster, more accurate, and accessible through a modern interface.',
+      'A digital attendance system that simplifies tracking and managing attendance, making it faster, more accurate, and easily accessible through a modern interface. The system is currently deployed.',
     href: 'https://mut-stars.web.app/home',
   },
 ]
@@ -99,89 +111,6 @@ function SkillModalRobot3D() {
     </div>
   )
 }
-
-const SKILL_MODAL_ROBOT_LANES = [
-  {
-    '--robot-bottom': '4%',
-    '--robot-w': '40px',
-    '--robot-duration': '26s',
-    '--robot-delay': '-1s',
-    '--bob-delay': '0s',
-    '--robot-scale': 0.88,
-    '--robot-opacity': 0.45,
-    '--robot-color': '#ffffff',
-  },
-  {
-    '--robot-bottom': '8%',
-    '--robot-w': '52px',
-    '--robot-duration': '19s',
-    '--robot-delay': '-11s',
-    '--bob-delay': '-0.6s',
-    '--robot-scale': 1,
-    '--robot-opacity': 0.65,
-    '--robot-color': '#7dd3fc',
-  },
-  {
-    '--robot-bottom': '11%',
-    '--robot-w': '46px',
-    '--robot-duration': '22s',
-    '--robot-delay': '-4s',
-    '--bob-delay': '-1.2s',
-    '--robot-scale': 0.92,
-    '--robot-opacity': 0.55,
-    '--robot-color': '#38bdf8',
-  },
-  {
-    '--robot-bottom': '14%',
-    '--robot-w': '58px',
-    '--robot-duration': '16s',
-    '--robot-delay': '-7s',
-    '--bob-delay': '-0.2s',
-    '--robot-scale': 1.05,
-    '--robot-opacity': 0.72,
-    '--robot-color': '#2563eb',
-  },
-  {
-    '--robot-bottom': '17%',
-    '--robot-w': '44px',
-    '--robot-duration': '24s',
-    '--robot-delay': '-14s',
-    '--bob-delay': '-0.9s',
-    '--robot-scale': 0.9,
-    '--robot-opacity': 0.5,
-    '--robot-color': '#e0f2fe',
-  },
-  {
-    '--robot-bottom': '20%',
-    '--robot-w': '50px',
-    '--robot-duration': '20s',
-    '--robot-delay': '-2s',
-    '--bob-delay': '-1.5s',
-    '--robot-scale': 0.98,
-    '--robot-opacity': 0.68,
-    '--robot-color': '#ffffff',
-  },
-  {
-    '--robot-bottom': '6%',
-    '--robot-w': '36px',
-    '--robot-duration': '28s',
-    '--robot-delay': '-18s',
-    '--bob-delay': '-0.4s',
-    '--robot-scale': 0.82,
-    '--robot-opacity': 0.4,
-    '--robot-color': '#bae6fd',
-  },
-  {
-    '--robot-bottom': '22%',
-    '--robot-w': '54px',
-    '--robot-duration': '17s',
-    '--robot-delay': '-9s',
-    '--bob-delay': '-2s',
-    '--robot-scale': 1,
-    '--robot-opacity': 0.6,
-    '--robot-color': '#3b82f6',
-  },
-] as unknown as CSSProperties[]
 
 function setBodyCursorActive(active: boolean) {
   if (active) document.body.classList.add('cursor-active')
@@ -415,31 +344,34 @@ export default function Portfolio() {
 
       {selectedSkill ? (
         <div className="fixed inset-0 z-[200] flex items-end justify-center p-4 pb-10 sm:items-center sm:pb-4">
+          <div
+            className="skill-modal-tech-photo-bg pointer-events-none absolute inset-0 z-0 overflow-hidden"
+            style={{ backgroundImage: `url(${skillTechModalBg})` }}
+            aria-hidden
+          />
           <button
             type="button"
-            className="absolute inset-0 bg-black/65 backdrop-blur-[6px]"
+            className="absolute inset-0 z-[1] bg-black/45 backdrop-blur-[3px]"
             aria-label="Close skill description"
             onClick={() => setSelectedSkill(null)}
           />
           <div
-            className="skill-modal-robots-layer pointer-events-none absolute inset-0 z-0 overflow-hidden"
+            className="skill-modal-robots-layer pointer-events-none absolute inset-0 z-[1] overflow-hidden"
             aria-hidden
           >
-            {SKILL_MODAL_ROBOT_LANES.map((laneStyle, i) => (
-              <div key={i} className="skill-modal-robot-lane" style={laneStyle}>
-                <div className="skill-modal-robot-mover">
-                  <div className="skill-modal-robot-mover-inner">
-                    <SkillModalRobot3D />
-                  </div>
+            <div className="skill-modal-robot-solo">
+              <div className="skill-modal-robot-mover" style={SKILL_MODAL_ROBOT_MARQUEE_STYLE}>
+                <div className="skill-modal-robot-mover-inner">
+                  <SkillModalRobot3D />
                 </div>
               </div>
-            ))}
+            </div>
           </div>
           <div
             role="dialog"
             aria-modal="true"
             aria-labelledby="skill-dialog-title"
-            className="relative z-[1] max-h-[min(85vh,520px)] w-full max-w-lg overflow-y-auto rounded-2xl border border-primary/40 bg-[rgba(12,14,18,0.92)] p-6 shadow-[0_0_48px_rgba(0,255,157,0.18),0_24px_48px_rgba(0,0,0,0.55)] backdrop-blur-[18px]"
+            className="relative z-[2] max-h-[min(85vh,520px)] w-full max-w-lg overflow-y-auto rounded-2xl border border-primary/40 bg-[rgba(12,14,18,0.92)] p-6 shadow-[0_0_48px_rgba(0,255,157,0.18),0_24px_48px_rgba(0,0,0,0.55)] backdrop-blur-[18px]"
           >
             <button
               type="button"

@@ -104,10 +104,10 @@
 
 @keyframes skill-modal-robot-marquee {
   from {
-    transform: translate3d(-22vw, 0, 0) scale(var(--robot-scale, 1));
+    transform: translate3d(122vw, 0, 0) scale(var(--robot-scale, 1));
   }
   to {
-    transform: translate3d(122vw, 0, 0) scale(var(--robot-scale, 1));
+    transform: translate3d(-22vw, 0, 0) scale(var(--robot-scale, 1));
   }
 }
 
@@ -161,12 +161,33 @@
   }
 }
 
-.skill-modal-robots-layer .skill-modal-robot-lane {
+/* Technologies & Skills modal: blurred reference — `contain` keeps the full image in frame */
+.skill-modal-tech-photo-bg {
+  background-color: #050508;
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  filter: blur(12px);
+  transform: scale(1.02);
+  transform-origin: center center;
+  opacity: 0.82;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skill-modal-tech-photo-bg {
+    filter: blur(8px);
+    transform: scale(1.01);
+  }
+}
+
+/* Single 3D robot lane: walks right (marquee) in front of the modal photo */
+.skill-modal-robots-layer .skill-modal-robot-solo {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: var(--robot-bottom, 10%);
+  bottom: min(8%, 64px);
   height: 104px;
+  overflow: hidden;
   pointer-events: none;
 }
 
@@ -410,4 +431,5 @@
   .skill-modal-robots-layer .skill-modal-robot-3d-arm-r {
     transform: rotateX(0deg) !important;
   }
+
 }
