@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { ProjectCard } from './ProjectCard'
+import { ProjectsGalaxyCanvas } from './ProjectsGalaxyCanvas'
 import { PROJECTS } from './projectsData'
 import { SERVICES } from './servicesData'
 import { setBodyCursorActive } from './RippleBox'
@@ -17,6 +18,11 @@ export default function ProjectsPage() {
 
   return (
     <div className="projects-page">
+      <div className="projects-page__galaxy" aria-hidden>
+        <ProjectsGalaxyCanvas />
+      </div>
+      <div className="projects-page__dev-matrix" aria-hidden />
+      <div className="projects-page__shell">
       <nav className="projects-page__nav" aria-label="Projects section">
         <a
           href="#/"
@@ -43,8 +49,24 @@ export default function ProjectsPage() {
         </span>
       </nav>
 
+      <div className="projects-page__code-rail" aria-hidden>
+        <div className="projects-page__code-rail-track">
+          <span className="projects-page__code-rail-seg">
+            ~/mesuli/portfolio <span className="projects-page__code-rail-muted">·</span> git (main){' '}
+            <span className="projects-page__code-rail-muted">·</span> ls ./projects
+          </span>
+          <span className="projects-page__code-rail-seg" aria-hidden>
+            ~/mesuli/portfolio <span className="projects-page__code-rail-muted">·</span> git (main){' '}
+            <span className="projects-page__code-rail-muted">·</span> ls ./projects
+          </span>
+        </div>
+      </div>
+
       <header className="projects-page__hero">
-        <p className="projects-page__eyebrow">Selected builds &amp; contributions</p>
+        <p className="projects-page__eyebrow">
+          <i className="fas fa-terminal projects-page__eyebrow-icon" aria-hidden />
+          Selected builds &amp; contributions
+        </p>
         <h1 className="projects-page__title">
           <span className="projects-page__title-glow">Projects</span>
         </h1>
@@ -130,6 +152,7 @@ export default function ProjectsPage() {
           Return to full portfolio
         </a>
       </footer>
+      </div>
     </div>
   )
 }

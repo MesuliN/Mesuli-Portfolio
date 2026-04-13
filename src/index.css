@@ -397,16 +397,83 @@
     animation: project-dev-card-accent-sweep 5s linear infinite;
   }
 
-  /* Dedicated projects view — navy + sky blue + existing neon accents */
+  /* Projects view — interactive canvas spiral galaxy + dev grid */
   .projects-page {
+    position: relative;
+    isolation: isolate;
+    overflow-x: clip;
     min-height: 100svh;
     padding: 0 1.25rem 3rem;
     color: #e2e8f0;
-    background:
-      radial-gradient(ellipse 90% 55% at 50% -25%, rgba(56, 189, 248, 0.18), transparent 55%),
-      radial-gradient(ellipse 50% 45% at 100% 80%, rgba(0, 255, 157, 0.08), transparent 50%),
-      radial-gradient(ellipse 45% 40% at 0% 60%, rgba(30, 64, 175, 0.35), transparent 55%),
-      linear-gradient(185deg, #050a12 0%, #0a1628 38%, #0c1220 100%);
+    background-color: #020408;
+  }
+
+  .projects-page__galaxy {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    background: #010102;
+  }
+
+  .projects-page__galaxy-canvas {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .projects-page__dev-matrix {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(56, 189, 248, 0.04) 1px, transparent 1px);
+    background-size: min(52px, 5vw) min(52px, 5vw);
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.28) 52%, rgba(0, 0, 0, 0.82) 100%);
+    animation: projects-page-matrix-glow 28s ease-in-out infinite alternate;
+  }
+
+  .projects-page__shell {
+    position: relative;
+    z-index: 1;
+  }
+
+  .projects-page__code-rail {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0.4rem 0 0.9rem;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(56, 189, 248, 0.14);
+    font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    color: rgba(125, 211, 252, 0.78);
+  }
+
+  .projects-page__code-rail-track {
+    display: flex;
+    width: max-content;
+    animation: projects-page-code-rail-scroll 40s linear infinite;
+    white-space: nowrap;
+  }
+
+  .projects-page__code-rail-seg {
+    flex-shrink: 0;
+    padding-right: 3.5rem;
+  }
+
+  .projects-page__code-rail-muted {
+    color: rgba(148, 163, 184, 0.45);
+  }
+
+  .projects-page__eyebrow-icon {
+    font-size: 0.88em;
+    color: rgba(52, 211, 153, 0.88);
   }
 
   .projects-page__nav {
@@ -477,6 +544,10 @@
   }
 
   .projects-page__eyebrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
     margin: 0 0 0.65rem;
     font-size: 0.78rem;
     font-weight: 600;
@@ -494,13 +565,22 @@
   }
 
   .projects-page__title-glow {
-    background: linear-gradient(120deg, #7dd3fc 0%, #00ff9d 45%, #38bdf8 100%);
-    background-size: 200% auto;
+    background: linear-gradient(
+      120deg,
+      #7dd3fc 0%,
+      #38bdf8 28%,
+      #34d399 52%,
+      #00ff9d 72%,
+      #22d3ee 100%
+    );
+    background-size: 220% auto;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     animation: projects-page-title-shine 7s ease-in-out infinite;
-    text-shadow: 0 0 40px rgba(56, 189, 248, 0.25);
+    text-shadow:
+      0 0 36px rgba(56, 189, 248, 0.28),
+      0 0 48px rgba(16, 185, 129, 0.12);
   }
 
   .projects-page__lede {
@@ -938,6 +1018,26 @@
   }
 }
 
+@keyframes projects-page-matrix-glow {
+  0% {
+    opacity: 0.55;
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    opacity: 0.82;
+    filter: hue-rotate(48deg);
+  }
+}
+
+@keyframes projects-page-code-rail-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
 @keyframes projects-cta-frame-flow {
   0%,
   100% {
@@ -1320,6 +1420,16 @@
   .projects-cta__pulse,
   .projects-cta__title {
     animation: none !important;
+  }
+
+  .projects-page__dev-matrix,
+  .projects-page__code-rail-track {
+    animation: none !important;
+  }
+
+  .projects-page__dev-matrix {
+    opacity: 0.68 !important;
+    filter: none !important;
   }
 
   .projects-cta {
