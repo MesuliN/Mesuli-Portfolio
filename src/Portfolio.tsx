@@ -1,70 +1,108 @@
-import {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  type CSSProperties,
-  type HTMLAttributes,
-  type MouseEvent as ReactMouseEvent,
-  type ReactNode,
-} from 'react'
+import { useEffect, useState, type CSSProperties } from 'react'
 import mesuliImage from './assets/Mesuli Image.jpg'
 import skillTechModalBg from './assets/skill-tech-modal-bg.png'
+import { getHashRoute } from './hashRoute'
+import ProjectsPage from './ProjectsPage'
+import { RippleBox, setBodyCursorActive } from './RippleBox'
+import { SERVICES } from './servicesData'
 
-const SERVICES: { icon: string; label: string }[] = [
-  { icon: 'fa-globe', label: 'Website Development' },
-  { icon: 'fa-laptop-code', label: 'Web Applications' },
-  { icon: 'fa-chalkboard-teacher', label: 'Computer Training' },
-  { icon: 'fa-windows', label: 'Windows Installation & Support' },
-]
+type SkillChip = { name: string; description: string; iconClass: string }
 
-const SKILLS: { name: string; description: string }[] = [
+/** Markup, languages, frameworks, and databases used in development */
+const TECHNOLOGIES: SkillChip[] = [
   {
     name: 'HTML',
+    iconClass: 'fab fa-html5',
     description:
       'HTML (HyperText Markup Language) is used to structure web pages: headings, paragraphs, links, images, forms, and sections. It tells the browser what each part of the page means so content is organized and accessible.',
   },
   {
     name: 'CSS',
+    iconClass: 'fab fa-css3-alt',
     description:
       'CSS (Cascading Style Sheets) controls how web pages look: colors, fonts, spacing, layout, and responsive design. It separates presentation from structure so sites can adapt to different screen sizes and brands.',
   },
   {
     name: 'JavaScript',
+    iconClass: 'fab fa-js',
     description:
       'JavaScript runs in the browser (and on servers with Node.js) to add interactivity: menus, validation, animations, and fetching data without reloading the page. It is the main language for dynamic web behavior.',
   },
   {
     name: 'React',
+    iconClass: 'fab fa-react',
     description:
       'React is a JavaScript library for building user interfaces from reusable components. It helps manage state and updates the UI efficiently, which is ideal for modern single-page applications and complex dashboards.',
   },
   {
     name: 'Python',
+    iconClass: 'fab fa-python',
     description:
       'Python is a versatile language used for scripting, automation, data work, APIs, and web backends. Its clear syntax makes it strong for prototypes, tools, and services that need to integrate with databases and other systems.',
   },
   {
     name: 'PHP',
+    iconClass: 'fab fa-php',
     description:
       'PHP is a server-side language widely used for web applications and content systems. It generates HTML, talks to databases, and handles forms and sessions—common in hosting environments and many existing websites.',
   },
   {
     name: 'MySQL',
+    iconClass: 'fas fa-database',
     description:
       'MySQL is a relational database system used to store and query structured data: users, products, records, and reports. It works with languages like PHP and Python to persist information safely behind web applications.',
   },
+]
+
+/** IT operations and hands-on hardware work */
+const IT_SKILLS: SkillChip[] = [
   {
     name: 'Windows Administration',
+    iconClass: 'fab fa-windows',
     description:
       'Windows administration covers managing user accounts, permissions, updates, networking, and services on Windows PCs and servers. It keeps systems secure, backed up, and running smoothly for organizations and clients.',
   },
   {
     name: 'Hardware Troubleshooting',
+    iconClass: 'fas fa-microchip',
     description:
       'Hardware troubleshooting means diagnosing physical computer issues: memory, storage, displays, power, and peripherals. It involves testing components, replacing faulty parts, and restoring reliable machines for everyday use.',
   },
 ]
+
+function SkillChipButton({
+  skill,
+  isSelected,
+  onSelect,
+}: {
+  skill: SkillChip
+  isSelected: boolean
+  onSelect: (s: SkillChip) => void
+}) {
+  return (
+    <RippleBox
+      role="button"
+      tabIndex={0}
+      aria-haspopup="dialog"
+      aria-expanded={isSelected}
+      aria-label={`${skill.name}: view description`}
+      className="group flex items-center gap-2.5 rounded-full border border-primary/35 bg-primary/10 px-5 py-2.5 text-base text-primary transition-all duration-[180ms] ease-in-out hover:-translate-y-0.5 hover:scale-[1.04] hover:bg-primary hover:text-[#111] hover:shadow-[0_10px_20px_rgba(0,255,157,0.2)]"
+      onClick={() => onSelect(skill)}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onSelect(skill)
+        }
+      }}
+    >
+      <i
+        className={`${skill.iconClass} text-[1.35rem] leading-none transition-colors duration-[180ms] group-hover:text-[#111]`}
+        aria-hidden
+      />
+      <span>{skill.name}</span>
+    </RippleBox>
+  )
+}
 
 /** CSS vars for the skill modal’s single walking 3D robot (marquee + bob / leg cycle). */
 const SKILL_MODAL_ROBOT_MARQUEE_STYLE = {
@@ -76,20 +114,6 @@ const SKILL_MODAL_ROBOT_MARQUEE_STYLE = {
   '--robot-opacity': '0.78',
   '--robot-color': '#7dd3fc',
 } as CSSProperties
-
-const PROJECTS: { title: string; description: string; href?: string }[] = [
-  {
-    title: 'SortiFy App',
-    description:
-      'A smart waste management application designed to help users sort and manage waste efficiently, promoting cleaner environments through an intuitive and user-friendly system.',
-  },
-  {
-    title: 'Attendify App',
-    description:
-      'A digital attendance system that simplifies tracking and managing attendance, making it faster, more accurate, and easily accessible through a modern interface. The system is currently deployed.',
-    href: 'https://mut-stars.web.app/home',
-  },
-]
 
 /** CSS 3D block robot with walk cycle; lane sets `--robot-color` and motion vars. */
 function SkillModalRobot3D() {
@@ -112,67 +136,16 @@ function SkillModalRobot3D() {
   )
 }
 
-function setBodyCursorActive(active: boolean) {
-  if (active) document.body.classList.add('cursor-active')
-  else document.body.classList.remove('cursor-active')
-}
-
-type RippleBoxProps = {
-  children: ReactNode
-  className?: string
-  onClick?: HTMLAttributes<HTMLDivElement>['onClick']
-} & Omit<HTMLAttributes<HTMLDivElement>, 'onClick' | 'children' | 'className'>
-
-function RippleBox({
-  children,
-  className = '',
-  onClick,
-  onPointerEnter,
-  onPointerLeave,
-  ...rest
-}: RippleBoxProps) {
-  const ref = useRef<HTMLDivElement>(null)
-  const handleClick = useCallback(
-    (e: ReactMouseEvent<HTMLDivElement>) => {
-      e.stopPropagation()
-      const el = ref.current
-      if (el) {
-        const rect = el.getBoundingClientRect()
-        const wave = document.createElement('span')
-        wave.className = 'ripple-wave'
-        wave.style.left = `${e.clientX - rect.left}px`
-        wave.style.top = `${e.clientY - rect.top}px`
-        el.appendChild(wave)
-        wave.addEventListener('animationend', () => wave.remove())
-      }
-      onClick?.(e)
-    },
-    [onClick],
-  )
-
-  return (
-    <div
-      ref={ref}
-      {...rest}
-      className={`interactive ripple relative cursor-pointer overflow-hidden ${className}`}
-      onClick={handleClick}
-      onPointerEnter={(e) => {
-        setBodyCursorActive(true)
-        onPointerEnter?.(e)
-      }}
-      onPointerLeave={(e) => {
-        setBodyCursorActive(false)
-        onPointerLeave?.(e)
-      }}
-    >
-      {children}
-    </div>
-  )
-}
-
 export default function Portfolio() {
   const [glow, setGlow] = useState({ x: 0, y: 0 })
-  const [selectedSkill, setSelectedSkill] = useState<(typeof SKILLS)[number] | null>(null)
+  const [selectedSkill, setSelectedSkill] = useState<SkillChip | null>(null)
+  const [hashRoute, setHashRoute] = useState(() => getHashRoute())
+
+  useEffect(() => {
+    const sync = () => setHashRoute(getHashRoute())
+    window.addEventListener('hashchange', sync)
+    return () => window.removeEventListener('hashchange', sync)
+  }, [])
 
   useEffect(() => {
     const onMove = (e: globalThis.MouseEvent) => {
@@ -195,6 +168,10 @@ export default function Portfolio() {
       document.body.style.overflow = prevOverflow
     }
   }, [selectedSkill])
+
+  if (hashRoute === 'projects') {
+    return <ProjectsPage />
+  }
 
   return (
     <>
@@ -238,7 +215,7 @@ export default function Portfolio() {
               About Me
             </h2>
             <p className="text-portfolio-text">
-              I am a web developer and IT specialist with a strong focus on creating clean, responsive
+              I am a website developer and software developer with a strong focus on creating clean, responsive
               websites and practical web applications. My work combines modern front-end development
               with reliable back-end integration to deliver solutions that are fast, user-focused, and
               built for real-world results.
@@ -274,71 +251,74 @@ export default function Portfolio() {
           </RippleBox>
         </div>
 
-        <section className="mt-[50px]" aria-label="Technologies and skills">
-          <h2 className="mb-6 flex items-center justify-center gap-3 text-center text-[1.8rem] text-primary">
-            <i className="fas fa-code" aria-hidden />
-            Technologies &amp; Skills
-          </h2>
-          <div className="flex flex-wrap justify-center gap-3">
-            {SKILLS.map((skill) => (
-              <RippleBox
-                key={skill.name}
-                role="button"
-                tabIndex={0}
-                aria-haspopup="dialog"
-                aria-expanded={selectedSkill?.name === skill.name}
-                aria-label={`${skill.name}: view description`}
-                className="rounded-full border border-primary/35 bg-primary/10 px-6 py-2.5 text-base text-primary transition-all duration-[180ms] ease-in-out hover:-translate-y-0.5 hover:scale-[1.04] hover:bg-primary hover:text-[#111] hover:shadow-[0_10px_20px_rgba(0,255,157,0.2)]"
-                onClick={() => setSelectedSkill(skill)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault()
-                    setSelectedSkill(skill)
-                  }
-                }}
-              >
-                {skill.name}
-              </RippleBox>
-            ))}
-          </div>
-        </section>
+        <div className="mt-[50px] space-y-12">
+          <section aria-labelledby="technologies-heading">
+            <h2
+              id="technologies-heading"
+              className="mb-2 flex items-center justify-center gap-3 text-center text-[1.8rem] text-primary"
+            >
+              <i className="fas fa-code" aria-hidden />
+              Technologies
+            </h2>
+            <p className="mx-auto mb-6 max-w-[640px] text-center text-[0.98rem] leading-relaxed text-portfolio-muted">
+              Languages, libraries, and data tools I use to build and ship web software.
+            </p>
+            <div className="flex flex-wrap justify-center gap-3">
+              {TECHNOLOGIES.map((skill) => (
+                <SkillChipButton
+                  key={skill.name}
+                  skill={skill}
+                  isSelected={selectedSkill?.name === skill.name}
+                  onSelect={setSelectedSkill}
+                />
+              ))}
+            </div>
+          </section>
 
-        <section className="mt-[60px]">
-          <h2 className="mb-8 flex items-center justify-center gap-3 text-center text-[1.8rem] text-primary">
-            <i className="fas fa-folder-open" aria-hidden />
-            Projects
-          </h2>
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-[25px]">
-            {PROJECTS.map((p) => (
-              <RippleBox
-                key={p.title}
-                role={p.href ? 'link' : undefined}
-                tabIndex={p.href ? 0 : undefined}
-                aria-label={p.href ? `${p.title}: open live site in a new tab` : undefined}
-                className={`overflow-hidden rounded-2xl border border-primary/20 bg-[rgba(20,20,20,0.7)] transition-all duration-[280ms] ease-in-out hover:-translate-y-2 hover:scale-[1.01] hover:border-primary hover:shadow-[0_22px_44px_rgba(0,255,157,0.24)] ${p.href ? '' : 'cursor-default'}`}
-                onClick={
-                  p.href
-                    ? () => window.open(p.href, '_blank', 'noopener,noreferrer')
-                    : undefined
-                }
-                onKeyDown={
-                  p.href
-                    ? (e) => {
-                        if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault()
-                          window.open(p.href, '_blank', 'noopener,noreferrer')
-                        }
-                      }
-                    : undefined
-                }
-              >
-                <div className="p-5">
-                  <h3 className="mb-2 text-primary">{p.title}</h3>
-                  <p className="text-portfolio-muted">{p.description}</p>
-                </div>
-              </RippleBox>
-            ))}
-          </div>
+          <section aria-labelledby="skills-heading">
+            <h2
+              id="skills-heading"
+              className="mb-2 flex items-center justify-center gap-3 text-center text-[1.8rem] text-primary"
+            >
+              <i className="fas fa-screwdriver-wrench" aria-hidden />
+              Skills
+            </h2>
+            <p className="mx-auto mb-6 max-w-[640px] text-center text-[0.98rem] leading-relaxed text-portfolio-muted">
+              Systems administration and hardware work I rely on for IT support and client setups.
+            </p>
+            <div className="flex flex-wrap justify-center gap-3">
+              {IT_SKILLS.map((skill) => (
+                <SkillChipButton
+                  key={skill.name}
+                  skill={skill}
+                  isSelected={selectedSkill?.name === skill.name}
+                  onSelect={setSelectedSkill}
+                />
+              ))}
+            </div>
+          </section>
+        </div>
+
+        <section className="mt-[60px] px-2" aria-labelledby="projects-section-title">
+          <a id="projects-section-title" href="#/projects" className="projects-cta group">
+            <span className="projects-cta__pulse" aria-hidden />
+            <span className="projects-cta__panel">
+              <span className="projects-cta__icon-wrap">
+                <i className="fas fa-folder-open projects-cta__icon" aria-hidden />
+              </span>
+              <span className="projects-cta__text">
+                <span className="projects-cta__title">Projects</span>
+                <span className="projects-cta__sub">Featured work &amp; builds</span>
+                <span className="projects-cta__hint">
+                  <kbd>Click</kbd> or tap to open the full gallery
+                </span>
+              </span>
+              <span className="projects-cta__chevron" aria-hidden>
+                <i className="fas fa-arrow-right" />
+              </span>
+            </span>
+            <span className="sr-only">View all projects on a dedicated page</span>
+          </a>
         </section>
       </div>
 
@@ -381,7 +361,14 @@ export default function Portfolio() {
             >
               <i className="fas fa-times" aria-hidden />
             </button>
-            <h3 id="skill-dialog-title" className="pr-12 text-xl font-semibold text-primary">
+            <h3
+              id="skill-dialog-title"
+              className="flex items-center gap-3 pr-12 text-xl font-semibold text-primary"
+            >
+              <i
+                className={`${selectedSkill.iconClass} text-[1.65rem] leading-none text-primary`}
+                aria-hidden
+              />
               {selectedSkill.name}
             </h3>
             <p className="mt-4 leading-relaxed text-portfolio-text">{selectedSkill.description}</p>
