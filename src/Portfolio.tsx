@@ -6,6 +6,36 @@ import ProjectsPage from './ProjectsPage'
 import { RippleBox, setBodyCursorActive } from './RippleBox'
 import { SERVICES } from './servicesData'
 
+const HERO_NAME_ARIA_LABEL = 'Mesuli Nduluko'
+
+/**
+ * Per-letter start offsets (viewport-relative) so each character flies in from a
+ * different direction and settles on one line under the photo.
+ */
+const HERO_LETTER_FROM_OFFSETS: readonly { x: string; y: string }[] = [
+  { x: '-6.5vmin', y: '-9.5vmin' },
+  { x: '8vmin', y: '-6.5vmin' },
+  { x: '9vmin', y: '0.25vmin' },
+  { x: '7vmin', y: '8.5vmin' },
+  { x: '0vmin', y: '9vmin' },
+  { x: '-7.5vmin', y: '8vmin' },
+  { x: '-9vmin', y: '0vmin' },
+  { x: '-6vmin', y: '-8.5vmin' },
+  { x: '7.5vmin', y: '-6vmin' },
+  { x: '8.5vmin', y: '4.5vmin' },
+  { x: '-6.5vmin', y: '8vmin' },
+  { x: '-8.5vmin', y: '-3.5vmin' },
+  { x: '7vmin', y: '7vmin' },
+  { x: '-6vmin', y: '-8vmin' },
+]
+
+function heroLetterOffset(i: number): { x: string; y: string } {
+  return HERO_LETTER_FROM_OFFSETS[i % HERO_LETTER_FROM_OFFSETS.length]!
+}
+
+const HERO_TAGLINE_TEXT =
+  'Web Developer and IT Specialist focused on building modern, high-performance digital experiences and delivering dependable technical support.'
+
 type SkillChip = { name: string; description: string; iconClass: string }
 
 /** Markup, languages, frameworks, and databases used in development */
@@ -182,7 +212,7 @@ export default function Portfolio() {
       />
 
       <div className="mx-auto max-w-[1200px] px-6 pb-28 pt-14 max-md:pb-24 max-md:pt-12">
-        <header className="mb-[68px] text-center max-md:mb-10">
+        <header className="portfolio-hero-intro mb-[68px] overflow-x-clip text-center max-md:mb-10">
           <div className="mb-7 flex justify-center max-md:mb-6">
             <img
               src={mesuliImage}
@@ -195,14 +225,56 @@ export default function Portfolio() {
               className="aspect-square h-auto w-[min(92vw,280px)] rounded-full border-2 border-primary/45 object-cover object-center shadow-[0_0_36px_rgba(0,255,157,0.35),0_0_24px_rgba(0,240,255,0.15)] ring-2 ring-secondary/20 md:w-80 transform-gpu"
             />
           </div>
-          <h1 className="mb-2.5 text-[2.6rem] font-bold leading-tight drop-shadow-[0_0_40px_rgba(0,255,157,0.5)] md:text-[3.5rem] md:leading-none">
-            <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              Mesuli Nduluko
+          <h1
+            className="portfolio-hero-name mb-2.5 flex flex-wrap justify-center text-center text-[2.6rem] font-bold leading-tight drop-shadow-[0_0_40px_rgba(0,255,157,0.5)] md:text-[3.5rem] md:leading-none"
+            aria-label={HERO_NAME_ARIA_LABEL}
+          >
+            <span className="portfolio-hero-chars" aria-hidden="true">
+              {Array.from(HERO_NAME_ARIA_LABEL).map((ch, i) => {
+                const o = heroLetterOffset(i)
+                return (
+                  <span
+                    key={`${i}-${ch === ' ' ? 'sp' : ch}`}
+                    className="portfolio-hero-char inline-block bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
+                    style={
+                      {
+                        '--hero-from-x': o.x,
+                        '--hero-from-y': o.y,
+                        '--hero-char-i': i,
+                      } as CSSProperties
+                    }
+                  >
+                    {ch === ' ' ? '\u00a0' : ch}
+                  </span>
+                )
+              })}
             </span>
           </h1>
-          <p className="mx-auto max-w-[860px] text-[1.2rem] font-medium text-secondary drop-shadow-[0_0_20px_rgba(0,240,255,0.4)]">
-            Web Developer and IT Specialist focused on building modern, high-performance digital
-            experiences and delivering dependable technical support.
+          <p
+            className="portfolio-hero-tagline mx-auto flex max-w-[860px] flex-wrap justify-center text-center text-[1.2rem] font-medium text-secondary drop-shadow-[0_0_20px_rgba(0,240,255,0.4)]"
+            aria-label={HERO_TAGLINE_TEXT}
+          >
+            <span className="portfolio-hero-chars" aria-hidden="true">
+              {Array.from(HERO_TAGLINE_TEXT).map((ch, i) => {
+                const nameLen = HERO_NAME_ARIA_LABEL.length
+                const o = heroLetterOffset(nameLen + i)
+                return (
+                  <span
+                    key={`t-${i}-${ch === ' ' ? 'sp' : ch}`}
+                    className="portfolio-hero-char portfolio-hero-char--tagline inline-block"
+                    style={
+                      {
+                        '--hero-from-x': o.x,
+                        '--hero-from-y': o.y,
+                        '--hero-char-i': i,
+                      } as CSSProperties
+                    }
+                  >
+                    {ch === ' ' ? '\u00a0' : ch}
+                  </span>
+                )
+              })}
+            </span>
           </p>
         </header>
 
@@ -387,7 +459,7 @@ export default function Portfolio() {
             onPointerEnter={() => setBodyCursorActive(true)}
             onPointerLeave={() => setBodyCursorActive(false)}
           >
-            Ndulukomesuli02@gmail.com | {' '}
+            Ndulukomesuli02@gmail.com | {'  '}
           </a>
         </span>
         <span className="inline-flex items-center gap-1.5">
