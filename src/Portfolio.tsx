@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties } from 'react'
+import { useCallback, useEffect, useState, type CSSProperties } from 'react'
 import mesuliImage from './assets/Mesuli Image.jpg'
 import skillTechModalBg from './assets/skill-tech-modal-bg.png'
 import { getHashRoute } from './hashRoute'
@@ -34,7 +34,15 @@ function heroLetterOffset(i: number): { x: string; y: string } {
 }
 
 const HERO_TAGLINE_TEXT =
-  'Web Developer and IT Specialist focused on building modern, high-performance digital experiences and delivering dependable technical support.'
+  'Web Developer focused on building modern, high-performance digital experiences and delivering dependable technical support.'
+
+/** Home “My Services” chips: fly in from four viewport corners (order matches SERVICES). */
+const MY_SERVICES_ENTRANCE_FROM: readonly { x: string; y: string }[] = [
+  { x: '-48vmin', y: '-44vmin' },
+  { x: '48vmin', y: '-44vmin' },
+  { x: '-48vmin', y: '44vmin' },
+  { x: '48vmin', y: '44vmin' },
+]
 
 type SkillChip = { name: string; description: string; iconClass: string }
 
@@ -116,7 +124,11 @@ function SkillChipButton({
       aria-haspopup="dialog"
       aria-expanded={isSelected}
       aria-label={`${skill.name}: view description`}
-      className="group flex items-center gap-2.5 rounded-full border border-primary/35 bg-primary/10 px-5 py-2.5 text-base text-primary transition-all duration-[180ms] ease-in-out hover:-translate-y-0.5 hover:scale-[1.04] hover:bg-primary hover:text-[#111] hover:shadow-[0_10px_20px_rgba(0,255,157,0.2)]"
+      className={`group flex items-center gap-2.5 rounded-full border px-5 py-2.5 text-base transition-[transform,box-shadow,background-color,border-color,color,ring] duration-300 ease-out motion-reduce:duration-75 ${
+        isSelected
+          ? '-translate-y-0.5 scale-[1.04] border-primary/60 bg-primary text-[#111] shadow-[0_10px_22px_rgba(0,255,157,0.28)] ring-2 ring-primary/35'
+          : 'border-primary/35 bg-primary/10 text-primary hover:-translate-y-0.5 hover:scale-[1.04] hover:bg-primary hover:text-[#111] hover:shadow-[0_10px_20px_rgba(0,255,157,0.2)]'
+      }`}
       onClick={() => onSelect(skill)}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -126,7 +138,7 @@ function SkillChipButton({
       }}
     >
       <i
-        className={`${skill.iconClass} text-[1.35rem] leading-none transition-colors duration-[180ms] group-hover:text-[#111]`}
+        className={`${skill.iconClass} text-[1.35rem] leading-none transition-colors duration-300 ease-out motion-reduce:duration-75 ${isSelected ? 'text-[#111]' : 'group-hover:text-[#111]'}`}
         aria-hidden
       />
       <span>{skill.name}</span>
@@ -166,9 +178,17 @@ function SkillModalRobot3D() {
   )
 }
 
+const SKILL_MODAL_MS = 280
+
+function prefersReducedMotion(): boolean {
+  if (typeof window === 'undefined') return false
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
 export default function Portfolio() {
   const [glow, setGlow] = useState({ x: 0, y: 0 })
   const [selectedSkill, setSelectedSkill] = useState<SkillChip | null>(null)
+  const [skillModalVisible, setSkillModalVisible] = useState(false)
   const [hashRoute, setHashRoute] = useState(() => getHashRoute())
 
   useEffect(() => {
@@ -186,9 +206,32 @@ export default function Portfolio() {
   }, [])
 
   useEffect(() => {
+    if (!selectedSkill) {
+      setSkillModalVisible(false)
+      return
+    }
+    if (prefersReducedMotion()) {
+      setSkillModalVisible(true)
+    } else {
+      const id = requestAnimationFrame(() => {
+        requestAnimationFrame(() => setSkillModalVisible(true))
+      })
+      return () => cancelAnimationFrame(id)
+    }
+  }, [selectedSkill])
+
+  const closeSkillModal = useCallback(() => {
+    if (!selectedSkill) return
+    setSkillModalVisible(false)
+    if (prefersReducedMotion()) {
+      setSelectedSkill(null)
+    }
+  }, [selectedSkill])
+
+  useEffect(() => {
     if (!selectedSkill) return
     const onKey = (e: globalThis.KeyboardEvent) => {
-      if (e.key === 'Escape') setSelectedSkill(null)
+      if (e.key === 'Escape') closeSkillModal()
     }
     document.addEventListener('keydown', onKey)
     const prevOverflow = document.body.style.overflow
@@ -197,7 +240,13 @@ export default function Portfolio() {
       document.removeEventListener('keydown', onKey)
       document.body.style.overflow = prevOverflow
     }
-  }, [selectedSkill])
+  }, [selectedSkill, closeSkillModal])
+
+  const onSkillModalOverlayTransitionEnd = (e: React.TransitionEvent<HTMLDivElement>) => {
+    if (e.target !== e.currentTarget) return
+    if (e.propertyName !== 'opacity') return
+    if (!skillModalVisible) setSelectedSkill(null)
+  }
 
   if (hashRoute === 'projects') {
     return <ProjectsPage />
@@ -212,70 +261,74 @@ export default function Portfolio() {
       />
 
       <div className="mx-auto max-w-[1200px] px-6 pb-28 pt-14 max-md:pb-24 max-md:pt-12">
-        <header className="portfolio-hero-intro mb-[68px] overflow-x-clip text-center max-md:mb-10">
-          <div className="mb-7 flex justify-center max-md:mb-6">
-            <img
-              src={mesuliImage}
-              alt="Mesuli Nduluko"
-              width={640}
-              height={640}
-              sizes="(max-width: 768px) min(92vw, 280px), 320px"
-              decoding="async"
-              fetchPriority="high"
-              className="aspect-square h-auto w-[min(92vw,280px)] rounded-full border-2 border-primary/45 object-cover object-center shadow-[0_0_36px_rgba(0,255,157,0.35),0_0_24px_rgba(0,240,255,0.15)] ring-2 ring-secondary/20 md:w-80 transform-gpu"
-            />
+        <header className="portfolio-hero-intro mb-[68px] overflow-x-clip max-md:mb-10">
+          <div className="flex flex-col items-center gap-8 md:flex-row md:items-center md:gap-10 lg:gap-12">
+            <div className="shrink-0 md:self-center">
+              <img
+                src={mesuliImage}
+                alt="Mesuli Nduluko"
+                width={640}
+                height={640}
+                sizes="(max-width: 768px) min(92vw, 280px), 320px"
+                decoding="async"
+                fetchPriority="high"
+                className="aspect-square h-auto w-[min(92vw,280px)] rounded-full border-2 border-primary/45 object-cover object-center shadow-[0_0_36px_rgba(0,255,157,0.35),0_0_24px_rgba(0,240,255,0.15)] ring-2 ring-secondary/20 md:w-72 lg:w-80 transform-gpu"
+              />
+            </div>
+            <div className="flex w-full min-w-0 flex-1 flex-col items-center text-center md:items-start md:text-left">
+              <h1
+                className="portfolio-hero-name mb-2.5 flex w-full flex-wrap justify-center text-[2.6rem] font-bold leading-tight drop-shadow-[0_0_40px_rgba(0,255,157,0.5)] md:justify-start md:text-[3.5rem] md:leading-none"
+                aria-label={HERO_NAME_ARIA_LABEL}
+              >
+                <span className="portfolio-hero-chars" aria-hidden="true">
+                  {Array.from(HERO_NAME_ARIA_LABEL).map((ch, i) => {
+                    const o = heroLetterOffset(i)
+                    return (
+                      <span
+                        key={`${i}-${ch === ' ' ? 'sp' : ch}`}
+                        className="portfolio-hero-char inline-block bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
+                        style={
+                          {
+                            '--hero-from-x': o.x,
+                            '--hero-from-y': o.y,
+                            '--hero-char-i': i,
+                          } as CSSProperties
+                        }
+                      >
+                        {ch === ' ' ? '\u00a0' : ch}
+                      </span>
+                    )
+                  })}
+                </span>
+              </h1>
+              <p
+                className="portfolio-hero-tagline mx-auto flex w-full max-w-[860px] flex-wrap justify-center text-[1.2rem] font-medium text-secondary drop-shadow-[0_0_20px_rgba(0,240,255,0.4)] md:mx-0 md:max-w-[36rem] md:justify-start lg:max-w-[40rem]"
+                aria-label={HERO_TAGLINE_TEXT}
+              >
+                <span className="portfolio-hero-chars" aria-hidden="true">
+                  {Array.from(HERO_TAGLINE_TEXT).map((ch, i) => {
+                    const nameLen = HERO_NAME_ARIA_LABEL.length
+                    const o = heroLetterOffset(nameLen + i)
+                    return (
+                      <span
+                        key={`t-${i}-${ch === ' ' ? 'sp' : ch}`}
+                        className="portfolio-hero-char portfolio-hero-char--tagline inline-block"
+                        style={
+                          {
+                            '--hero-from-x': o.x,
+                            '--hero-from-y': o.y,
+                            '--hero-char-i': i,
+                          } as CSSProperties
+                        }
+                      >
+                        {ch === ' ' ? '\u00a0' : ch}
+                      </span>
+                    )
+                  })}
+                </span>
+              </p>
+            </div>
           </div>
-          <h1
-            className="portfolio-hero-name mb-2.5 flex flex-wrap justify-center text-center text-[2.6rem] font-bold leading-tight drop-shadow-[0_0_40px_rgba(0,255,157,0.5)] md:text-[3.5rem] md:leading-none"
-            aria-label={HERO_NAME_ARIA_LABEL}
-          >
-            <span className="portfolio-hero-chars" aria-hidden="true">
-              {Array.from(HERO_NAME_ARIA_LABEL).map((ch, i) => {
-                const o = heroLetterOffset(i)
-                return (
-                  <span
-                    key={`${i}-${ch === ' ' ? 'sp' : ch}`}
-                    className="portfolio-hero-char inline-block bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
-                    style={
-                      {
-                        '--hero-from-x': o.x,
-                        '--hero-from-y': o.y,
-                        '--hero-char-i': i,
-                      } as CSSProperties
-                    }
-                  >
-                    {ch === ' ' ? '\u00a0' : ch}
-                  </span>
-                )
-              })}
-            </span>
-          </h1>
-          <p
-            className="portfolio-hero-tagline mx-auto flex max-w-[860px] flex-wrap justify-center text-center text-[1.2rem] font-medium text-secondary drop-shadow-[0_0_20px_rgba(0,240,255,0.4)]"
-            aria-label={HERO_TAGLINE_TEXT}
-          >
-            <span className="portfolio-hero-chars" aria-hidden="true">
-              {Array.from(HERO_TAGLINE_TEXT).map((ch, i) => {
-                const nameLen = HERO_NAME_ARIA_LABEL.length
-                const o = heroLetterOffset(nameLen + i)
-                return (
-                  <span
-                    key={`t-${i}-${ch === ' ' ? 'sp' : ch}`}
-                    className="portfolio-hero-char portfolio-hero-char--tagline inline-block"
-                    style={
-                      {
-                        '--hero-from-x': o.x,
-                        '--hero-from-y': o.y,
-                        '--hero-char-i': i,
-                      } as CSSProperties
-                    }
-                  >
-                    {ch === ' ' ? '\u00a0' : ch}
-                  </span>
-                )
-              })}
-            </span>
-          </p>
         </header>
 
         <div className="grid grid-cols-1 items-stretch gap-[25px] md:grid-cols-2 md:gap-[35px]">
@@ -307,18 +360,28 @@ export default function Portfolio() {
               My Services
             </h2>
             <div className="grid grid-cols-[repeat(auto-fit,minmax(210px,1fr))] gap-4">
-              {SERVICES.map((s) => (
-                <RippleBox
-                  key={s.label}
-                  className="group flex items-center gap-3.5 rounded-[14px] border border-primary/[0.18] bg-white/[0.06] px-5 py-[18px] text-[1.05rem] font-semibold text-portfolio-text transition-all duration-[180ms] ease-in-out hover:-translate-y-1 hover:scale-[1.01] hover:bg-gradient-to-br hover:from-primary hover:to-[#00cc7a] hover:text-[#111] hover:shadow-[0_12px_25px_rgba(0,255,157,0.3)]"
-                >
-                  <i
-                    className={`fas ${s.icon} text-[1.7rem] text-primary transition-colors duration-[180ms] group-hover:text-[#0b1813]`}
-                    aria-hidden
-                  />
-                  {s.label}
-                </RippleBox>
-              ))}
+              {SERVICES.map((s, i) => {
+                const corner = MY_SERVICES_ENTRANCE_FROM[i % MY_SERVICES_ENTRANCE_FROM.length]!
+                return (
+                  <RippleBox
+                    key={s.label}
+                    className="home-service-card-enter group flex items-center gap-3.5 rounded-[14px] border border-primary/[0.18] bg-white/[0.06] px-5 py-[18px] text-[1.05rem] font-semibold text-portfolio-text transition-all duration-[180ms] ease-in-out hover:-translate-y-1 hover:scale-[1.01] hover:bg-gradient-to-br hover:from-primary hover:to-[#00cc7a] hover:text-[#111] hover:shadow-[0_12px_25px_rgba(0,255,157,0.3)]"
+                    style={
+                      {
+                        '--svc-from-x': corner.x,
+                        '--svc-from-y': corner.y,
+                        '--svc-enter-i': i,
+                      } as CSSProperties
+                    }
+                  >
+                    <i
+                      className={`fas ${s.icon} text-[1.7rem] text-primary transition-colors duration-[180ms] group-hover:text-[#0b1813]`}
+                      aria-hidden
+                    />
+                    {s.label}
+                  </RippleBox>
+                )
+              })}
             </div>
           </RippleBox>
         </div>
@@ -395,7 +458,13 @@ export default function Portfolio() {
       </div>
 
       {selectedSkill ? (
-        <div className="fixed inset-0 z-[200] flex items-end justify-center p-4 pb-10 sm:items-center sm:pb-4">
+        <div
+          className={`fixed inset-0 z-[200] flex items-end justify-center p-4 pb-10 sm:items-center sm:pb-4 transition-opacity ease-out motion-reduce:transition-none ${
+            skillModalVisible ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
+          }`}
+          style={{ transitionDuration: `${SKILL_MODAL_MS}ms` }}
+          onTransitionEnd={onSkillModalOverlayTransitionEnd}
+        >
           <div
             className="skill-modal-tech-photo-bg pointer-events-none absolute inset-0 z-0 overflow-hidden"
             style={{ backgroundImage: `url(${skillTechModalBg})` }}
@@ -405,7 +474,7 @@ export default function Portfolio() {
             type="button"
             className="absolute inset-0 z-[1] bg-black/45 backdrop-blur-[3px]"
             aria-label="Close skill description"
-            onClick={() => setSelectedSkill(null)}
+            onClick={closeSkillModal}
           />
           <div
             className="skill-modal-robots-layer pointer-events-none absolute inset-0 z-[1] overflow-hidden"
@@ -423,27 +492,32 @@ export default function Portfolio() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="skill-dialog-title"
-            className="relative z-[2] max-h-[min(85vh,520px)] w-full max-w-lg overflow-y-auto rounded-2xl border border-primary/40 bg-[rgba(12,14,18,0.92)] p-6 shadow-[0_0_48px_rgba(0,255,157,0.18),0_24px_48px_rgba(0,0,0,0.55)] backdrop-blur-[18px]"
+            className={`relative z-[2] max-h-[min(85vh,520px)] w-full max-w-lg overflow-y-auto rounded-2xl border border-primary/40 bg-[rgba(12,14,18,0.92)] p-6 shadow-[0_0_48px_rgba(0,255,157,0.18),0_24px_48px_rgba(0,0,0,0.55)] backdrop-blur-[18px] transition-[transform] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
+              skillModalVisible ? 'translate-y-0 scale-100' : 'translate-y-5 scale-[0.97]'
+            }`}
+            style={{ transitionDuration: `${SKILL_MODAL_MS}ms` }}
           >
             <button
               type="button"
               className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-lg border border-primary/30 text-portfolio-muted transition-colors hover:border-primary hover:text-primary"
               aria-label="Close"
-              onClick={() => setSelectedSkill(null)}
+              onClick={closeSkillModal}
             >
               <i className="fas fa-times" aria-hidden />
             </button>
-            <h3
-              id="skill-dialog-title"
-              className="flex items-center gap-3 pr-12 text-xl font-semibold text-primary"
-            >
-              <i
-                className={`${selectedSkill.iconClass} text-[1.65rem] leading-none text-primary`}
-                aria-hidden
-              />
-              {selectedSkill.name}
-            </h3>
-            <p className="mt-4 leading-relaxed text-portfolio-text">{selectedSkill.description}</p>
+            <div key={selectedSkill.name} className="skill-modal-content-swap">
+              <h3
+                id="skill-dialog-title"
+                className="flex items-center gap-3 pr-12 text-xl font-semibold text-primary"
+              >
+                <i
+                  className={`${selectedSkill.iconClass} text-[1.65rem] leading-none text-primary`}
+                  aria-hidden
+                />
+                {selectedSkill.name}
+              </h3>
+              <p className="mt-4 leading-relaxed text-portfolio-text">{selectedSkill.description}</p>
+            </div>
           </div>
         </div>
       ) : null}
