@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useState, type CSSProperties } from 'react'
 import mesuliImage from './assets/Mesuli Image.jpg'
 import skillTechModalBg from './assets/skill-tech-modal-bg.png'
-import { getHashRoute } from './hashRoute'
+import AboutPage from './AboutPage'
+import { getAppRoute, hrefTo, navigate, subscribeAppRoute } from './appRoute'
 import ProjectsPage from './ProjectsPage'
+import { SiteHeader } from './SiteHeader'
 import { RippleBox, setBodyCursorActive } from './RippleBox'
 import { SERVICES } from './servicesData'
 
@@ -189,12 +191,16 @@ export default function Portfolio() {
   const [glow, setGlow] = useState({ x: 0, y: 0 })
   const [selectedSkill, setSelectedSkill] = useState<SkillChip | null>(null)
   const [skillModalVisible, setSkillModalVisible] = useState(false)
-  const [hashRoute, setHashRoute] = useState(() => getHashRoute())
+  const [appRoute, setAppRoute] = useState(() => getAppRoute())
 
   useEffect(() => {
-    const sync = () => setHashRoute(getHashRoute())
-    window.addEventListener('hashchange', sync)
-    return () => window.removeEventListener('hashchange', sync)
+    const sync = () => setAppRoute(getAppRoute())
+    window.addEventListener('popstate', sync)
+    const unsub = subscribeAppRoute((route) => setAppRoute(route))
+    return () => {
+      window.removeEventListener('popstate', sync)
+      unsub()
+    }
   }, [])
 
   useEffect(() => {
@@ -248,8 +254,12 @@ export default function Portfolio() {
     if (!skillModalVisible) setSelectedSkill(null)
   }
 
-  if (hashRoute === 'projects') {
+  if (appRoute === 'projects') {
     return <ProjectsPage />
+  }
+
+  if (appRoute === 'about') {
+    return <AboutPage />
   }
 
   return (
@@ -260,7 +270,8 @@ export default function Portfolio() {
         aria-hidden
       />
 
-      <div className="mx-auto max-w-[1200px] px-6 pb-28 pt-14 max-md:pb-24 max-md:pt-12">
+      <div className="mx-auto max-w-[1200px] px-6 pb-28 pt-10 max-md:pb-24 max-md:pt-8">
+        <SiteHeader active="home" />
         <header className="portfolio-hero-intro mb-[68px] overflow-x-clip max-md:mb-10">
           <div className="flex flex-col items-center gap-8 md:flex-row md:items-center md:gap-10 lg:gap-12">
             <div className="shrink-0 md:self-center">
@@ -435,7 +446,15 @@ export default function Portfolio() {
         </div>
 
         <section className="mt-[60px] px-2" aria-labelledby="projects-section-title">
-          <a id="projects-section-title" href="#/projects" className="projects-cta group">
+          <a
+            id="projects-section-title"
+            href={hrefTo('projects')}
+            className="projects-cta group"
+            onClick={(e) => {
+              e.preventDefault()
+              navigate('/projects')
+            }}
+          >
             <span className="projects-cta__pulse" aria-hidden />
             <span className="projects-cta__panel">
               <span className="projects-cta__icon-wrap">

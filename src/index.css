@@ -616,6 +616,16 @@
     border-bottom: 1px solid rgba(56, 189, 248, 0.22);
   }
 
+  /** Primary nav on the projects page (replaces legacy single “back” row). */
+  .projects-page .site-header.projects-page__site-header {
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0;
+    padding: 1.15rem 0 1.5rem;
+    border-bottom: 1px solid rgba(56, 189, 248, 0.22);
+  }
+
   .projects-page__back {
     display: inline-flex;
     align-items: center;
@@ -929,6 +939,138 @@
     outline: none;
   }
 
+  /* About route — driver cockpit canvas (see AboutCockpitCanvas) + dev matrix */
+  .about-cockpit-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    transition: filter var(--pp-theme-dur) var(--pp-theme-ease);
+  }
+
+  .projects-page.projects-page--bottom-zone .about-cockpit-canvas {
+    filter: hue-rotate(72deg) saturate(0.95) brightness(0.88);
+  }
+
+  .about-page__shell-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.25rem 0 3rem;
+  }
+
+  .about-page__panel {
+    border-radius: 20px;
+    border: 1px solid rgba(56, 189, 248, 0.22);
+    background: linear-gradient(165deg, rgba(15, 23, 42, 0.72) 0%, rgba(8, 12, 22, 0.9) 100%);
+    box-shadow:
+      0 0 0 1px rgba(30, 64, 175, 0.22) inset,
+      0 14px 40px rgba(0, 0, 0, 0.42);
+    backdrop-filter: blur(14px);
+    transition:
+      border-color var(--pp-theme-dur) var(--pp-theme-ease),
+      box-shadow var(--pp-theme-dur) var(--pp-theme-ease),
+      background var(--pp-theme-dur) var(--pp-theme-ease);
+  }
+
+  .about-page__portrait {
+    border: 2px solid rgba(56, 189, 248, 0.38);
+    box-shadow:
+      0 0 36px rgba(56, 189, 248, 0.22),
+      0 0 24px rgba(16, 185, 129, 0.1),
+      0 0 0 2px rgba(56, 189, 248, 0.15);
+    transition:
+      border-color var(--pp-theme-dur) var(--pp-theme-ease),
+      box-shadow var(--pp-theme-dur) var(--pp-theme-ease);
+  }
+
+  .about-page__section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin: 0 0 1rem;
+    font-size: 1.45rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #e2e8f0;
+    text-align: left;
+    transition: color var(--pp-theme-dur) var(--pp-theme-ease);
+  }
+
+  .about-page__section-title i {
+    color: #00ff9d;
+    font-size: 1.08em;
+    transition: color var(--pp-theme-dur) var(--pp-theme-ease);
+  }
+
+  .about-page__copy {
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.65;
+    color: #cbd5e1;
+    transition: color var(--pp-theme-dur) var(--pp-theme-ease);
+  }
+
+  .about-page__copy-muted {
+    margin: 0;
+    font-size: 0.98rem;
+    line-height: 1.65;
+    color: #94a3b8;
+    transition: color var(--pp-theme-dur) var(--pp-theme-ease);
+  }
+
+  .about-page__border-copy {
+    border-top: 1px solid rgba(56, 189, 248, 0.18);
+    transition: border-color var(--pp-theme-dur) var(--pp-theme-ease);
+  }
+
+  .about-page__border-services {
+    border-top: 1px solid rgba(30, 58, 138, 0.35);
+    transition: border-color var(--pp-theme-dur) var(--pp-theme-ease);
+  }
+
+  .projects-page.projects-page--bottom-zone .about-page__panel {
+    border-color: rgba(34, 197, 94, 0.3);
+    background: linear-gradient(165deg, rgba(6, 40, 24, 0.72) 0%, rgba(3, 24, 14, 0.92) 100%);
+    box-shadow:
+      0 0 0 1px rgba(22, 101, 52, 0.38) inset,
+      0 14px 40px rgba(0, 0, 0, 0.42);
+  }
+
+  .projects-page.projects-page--bottom-zone .about-page__portrait {
+    border-color: rgba(74, 222, 128, 0.45);
+    box-shadow:
+      0 0 36px rgba(34, 197, 94, 0.22),
+      0 0 24px rgba(22, 163, 74, 0.14),
+      0 0 0 2px rgba(74, 222, 128, 0.22);
+  }
+
+  .projects-page.projects-page--bottom-zone .about-page__section-title {
+    color: #ecfdf5;
+  }
+
+  .projects-page.projects-page--bottom-zone .about-page__section-title i {
+    color: #4ade80;
+  }
+
+  .projects-page.projects-page--bottom-zone .about-page__copy {
+    color: rgba(167, 243, 208, 0.88);
+  }
+
+  .projects-page.projects-page--bottom-zone .about-page__copy-muted {
+    color: rgba(110, 231, 183, 0.78);
+  }
+
+  .projects-page.projects-page--bottom-zone .about-page__border-copy {
+    border-top-color: rgba(34, 197, 94, 0.35);
+  }
+
+  .projects-page.projects-page--bottom-zone .about-page__border-services {
+    border-top-color: rgba(22, 101, 52, 0.55);
+  }
+
   /* Projects route: cool blue tint on shared cards */
   .projects-page .project-dev-card {
     border-color: rgba(56, 189, 248, 0.22);
@@ -996,7 +1138,8 @@
     color: rgba(134, 239, 172, 0.92);
   }
 
-  .projects-page.projects-page--bottom-zone .projects-page__nav {
+  .projects-page.projects-page--bottom-zone .projects-page__nav,
+  .projects-page.projects-page--bottom-zone .site-header.projects-page__site-header {
     border-bottom-color: rgba(34, 197, 94, 0.32);
   }
 
