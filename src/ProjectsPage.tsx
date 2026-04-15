@@ -70,30 +70,7 @@ export default function ProjectsPage() {
       </div>
       <div className="projects-page__dev-matrix" aria-hidden />
       <div className="projects-page__shell">
-      <SiteHeader
-        active="projects"
-        className="projects-page__site-header"
-        trailing={
-          <>
-            <a
-              href={`${hrefTo('about')}?section=services`}
-              className="projects-page__nav-anchor"
-              onClick={(e) => {
-                e.preventDefault()
-                navigate('/about?section=services')
-              }}
-              onPointerEnter={() => setBodyCursorActive(true)}
-              onPointerLeave={() => setBodyCursorActive(false)}
-            >
-              Services
-            </a>
-            <span className="projects-page__nav-meta">
-              <i className="fas fa-code-branch" aria-hidden />
-              featured work
-            </span>
-          </>
-        }
-      />
+      <SiteHeader active="projects" className="projects-page__site-header" />
 
       <div className="projects-page__code-rail" aria-hidden>
         <div className="projects-page__code-rail-track">

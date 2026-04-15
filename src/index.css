@@ -24,6 +24,22 @@
     display: block;
   }
 
+  html {
+    overflow-x: clip;
+  }
+
+  /* Fluid scale — content and rhythm track viewport width (320px–1200px+). */
+  :root {
+    --page-pad-x: clamp(0.65rem, 2.6vw + 0.2rem, 1.5rem);
+    --page-pad-y-top: clamp(1.35rem, 3.2vw, 2.5rem);
+    --page-pad-y-bottom: clamp(4.5rem, 10vw, 7rem);
+    --section-gap-y: clamp(2rem, 5vw, 3rem);
+    --card-radius: clamp(14px, 1.8vw, 20px);
+    --card-pad: clamp(1rem, 2.8vw, 2rem);
+    --text-lede: clamp(0.92rem, 0.35vw + 0.86rem, 1.06rem);
+    --text-section-title: clamp(1.35rem, 2.2vw + 0.85rem, 1.85rem);
+  }
+
   body {
     margin: 0;
     min-height: 100vh;
@@ -31,6 +47,7 @@
     color: var(--color-portfolio-text);
     line-height: 1.7;
     letter-spacing: 0.2px;
+    overflow-x: clip;
     background:
       linear-gradient(rgba(10, 10, 10, 0.62), rgba(8, 8, 8, 0.75)),
       url('https://images.unsplash.com/photo-1518770660439-4636190af475') center /
@@ -39,6 +56,25 @@
 }
 
 @layer components {
+  /* Home route main column — matches projects-page horizontal rhythm */
+  .page-content {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: max(var(--page-pad-x), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--page-pad-x), env(safe-area-inset-right, 0px));
+    padding-top: var(--page-pad-y-top);
+    padding-bottom: var(--page-pad-y-bottom);
+  }
+
+  /* Primary nav — text only; no bar background (page shows through). */
+  .site-header {
+    position: sticky;
+    top: max(0px, env(safe-area-inset-top, 0px));
+    z-index: 100;
+  }
+
   .link-cyber {
     @apply text-secondary relative transition-colors duration-[180ms] ease-in-out hover:text-primary;
   }
@@ -493,7 +529,9 @@
     isolation: isolate;
     overflow-x: clip;
     min-height: 100svh;
-    padding: 0 1.25rem 3rem;
+    padding-left: max(var(--page-pad-x), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--page-pad-x), env(safe-area-inset-right, 0px));
+    padding-bottom: max(clamp(2rem, 5vw, 3rem), env(safe-area-inset-bottom, 0px));
     color: #e2e8f0;
     background-color: #020408;
     transition:
@@ -616,14 +654,13 @@
     border-bottom: 1px solid rgba(56, 189, 248, 0.22);
   }
 
-  /** Primary nav on the projects page (replaces legacy single “back” row). */
+  /** Primary nav alignment on projects / about shell */
   .projects-page .site-header.projects-page__site-header {
     max-width: 1100px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 0;
     padding: 1.15rem 0 1.5rem;
-    border-bottom: 1px solid rgba(56, 189, 248, 0.22);
   }
 
   .projects-page__back {
@@ -673,9 +710,9 @@
   }
 
   .projects-page__hero {
-    max-width: 720px;
+    max-width: min(720px, 100%);
     margin: 0 auto;
-    padding: 2.5rem 0 2rem;
+    padding: clamp(1.35rem, 3.5vw, 2.5rem) 0 clamp(1.15rem, 2.8vw, 2rem);
     text-align: center;
   }
 
@@ -722,8 +759,8 @@
 
   .projects-page__lede {
     margin: 0;
-    font-size: 1.05rem;
-    line-height: 1.65;
+    font-size: var(--text-lede);
+    line-height: 1.62;
     color: #94a3b8;
   }
 
@@ -767,8 +804,8 @@
 
   .projects-page__services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
-    gap: 1.25rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.9rem, 2.2vw, 1.35rem);
   }
 
   .projects-page__service-card {
@@ -956,13 +993,16 @@
   }
 
   .about-page__shell-inner {
-    max-width: 1100px;
+    max-width: min(1100px, 100%);
     margin: 0 auto;
-    padding: 1.25rem 0 3rem;
+    padding-top: clamp(1rem, 2.5vw, 1.35rem);
+    padding-bottom: clamp(2rem, 5vw, 3rem);
+    padding-left: max(var(--page-pad-x), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--page-pad-x), env(safe-area-inset-right, 0px));
   }
 
   .about-page__panel {
-    border-radius: 20px;
+    border-radius: var(--card-radius);
     border: 1px solid rgba(56, 189, 248, 0.22);
     background: linear-gradient(165deg, rgba(15, 23, 42, 0.72) 0%, rgba(8, 12, 22, 0.9) 100%);
     box-shadow:
@@ -991,7 +1031,7 @@
     align-items: center;
     gap: 0.65rem;
     margin: 0 0 1rem;
-    font-size: 1.45rem;
+    font-size: var(--text-section-title);
     font-weight: 800;
     letter-spacing: -0.02em;
     color: #e2e8f0;
@@ -1007,7 +1047,7 @@
 
   .about-page__copy {
     margin: 0;
-    font-size: 1rem;
+    font-size: var(--text-lede);
     line-height: 1.65;
     color: #cbd5e1;
     transition: color var(--pp-theme-dur) var(--pp-theme-ease);
@@ -1138,8 +1178,7 @@
     color: rgba(134, 239, 172, 0.92);
   }
 
-  .projects-page.projects-page--bottom-zone .projects-page__nav,
-  .projects-page.projects-page--bottom-zone .site-header.projects-page__site-header {
+  .projects-page.projects-page--bottom-zone .projects-page__nav {
     border-bottom-color: rgba(34, 197, 94, 0.32);
   }
 
@@ -1564,6 +1603,93 @@
   .projects-cta:hover .projects-cta__chevron {
     transform: translateX(8px);
     color: #00ff9d;
+  }
+
+  /* ≤374px: same look as desktop, tighter rails — iPhone SE / small Android */
+  @media (max-width: 374px) {
+    .projects-page__code-rail {
+      padding-left: 0;
+      padding-right: 0;
+      font-size: 0.62rem;
+    }
+
+    .projects-page__title {
+      font-size: clamp(1.2rem, 8.5vw, 1.5rem);
+    }
+
+    .projects-page__lede {
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .projects-page__services-grid {
+      gap: 1rem;
+    }
+
+    .projects-page__service-card {
+      padding: 1rem 1rem 1.1rem;
+    }
+
+    .projects-page__hero {
+      margin-bottom: 1.25rem;
+    }
+
+    .site-header {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+    }
+
+    .site-header nav a {
+      padding: 0.35rem 0.65rem;
+      font-size: 0.82rem;
+    }
+
+    .about-page__panel {
+      padding: 1.1rem !important;
+      border-radius: 16px;
+    }
+
+    .projects-cta__panel {
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      padding: 0.85rem 0.75rem;
+    }
+
+    .projects-cta__icon-wrap {
+      width: 2.85rem;
+      height: 2.85rem;
+    }
+
+    .projects-cta__icon {
+      font-size: 1.35rem;
+    }
+
+    .projects-cta__title {
+      font-size: clamp(1.2rem, 6vw, 1.45rem);
+    }
+
+    .projects-cta__sub {
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+    }
+
+    .projects-cta__hint {
+      font-size: 0.72rem;
+    }
+
+    .projects-page__grid {
+      gap: 1.15rem;
+    }
+
+    .project-dev-card__chrome {
+      flex-wrap: wrap;
+      row-gap: 0.35rem;
+    }
+
+    .project-dev-card__path {
+      font-size: 0.68rem;
+      word-break: break-all;
+    }
   }
 }
 

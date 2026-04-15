@@ -609,15 +609,19 @@ export function AboutCockpitCanvas() {
 
       drawOverheadPanel(w, h, t)
 
-      const sw = w * 0.19
+      const narrow = w < 375
+      const sw = w * (narrow ? 0.165 : 0.19)
       const sh = h * 0.15
       const sy = h * 0.5
-      drawHoloScreen(w * 0.06, sy, sw, sh, t, 101)
-      drawHoloScreen(w * 0.75, sy, sw, sh, t, 303)
+      const holoL = narrow ? w * 0.052 : w * 0.06
+      const holoR = narrow ? w * 0.758 : w * 0.75
+      drawHoloScreen(holoL, sy, sw, sh, t, 101)
+      drawHoloScreen(holoR, sy, sw, sh, t, 303)
 
-      drawMiniScreen(w * 0.28, h * 0.52, w * 0.1, h * 0.055, 'amber', t, 'AUX-1')
-      drawMiniScreen(w * 0.62, h * 0.52, w * 0.1, h * 0.055, 'green', t, 'OK')
-      drawMiniScreen(w * 0.4, h * 0.58, w * 0.08, h * 0.045, 'red', t, 'WARN')
+      const miniW = narrow ? w * 0.09 : w * 0.1
+      drawMiniScreen(w * 0.28, h * 0.52, miniW, h * 0.055, 'amber', t, 'AUX-1')
+      drawMiniScreen(w * 0.62, h * 0.52, miniW, h * 0.055, 'green', t, 'OK')
+      drawMiniScreen(w * 0.4, h * 0.58, narrow ? w * 0.075 : w * 0.08, h * 0.045, 'red', t, 'WARN')
 
       drawSlider(w * 0.04, h * 0.52, h * 0.18, true)
       drawSlider(w * 0.92, h * 0.52, h * 0.18, true)
@@ -625,9 +629,9 @@ export function AboutCockpitCanvas() {
 
       drawFlightStick(w, h, t)
 
-      const bs = Math.min(w, h) * 0.022
-      const colPitch = w * 0.052
-      const bx0 = w * 0.31 + bs * 0.5
+      const bs = Math.min(w, h) * (narrow ? 0.018 : 0.022)
+      const colPitch = w * (narrow ? 0.044 : 0.052)
+      const bx0 = w * (narrow ? 0.285 : 0.31) + bs * 0.5
       const row0 = h * 0.765 + bs * 0.5
       const colors: Array<'red' | 'blue' | 'orange' | 'cyan'> = [
         'cyan',
@@ -653,7 +657,7 @@ export function AboutCockpitCanvas() {
       }
 
       ctx.fillStyle = 'rgba(103, 232, 249, 0.35)'
-      ctx.font = `${Math.max(8, w * 0.012)}px ui-monospace, Consolas, monospace`
+      ctx.font = `${Math.max(7, w * (narrow ? 0.01 : 0.012))}px ui-monospace, Consolas, monospace`
       ctx.textAlign = 'center'
       ctx.fillText('MANUAL · AUTO · DOCK', w * 0.5, h * 0.93)
       ctx.textAlign = 'left'

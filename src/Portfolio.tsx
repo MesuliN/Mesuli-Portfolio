@@ -126,7 +126,7 @@ function SkillChipButton({
       aria-haspopup="dialog"
       aria-expanded={isSelected}
       aria-label={`${skill.name}: view description`}
-      className={`group flex items-center gap-2.5 rounded-full border px-5 py-2.5 text-base transition-[transform,box-shadow,background-color,border-color,color,ring] duration-300 ease-out motion-reduce:duration-75 ${
+      className={`group flex max-w-[100%] items-center gap-[clamp(0.4rem,1.5vw,0.65rem)] rounded-full border px-[clamp(0.75rem,2.2vw,1.25rem)] py-[clamp(0.5rem,1.5vw,0.65rem)] text-[clamp(0.88rem,calc(0.35vw+0.82rem),1rem)] transition-[transform,box-shadow,background-color,border-color,color,ring] duration-300 ease-out motion-reduce:duration-75 ${
         isSelected
           ? '-translate-y-0.5 scale-[1.04] border-primary/60 bg-primary text-[#111] shadow-[0_10px_22px_rgba(0,255,157,0.28)] ring-2 ring-primary/35'
           : 'border-primary/35 bg-primary/10 text-primary hover:-translate-y-0.5 hover:scale-[1.04] hover:bg-primary hover:text-[#111] hover:shadow-[0_10px_20px_rgba(0,255,157,0.2)]'
@@ -270,10 +270,10 @@ export default function Portfolio() {
         aria-hidden
       />
 
-      <div className="mx-auto max-w-[1200px] px-6 pb-28 pt-10 max-md:pb-24 max-md:pt-8">
+      <div className="page-content">
         <SiteHeader active="home" />
-        <header className="portfolio-hero-intro mb-[68px] overflow-x-clip max-md:mb-10">
-          <div className="flex flex-col items-center gap-8 md:flex-row md:items-center md:gap-10 lg:gap-12">
+        <header className="portfolio-hero-intro mb-[clamp(2.5rem,6vw,4.25rem)] overflow-x-clip">
+          <div className="flex flex-col items-center gap-[clamp(1.5rem,4vw,3rem)] md:flex-row md:items-center md:gap-[clamp(1.75rem,3vw,2.75rem)] lg:gap-12">
             <div className="shrink-0 md:self-center">
               <img
                 src={mesuliImage}
@@ -283,12 +283,12 @@ export default function Portfolio() {
                 sizes="(max-width: 768px) min(92vw, 280px), 320px"
                 decoding="async"
                 fetchPriority="high"
-                className="aspect-square h-auto w-[min(92vw,280px)] rounded-full border-2 border-primary/45 object-cover object-center shadow-[0_0_36px_rgba(0,255,157,0.35),0_0_24px_rgba(0,240,255,0.15)] ring-2 ring-secondary/20 md:w-72 lg:w-80 transform-gpu"
+                className="aspect-square h-auto w-[min(92vw,min(280px,85vw))] rounded-full border-2 border-primary/45 object-cover object-center shadow-[0_0_36px_rgba(0,255,157,0.35),0_0_24px_rgba(0,240,255,0.15)] ring-2 ring-secondary/20 sm:w-[min(88vw,300px)] md:w-72 lg:w-80 transform-gpu"
               />
             </div>
             <div className="flex w-full min-w-0 flex-1 flex-col items-center text-center md:items-start md:text-left">
               <h1
-                className="portfolio-hero-name mb-2.5 flex w-full flex-wrap justify-center text-[2.6rem] font-bold leading-tight drop-shadow-[0_0_40px_rgba(0,255,157,0.5)] md:justify-start md:text-[3.5rem] md:leading-none"
+                className="portfolio-hero-name mb-2.5 flex w-full flex-wrap justify-center text-[clamp(1.65rem,calc(5vw+0.75rem),3.5rem)] font-bold leading-[1.08] drop-shadow-[0_0_40px_rgba(0,255,157,0.5)] md:justify-start md:leading-none"
                 aria-label={HERO_NAME_ARIA_LABEL}
               >
                 <span className="portfolio-hero-chars" aria-hidden="true">
@@ -313,7 +313,7 @@ export default function Portfolio() {
                 </span>
               </h1>
               <p
-                className="portfolio-hero-tagline mx-auto flex w-full max-w-[860px] flex-wrap justify-center text-[1.2rem] font-medium text-secondary drop-shadow-[0_0_20px_rgba(0,240,255,0.4)] md:mx-0 md:max-w-[36rem] md:justify-start lg:max-w-[40rem]"
+                className="portfolio-hero-tagline mx-auto flex w-full max-w-[min(860px,100%)] flex-wrap justify-center text-[clamp(0.88rem,calc(0.4vw+0.82rem),1.22rem)] font-medium leading-snug text-secondary drop-shadow-[0_0_20px_rgba(0,240,255,0.4)] md:mx-0 md:max-w-[min(36rem,92vw)] md:justify-start lg:max-w-[min(40rem,94vw)]"
                 aria-label={HERO_TAGLINE_TEXT}
               >
                 <span className="portfolio-hero-chars" aria-hidden="true">
@@ -342,21 +342,21 @@ export default function Portfolio() {
           </div>
         </header>
 
-        <div className="grid grid-cols-1 items-stretch gap-[25px] md:grid-cols-2 md:gap-[35px]">
+        <div className="grid grid-cols-1 items-stretch gap-[clamp(1.15rem,3vw,2.2rem)] md:grid-cols-2 md:gap-[clamp(1.25rem,3.5vw,2.2rem)]">
           <RippleBox
-            className="mb-10 rounded-[20px] border border-primary/25 bg-[rgba(20,20,20,0.7)] p-8 shadow-[0_10px_24px_rgba(0,0,0,0.25)] backdrop-blur-[14px] transition-all duration-[280ms] ease-in-out hover:-translate-y-1.5 hover:scale-[1.01] hover:border-primary hover:shadow-[0_18px_36px_rgba(0,255,157,0.16)] max-md:mb-6"
+            className="mb-[clamp(1.5rem,4vw,2.5rem)] rounded-[var(--card-radius)] border border-primary/25 bg-[rgba(20,20,20,0.7)] p-[var(--card-pad)] shadow-[0_10px_24px_rgba(0,0,0,0.25)] backdrop-blur-[14px] transition-all duration-[280ms] ease-in-out hover:-translate-y-1.5 hover:scale-[1.01] hover:border-primary hover:shadow-[0_18px_36px_rgba(0,255,157,0.16)] max-md:mb-6"
           >
-            <h2 className="mb-5 flex items-center gap-3 text-[1.7rem] text-primary">
+            <h2 className="mb-5 flex items-center gap-3 text-[var(--text-section-title)] text-primary">
               <i className="fas fa-user" aria-hidden />
               About Me
             </h2>
-            <p className="text-portfolio-text">
+            <p className="text-[var(--text-lede)] leading-relaxed text-portfolio-text">
               I am a website developer and software developer with a strong focus on creating clean, responsive
               websites and practical web applications. My work combines modern front-end development
               with reliable back-end integration to deliver solutions that are fast, user-focused, and
               built for real-world results.
             </p>
-            <p className="mt-4 text-portfolio-text">
+            <p className="mt-4 text-[var(--text-lede)] leading-relaxed text-portfolio-text">
               Alongside development, I provide IT support services including system setup, Windows
               installation, troubleshooting, and user training. This combination allows me to support
               clients from planning and development through day-to-day technical operations.
@@ -364,19 +364,19 @@ export default function Portfolio() {
           </RippleBox>
 
           <RippleBox
-            className="mb-10 rounded-[20px] border border-primary/25 bg-[rgba(20,20,20,0.7)] p-8 shadow-[0_10px_24px_rgba(0,0,0,0.25)] backdrop-blur-[14px] transition-all duration-[280ms] ease-in-out hover:-translate-y-1.5 hover:scale-[1.01] hover:border-primary hover:shadow-[0_18px_36px_rgba(0,255,157,0.16)] max-md:mb-6"
+            className="mb-[clamp(1.5rem,4vw,2.5rem)] rounded-[var(--card-radius)] border border-primary/25 bg-[rgba(20,20,20,0.7)] p-[var(--card-pad)] shadow-[0_10px_24px_rgba(0,0,0,0.25)] backdrop-blur-[14px] transition-all duration-[280ms] ease-in-out hover:-translate-y-1.5 hover:scale-[1.01] hover:border-primary hover:shadow-[0_18px_36px_rgba(0,255,157,0.16)] max-md:mb-6"
           >
-            <h2 className="mb-5 flex items-center gap-3 text-[1.7rem] text-primary">
+            <h2 className="mb-5 flex items-center gap-3 text-[var(--text-section-title)] text-primary">
               <i className="fas fa-tools" aria-hidden />
               My Services
             </h2>
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(210px,1fr))] gap-4">
+            <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,180px),1fr))] gap-[clamp(0.65rem,2vw,1rem)]">
               {SERVICES.map((s, i) => {
                 const corner = MY_SERVICES_ENTRANCE_FROM[i % MY_SERVICES_ENTRANCE_FROM.length]!
                 return (
                   <RippleBox
                     key={s.label}
-                    className="home-service-card-enter group flex items-center gap-3.5 rounded-[14px] border border-primary/[0.18] bg-white/[0.06] px-5 py-[18px] text-[1.05rem] font-semibold text-portfolio-text transition-all duration-[180ms] ease-in-out hover:-translate-y-1 hover:scale-[1.01] hover:bg-gradient-to-br hover:from-primary hover:to-[#00cc7a] hover:text-[#111] hover:shadow-[0_12px_25px_rgba(0,255,157,0.3)]"
+                    className="home-service-card-enter group flex min-w-0 items-center gap-[clamp(0.5rem,2vw,0.9rem)] rounded-[clamp(10px,1.5vw,14px)] border border-primary/[0.18] bg-white/[0.06] px-[clamp(0.75rem,2.5vw,1.25rem)] py-[clamp(0.65rem,2vw,1.1rem)] text-[clamp(0.88rem,calc(0.45vw+0.8rem),1.05rem)] font-semibold text-portfolio-text transition-all duration-[180ms] ease-in-out hover:-translate-y-1 hover:scale-[1.01] hover:bg-gradient-to-br hover:from-primary hover:to-[#00cc7a] hover:text-[#111] hover:shadow-[0_12px_25px_rgba(0,255,157,0.3)]"
                     style={
                       {
                         '--svc-from-x': corner.x,
@@ -397,16 +397,16 @@ export default function Portfolio() {
           </RippleBox>
         </div>
 
-        <div className="mt-[50px] space-y-12">
+        <div className="mt-[clamp(2.25rem,5vw,3.75rem)] space-y-[clamp(2rem,5vw,3rem)]">
           <section aria-labelledby="technologies-heading">
             <h2
               id="technologies-heading"
-              className="mb-2 flex items-center justify-center gap-3 text-center text-[1.8rem] text-primary"
+              className="mb-2 flex items-center justify-center gap-3 text-center text-[var(--text-section-title)] text-primary"
             >
               <i className="fas fa-code" aria-hidden />
               Technologies
             </h2>
-            <p className="mx-auto mb-6 max-w-[640px] text-center text-[0.98rem] leading-relaxed text-portfolio-muted">
+            <p className="mx-auto mb-6 max-w-[min(640px,92vw)] text-center text-[var(--text-lede)] leading-relaxed text-portfolio-muted">
               Languages, libraries, and data tools I use to build and ship web software.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
@@ -424,12 +424,12 @@ export default function Portfolio() {
           <section aria-labelledby="skills-heading">
             <h2
               id="skills-heading"
-              className="mb-2 flex items-center justify-center gap-3 text-center text-[1.8rem] text-primary"
+              className="mb-2 flex items-center justify-center gap-3 text-center text-[var(--text-section-title)] text-primary"
             >
               <i className="fas fa-screwdriver-wrench" aria-hidden />
               Skills
             </h2>
-            <p className="mx-auto mb-6 max-w-[640px] text-center text-[0.98rem] leading-relaxed text-portfolio-muted">
+            <p className="mx-auto mb-6 max-w-[min(640px,92vw)] text-center text-[var(--text-lede)] leading-relaxed text-portfolio-muted">
               Systems administration and hardware work I rely on for IT support and client setups.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
@@ -445,7 +445,7 @@ export default function Portfolio() {
           </section>
         </div>
 
-        <section className="mt-[60px] px-2" aria-labelledby="projects-section-title">
+        <section className="mt-[clamp(2.5rem,6vw,3.75rem)] px-[clamp(0.25rem,1.5vw,0.5rem)]" aria-labelledby="projects-section-title">
           <a
             id="projects-section-title"
             href={hrefTo('projects')}
@@ -478,7 +478,7 @@ export default function Portfolio() {
 
       {selectedSkill ? (
         <div
-          className={`fixed inset-0 z-[200] flex items-end justify-center p-4 pb-10 sm:items-center sm:pb-4 transition-opacity ease-out motion-reduce:transition-none ${
+          className={`fixed inset-0 z-[200] flex items-end justify-center p-[clamp(0.65rem,2.5vw,1rem)] pb-[clamp(1.75rem,5vw,2.5rem)] sm:items-center sm:p-4 sm:pb-4 transition-opacity ease-out motion-reduce:transition-none ${
             skillModalVisible ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
           }`}
           style={{ transitionDuration: `${SKILL_MODAL_MS}ms` }}
@@ -511,7 +511,7 @@ export default function Portfolio() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="skill-dialog-title"
-            className={`relative z-[2] max-h-[min(85vh,520px)] w-full max-w-lg overflow-y-auto rounded-2xl border border-primary/40 bg-[rgba(12,14,18,0.92)] p-6 shadow-[0_0_48px_rgba(0,255,157,0.18),0_24px_48px_rgba(0,0,0,0.55)] backdrop-blur-[18px] transition-[transform] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
+            className={`relative z-[2] max-h-[min(85vh,520px)] w-full max-w-[min(32rem,calc(100vw-1rem))] overflow-y-auto rounded-2xl border border-primary/40 bg-[rgba(12,14,18,0.92)] p-[clamp(1rem,3vw,1.5rem)] shadow-[0_0_48px_rgba(0,255,157,0.18),0_24px_48px_rgba(0,0,0,0.55)] backdrop-blur-[18px] transition-[transform] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
               skillModalVisible ? 'translate-y-0 scale-100' : 'translate-y-5 scale-[0.97]'
             }`}
             style={{ transitionDuration: `${SKILL_MODAL_MS}ms` }}
@@ -542,7 +542,7 @@ export default function Portfolio() {
       ) : null}
 
       <div
-        className="fixed bottom-6 right-6 z-[100] rounded-2xl border border-primary bg-[rgba(10,10,10,0.93)] px-6 py-[18px] text-[0.97rem] leading-[2] shadow-[0_15px_35px_rgba(0,255,157,0.25)] backdrop-blur-[14px] transition-all duration-[180ms] ease-in-out hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,255,157,0.3)] max-md:relative max-md:bottom-auto max-md:right-auto max-md:mx-auto max-md:mt-12 max-md:max-w-[360px] max-md:text-center"
+        className="fixed bottom-6 right-6 z-[100] max-w-[min(100vw-1rem,420px)] rounded-2xl border border-primary bg-[rgba(10,10,10,0.93)] px-[clamp(1rem,3vw,1.5rem)] py-[clamp(0.65rem,2.5vw,1.1rem)] text-[clamp(0.82rem,calc(0.28vw+0.78rem),0.97rem)] leading-[2] shadow-[0_15px_35px_rgba(0,255,157,0.25)] backdrop-blur-[14px] transition-all duration-[180ms] ease-in-out hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,255,157,0.3)] max-md:relative max-md:bottom-auto max-md:right-auto max-md:mx-auto max-md:mt-12 max-md:max-w-[min(360px,92vw)] max-md:text-center max-md:leading-relaxed"
       >
         <span className="inline-flex items-center gap-1.5">
           <i className="fas fa-envelope" aria-hidden />
