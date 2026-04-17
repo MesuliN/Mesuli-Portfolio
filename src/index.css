@@ -2664,4 +2664,246 @@
   .projects-cta {
     background-position: 50% 50%;
   }
+
+  .portfolio-welcome-overlay .portfolio-welcome-robot .skill-modal-robot-mover {
+    transform: translateX(-50%) scale(var(--robot-scale, 1)) !important;
+  }
+
+  .portfolio-welcome-overlay__aurora {
+    animation: none !important;
+  }
+
+  .portfolio-welcome-panel {
+    transition-duration: 0.22s !important;
+    transition-property: opacity, transform !important;
+  }
+
+  .portfolio-welcome-overlay__backdrop {
+    transition-duration: 0.22s !important;
+  }
+}
+
+/* Portfolio home welcome: centers the skill-modal robot and stops marquee */
+.portfolio-welcome-overlay .portfolio-welcome-robot {
+  position: relative;
+  width: min(220px, 52vw);
+  height: 140px;
+  margin: 0 auto clamp(1rem, 4vw, 1.5rem);
+}
+
+.portfolio-welcome-overlay .portfolio-welcome-robot .skill-modal-robots-layer {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+}
+
+.portfolio-welcome-overlay .portfolio-welcome-robot .skill-modal-robot-solo {
+  bottom: 0;
+  top: auto;
+  left: 0;
+  right: 0;
+  height: 104px;
+}
+
+.portfolio-welcome-overlay .portfolio-welcome-robot .skill-modal-robot-mover {
+  animation: none !important;
+  left: 50% !important;
+  right: auto !important;
+  transform: translateX(-50%) scale(var(--robot-scale, 1)) !important;
+}
+
+/* Welcome overlay — ambient layers & glass panel */
+@keyframes portfolio-welcome-aurora-drift {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(1.5%, -1.2%) scale(1.025);
+  }
+}
+
+.portfolio-welcome-overlay {
+  overflow: hidden;
+}
+
+.portfolio-welcome-overlay__aurora {
+  position: absolute;
+  inset: -25%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 85% 55% at 12% 18%, rgba(0, 255, 157, 0.2), transparent 58%),
+    radial-gradient(ellipse 75% 50% at 88% 78%, rgba(0, 240, 255, 0.16), transparent 52%),
+    radial-gradient(ellipse 45% 35% at 50% -5%, rgba(0, 255, 157, 0.09), transparent 50%);
+  animation: portfolio-welcome-aurora-drift 16s ease-in-out infinite alternate;
+}
+
+.portfolio-welcome-overlay__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 80% 90% at 50% 42%,
+    transparent 0%,
+    rgba(4, 6, 8, 0.55) 55%,
+    rgba(2, 3, 5, 0.92) 100%
+  );
+}
+
+.portfolio-welcome-overlay__grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.14;
+  background-image:
+    linear-gradient(rgba(0, 255, 157, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.1) 1px, transparent 1px);
+  background-size: 52px 52px;
+  mask-image: radial-gradient(ellipse 85% 75% at 50% 45%, black 20%, transparent 75%);
+}
+
+.portfolio-welcome-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: rgba(8, 10, 12, 0.55);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  opacity: 0;
+  transition:
+    opacity 0.58s cubic-bezier(0.16, 1, 0.3, 1),
+    backdrop-filter 0.58s ease;
+}
+
+.portfolio-welcome-overlay--shown:not(.portfolio-welcome-overlay--exit) .portfolio-welcome-overlay__backdrop {
+  opacity: 1;
+}
+
+.portfolio-welcome-overlay--exit .portfolio-welcome-overlay__backdrop {
+  opacity: 0;
+  transition-duration: 0.42s;
+}
+
+.portfolio-welcome-panel {
+  position: relative;
+  z-index: 1;
+  width: min(26rem, calc(100vw - 2.5rem));
+  padding: clamp(1.75rem, 4.5vw, 2.35rem) clamp(1.35rem, 4vw, 2rem) clamp(1.85rem, 4.5vw, 2.5rem);
+  border-radius: clamp(18px, 2.5vw, 24px);
+  border: 1px solid color-mix(in srgb, #00ff9d 28%, transparent);
+  background:
+    linear-gradient(
+      155deg,
+      color-mix(in srgb, #0e1210 88%, #00ff9d) 0%,
+      rgba(10, 14, 16, 0.72) 45%,
+      rgba(8, 12, 18, 0.78) 100%
+    );
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, #00f0ff 12%, transparent) inset,
+    0 24px 56px rgba(0, 0, 0, 0.45),
+    0 0 80px color-mix(in srgb, #00ff9d 12%, transparent),
+    0 0 120px color-mix(in srgb, #00f0ff 6%, transparent);
+  opacity: 0;
+  transform: translateY(22px) scale(0.97);
+  transition:
+    opacity 0.58s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.58s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.portfolio-welcome-overlay--shown:not(.portfolio-welcome-overlay--exit) .portfolio-welcome-panel {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.portfolio-welcome-overlay--exit .portfolio-welcome-panel {
+  opacity: 0;
+  transform: translateY(-14px) scale(0.965);
+  transition-duration: 0.42s;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.portfolio-welcome-panel__glow {
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    120% 80% at 50% -20%,
+    color-mix(in srgb, #00ff9d 22%, transparent),
+    transparent 55%
+  );
+  opacity: 0.55;
+  filter: blur(20px);
+  z-index: 0;
+}
+
+.portfolio-welcome-panel__edge {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  pointer-events: none;
+  z-index: 2;
+  border-radius: 4px;
+}
+
+.portfolio-welcome-panel__edge--tl {
+  top: 12px;
+  left: 12px;
+  border-top: 2px solid color-mix(in srgb, #00ff9d 55%, transparent);
+  border-left: 2px solid color-mix(in srgb, #00ff9d 55%, transparent);
+  box-shadow: -1px -1px 12px color-mix(in srgb, #00ff9d 25%, transparent);
+}
+
+.portfolio-welcome-panel__edge--br {
+  bottom: 12px;
+  right: 12px;
+  border-bottom: 2px solid color-mix(in srgb, #00f0ff 45%, transparent);
+  border-right: 2px solid color-mix(in srgb, #00f0ff 45%, transparent);
+  box-shadow: 1px 1px 12px color-mix(in srgb, #00f0ff 20%, transparent);
+}
+
+.portfolio-welcome-robot-wrap {
+  position: relative;
+  margin: 0 auto clamp(0.25rem, 2vw, 0.75rem);
+  padding-bottom: 0.25rem;
+}
+
+.portfolio-welcome-robot-ring {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: min(200px, 48vw);
+  height: 48px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 50% 40%,
+    color-mix(in srgb, #00f0ff 18%, transparent),
+    transparent 70%
+  );
+  box-shadow: 0 0 40px color-mix(in srgb, #00ff9d 15%, transparent);
+  opacity: 0.85;
+}
+
+.portfolio-welcome-kicker {
+  margin: 0 0 0.35rem;
+  font-size: clamp(0.68rem, 0.2vw + 0.62rem, 0.78rem);
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, #00f0ff 85%, #b5bdc8);
+  text-shadow: 0 0 24px color-mix(in srgb, #00f0ff 35%, transparent);
+}
+
+.portfolio-welcome-title {
+  margin: 0;
+  font-size: clamp(1.5rem, calc(2.4vw + 0.95rem), 2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  filter: drop-shadow(0 0 28px color-mix(in srgb, #00ff9d 40%, transparent));
+}
+
+.portfolio-welcome-desc {
+  text-wrap: balance;
 }

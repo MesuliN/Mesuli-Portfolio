@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useState, type CSSProperties } from 'react'
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+} from 'react'
 import mesuliImage from './assets/Mesuli Image.jpg'
 import skillTechModalBg from './assets/skill-tech-modal-bg.png'
 import AboutPage from './AboutPage'
@@ -192,6 +199,16 @@ function SkillModalRobot3D() {
 
 const SKILL_MODAL_MS = 280
 
+const WELCOME_ROBOT_STYLE = {
+  '--robot-w': '72px',
+  '--robot-duration': '22s',
+  '--robot-delay': '0s',
+  '--bob-delay': '0s',
+  '--robot-scale': '1.35',
+  '--robot-opacity': '0.95',
+  '--robot-color': '#00f0ff',
+} as CSSProperties
+
 function prefersReducedMotion(): boolean {
   if (typeof window === 'undefined') return false
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -202,6 +219,26 @@ export default function Portfolio() {
   const [selectedSkill, setSelectedSkill] = useState<SkillChip | null>(null)
   const [skillModalVisible, setSkillModalVisible] = useState(false)
   const [appRoute, setAppRoute] = useState(() => getAppRoute())
+  const [portfolioWelcomeDismissed, setPortfolioWelcomeDismissed] = useState(
+    () => getAppRoute() !== 'home',
+  )
+  const prevAppRouteRef = useRef(appRoute)
+  const [welcomeEntered, setWelcomeEntered] = useState(false)
+  const [welcomeClosing, setWelcomeClosing] = useState(false)
+
+  const beginWelcomeDismiss = useCallback(() => {
+    setWelcomeClosing(true)
+  }, [])
+
+  const onWelcomePanelTransitionEnd = useCallback(
+    (e: React.TransitionEvent<HTMLDivElement>) => {
+      if (e.target !== e.currentTarget) return
+      if (e.propertyName !== 'opacity') return
+      if (!welcomeClosing) return
+      setPortfolioWelcomeDismissed(true)
+    },
+    [welcomeClosing],
+  )
 
   useEffect(() => {
     const sync = () => setAppRoute(getAppRoute())
@@ -212,6 +249,53 @@ export default function Portfolio() {
       unsub()
     }
   }, [])
+
+  useLayoutEffect(() => {
+    const prev = prevAppRouteRef.current
+    prevAppRouteRef.current = appRoute
+    if (appRoute === 'home' && prev !== 'home') {
+      setPortfolioWelcomeDismissed(false)
+      setWelcomeClosing(false)
+      setWelcomeEntered(false)
+    }
+  }, [appRoute])
+
+  useEffect(() => {
+    if (portfolioWelcomeDismissed || appRoute !== 'home') return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [portfolioWelcomeDismissed, appRoute])
+
+  useEffect(() => {
+    if (portfolioWelcomeDismissed || appRoute !== 'home' || welcomeClosing) return
+    const ms = prefersReducedMotion() ? 1600 : 4200
+    const id = window.setTimeout(beginWelcomeDismiss, ms)
+    return () => window.clearTimeout(id)
+  }, [portfolioWelcomeDismissed, appRoute, welcomeClosing, beginWelcomeDismiss])
+
+  useEffect(() => {
+    if (portfolioWelcomeDismissed || appRoute !== 'home') return
+    if (prefersReducedMotion()) {
+      setWelcomeEntered(true)
+      return
+    }
+    const id = requestAnimationFrame(() => {
+      requestAnimationFrame(() => setWelcomeEntered(true))
+    })
+    return () => cancelAnimationFrame(id)
+  }, [portfolioWelcomeDismissed, appRoute])
+
+  useEffect(() => {
+    if (portfolioWelcomeDismissed || appRoute !== 'home' || welcomeClosing) return
+    const onKey = (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Escape') beginWelcomeDismiss()
+    }
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [portfolioWelcomeDismissed, appRoute, welcomeClosing, beginWelcomeDismiss])
 
   useEffect(() => {
     const onMove = (e: globalThis.MouseEvent) => {
@@ -274,13 +358,90 @@ export default function Portfolio() {
 
   return (
     <>
+      {!portfolioWelcomeDismissed ? (
+        <div
+          className={`portfolio-welcome-overlay fixed inset-0 z-[300] flex flex-col items-center justify-center px-5 py-10 sm:px-6 ${
+            welcomeEntered && !welcomeClosing ? 'portfolio-welcome-overlay--shown' : ''
+          } ${welcomeClosing ? 'portfolio-welcome-overlay--exit' : ''}`}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="portfolio-welcome-title"
+          aria-describedby="portfolio-welcome-desc"
+        >
+          <div className="portfolio-welcome-overlay__aurora" aria-hidden />
+          <div className="portfolio-welcome-overlay__vignette" aria-hidden />
+          <div className="portfolio-welcome-overlay__grid" aria-hidden />
+          <div className="portfolio-welcome-overlay__backdrop" aria-hidden />
+
+          <div className="portfolio-welcome-panel" onTransitionEnd={onWelcomePanelTransitionEnd}>
+            <div className="portfolio-welcome-panel__edge portfolio-welcome-panel__edge--tl" aria-hidden />
+            <div className="portfolio-welcome-panel__edge portfolio-welcome-panel__edge--br" aria-hidden />
+            <div className="portfolio-welcome-panel__glow" aria-hidden />
+
+            <div className="portfolio-welcome-panel__inner relative z-[1] flex flex-col items-center text-center">
+              <div className="portfolio-welcome-robot-wrap" aria-hidden>
+                <div className="portfolio-welcome-robot-ring" />
+                <div className="portfolio-welcome-robot">
+                  <div className="skill-modal-robots-layer pointer-events-none absolute inset-0 overflow-visible">
+                    <div className="skill-modal-robot-solo">
+                      <div className="skill-modal-robot-mover" style={WELCOME_ROBOT_STYLE}>
+                        <div className="skill-modal-robot-mover-inner">
+                          <SkillModalRobot3D />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <p className="portfolio-welcome-kicker">You&apos;re here</p>
+              <h2
+                id="portfolio-welcome-title"
+                className="portfolio-welcome-title bg-gradient-to-r from-primary via-[#5dffc4] to-secondary bg-clip-text text-transparent"
+              >
+                Hey there!
+              </h2>
+              <p
+                id="portfolio-welcome-desc"
+                className="portfolio-welcome-desc mt-3 max-w-[min(22rem,100%)] text-[clamp(0.92rem,calc(0.35vw+0.86rem),1.06rem)] leading-relaxed text-portfolio-muted"
+              >
+                Welcome to my corner of the web — I&apos;m glad you&apos;re here. Take a look around
+                when you&apos;re ready.
+              </p>
+              <RippleBox
+                role="button"
+                tabIndex={0}
+                aria-label="Continue to portfolio"
+                className={`portfolio-welcome-cta mt-8 rounded-xl border border-primary/40 bg-primary px-[clamp(1.25rem,3.5vw,1.75rem)] py-[clamp(0.65rem,2vw,0.85rem)] text-[clamp(0.85rem,calc(0.28vw+0.8rem),0.98rem)] font-semibold uppercase tracking-[0.14em] text-[#111] shadow-[0_12px_36px_rgba(0,255,157,0.32)] transition-[transform,box-shadow,opacity] duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(0,255,157,0.38)] ${welcomeClosing ? 'pointer-events-none opacity-60' : ''}`}
+                onClick={beginWelcomeDismiss}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    beginWelcomeDismiss()
+                  }
+                }}
+              >
+                Let&apos;s go
+              </RippleBox>
+              <button
+                type="button"
+                className={`portfolio-welcome-skip mt-4 text-[0.82rem] text-portfolio-muted underline decoration-primary/45 underline-offset-[5px] transition-[color,text-decoration-color,opacity] duration-200 hover:text-primary ${welcomeClosing ? 'pointer-events-none opacity-50' : ''}`}
+                onClick={beginWelcomeDismiss}
+              >
+                Skip intro
+              </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
       <div
         className="cursor-glow-dot max-md:hidden"
         style={{ left: glow.x, top: glow.y }}
         aria-hidden
       />
 
-      <div className="page-content">
+      <div className="page-content" aria-hidden={!portfolioWelcomeDismissed}>
         <SiteHeader active="home" />
         <div className="mx-auto max-w-[1200px] px-6 pb-28 pt-14 max-md:pb-24 max-md:pt-12">
         <main id="main-content">
@@ -544,6 +705,7 @@ export default function Portfolio() {
 
       <div
         className="fixed bottom-6 right-6 z-[100] max-w-[min(100vw-1rem,420px)] rounded-2xl border border-primary bg-[rgba(10,10,10,0.93)] px-[clamp(1rem,3vw,1.5rem)] py-[clamp(0.65rem,2.5vw,1.1rem)] text-[clamp(0.82rem,calc(0.28vw+0.78rem),0.97rem)] leading-[2] shadow-[0_15px_35px_rgba(0,255,157,0.25)] backdrop-blur-[14px] transition-all duration-[180ms] ease-in-out hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,255,157,0.3)] max-md:relative max-md:bottom-auto max-md:right-auto max-md:mx-auto max-md:mt-12 max-md:max-w-[min(360px,92vw)] max-md:text-center max-md:leading-relaxed"
+        aria-hidden={!portfolioWelcomeDismissed}
       >
         <span className="inline-flex items-center gap-1.5">
           <i className="fas fa-envelope" aria-hidden />
