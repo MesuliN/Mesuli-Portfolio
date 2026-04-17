@@ -219,6 +219,35 @@ function SkillModalRobot3D() {
 
 const SKILL_MODAL_MS = 280
 
+/** After dismiss, suppress greeting on SPA navigations until full page load or refresh. */
+const WELCOME_SKIP_UNTIL_LOAD_KEY = 'mesuli-portfolio-welcome-skip-spa'
+
+function readInitialWelcomeDismissed(): boolean {
+  if (typeof window === 'undefined') return true
+  if (getAppRoute() !== 'home') return true
+  try {
+    const nav = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined
+    if (nav?.type === 'reload') {
+      sessionStorage.removeItem(WELCOME_SKIP_UNTIL_LOAD_KEY)
+    }
+  } catch {
+    /* ignore */
+  }
+  try {
+    return sessionStorage.getItem(WELCOME_SKIP_UNTIL_LOAD_KEY) === '1'
+  } catch {
+    return false
+  }
+}
+
+function persistWelcomeSkippedForSession(): void {
+  try {
+    sessionStorage.setItem(WELCOME_SKIP_UNTIL_LOAD_KEY, '1')
+  } catch {
+    /* ignore */
+  }
+}
+
 const WELCOME_ROBOT_STYLE = {
   '--robot-w': '72px',
   '--robot-duration': '22s',
@@ -239,9 +268,7 @@ export default function Portfolio() {
   const [selectedSkill, setSelectedSkill] = useState<SkillChip | null>(null)
   const [skillModalVisible, setSkillModalVisible] = useState(false)
   const [appRoute, setAppRoute] = useState(() => getAppRoute())
-  const [portfolioWelcomeDismissed, setPortfolioWelcomeDismissed] = useState(
-    () => getAppRoute() !== 'home',
-  )
+  const [portfolioWelcomeDismissed, setPortfolioWelcomeDismissed] = useState(readInitialWelcomeDismissed)
   const prevAppRouteRef = useRef(appRoute)
   const [welcomeEntered, setWelcomeEntered] = useState(false)
   const [welcomeClosing, setWelcomeClosing] = useState(false)
@@ -259,6 +286,7 @@ export default function Portfolio() {
       if (e.target !== e.currentTarget) return
       if (e.propertyName !== 'opacity') return
       if (!welcomeClosing) return
+      persistWelcomeSkippedForSession()
       setPortfolioWelcomeDismissed(true)
     },
     [welcomeClosing],
@@ -278,6 +306,18 @@ export default function Portfolio() {
     const prev = prevAppRouteRef.current
     prevAppRouteRef.current = appRoute
     if (appRoute === 'home' && prev !== 'home') {
+      try {
+        if (sessionStorage.getItem(WELCOME_SKIP_UNTIL_LOAD_KEY) === '1') {
+          setPortfolioWelcomeDismissed(true)
+          setWelcomeClosing(false)
+          setWelcomeEntered(false)
+          /* Skip letter/slice “page reveal” — show home content immediately (not like a refresh). */
+          setHomeRevealPlaying(true)
+          return
+        }
+      } catch {
+        /* ignore */
+      }
       setPortfolioWelcomeDismissed(false)
       setWelcomeClosing(false)
       setWelcomeEntered(false)
