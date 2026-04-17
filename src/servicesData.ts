@@ -39,12 +39,9 @@ export const SERVICES: ServiceOffering[] = [
     label: 'Web Applications',
     tagline: 'Interactive tools and dashboards built for real daily use',
     body:
-      'Beyond static pages, I develop web applications—think internal tools, data entry flows, client portals, and single-page experiences in React. I focus on predictable state, clear validation, and interfaces that stay maintainable as requirements grow.',
-<<<<<<< HEAD
-=======
+      'Beyond static pages, I develop web applications—think internal tools, data entry flows, client portals, and single-page experiences in React. I focus on predictable state, clear validation, and interfaces that stay maintainable as requirements grow. When a backend or database is part of the picture, I wire up APIs and persistence so the app behaves reliably in production, not only in a demo.',
     bodyShort:
       'Internal tools, portals, and React SPAs—with clear validation and maintainable structure as features grow.',
->>>>>>> d81fb51113eb79fcd5d134b24563352fdd926d15
     includes: [
       'Component-based UI in React for maintainable feature work',
       'Forms, tables, filters, and workflows tailored to your process',
@@ -63,11 +60,8 @@ export const SERVICES: ServiceOffering[] = [
     tagline: 'Patient, practical sessions so users gain confidence',
     body:
       'Not everyone learns the same way. I offer one-on-one or small-group training on everyday computing: navigating Windows, using email and browsers safely, file management, and common productivity tasks. Sessions are paced to the learner, with emphasis on repeating the skills you will actually use at work or at home—so knowledge sticks after the lesson ends.',
-<<<<<<< HEAD
-=======
     bodyShort:
       'One-on-one or small-group training on everyday computing—paced to the learner so skills stick.',
->>>>>>> d81fb51113eb79fcd5d134b24563352fdd926d15
     includes: [
       'Windows basics: files, folders, search, and printer setup',
       'Email, calendars, and cloud storage used step by step',

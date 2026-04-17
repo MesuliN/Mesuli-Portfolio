@@ -270,16 +270,11 @@ export default function Portfolio() {
         aria-hidden
       />
 
-<<<<<<< HEAD
-      <div className="mx-auto max-w-[1200px] px-6 pb-28 pt-14 max-md:pb-24 max-md:pt-12">
-        <header className="portfolio-hero-intro mb-[68px] overflow-x-clip max-md:mb-10">
-          <div className="flex flex-col items-center gap-8 md:flex-row md:items-center md:gap-10 lg:gap-12">
-=======
       <div className="page-content">
         <SiteHeader active="home" />
-        <header className="portfolio-hero-intro mb-[clamp(2.5rem,6vw,4.25rem)] overflow-x-clip">
+        <div className="mx-auto max-w-[1200px] px-6 pb-28 pt-14 max-md:pb-24 max-md:pt-12">
+        <header className="portfolio-hero-intro mb-[clamp(2.5rem,6vw,4.25rem)] overflow-x-clip max-md:mb-10">
           <div className="flex flex-col items-center gap-[clamp(1.5rem,4vw,3rem)] md:flex-row md:items-center md:gap-[clamp(1.75rem,3vw,2.75rem)] lg:gap-12">
->>>>>>> d81fb51113eb79fcd5d134b24563352fdd926d15
             <div className="shrink-0 md:self-center">
               <img
                 src={mesuliImage}
@@ -289,20 +284,12 @@ export default function Portfolio() {
                 sizes="(max-width: 768px) min(92vw, 280px), 320px"
                 decoding="async"
                 fetchPriority="high"
-<<<<<<< HEAD
-                className="aspect-square h-auto w-[min(92vw,280px)] rounded-full border-2 border-primary/45 object-cover object-center shadow-[0_0_36px_rgba(0,255,157,0.35),0_0_24px_rgba(0,240,255,0.15)] ring-2 ring-secondary/20 md:w-72 lg:w-80 transform-gpu"
-=======
                 className="aspect-square h-auto w-[min(92vw,min(280px,85vw))] rounded-full border-2 border-primary/45 object-cover object-center shadow-[0_0_36px_rgba(0,255,157,0.35),0_0_24px_rgba(0,240,255,0.15)] ring-2 ring-secondary/20 sm:w-[min(88vw,300px)] md:w-72 lg:w-80 transform-gpu"
->>>>>>> d81fb51113eb79fcd5d134b24563352fdd926d15
               />
             </div>
             <div className="flex w-full min-w-0 flex-1 flex-col items-center text-center md:items-start md:text-left">
               <h1
-<<<<<<< HEAD
-                className="portfolio-hero-name mb-2.5 flex w-full flex-wrap justify-center text-[2.6rem] font-bold leading-tight drop-shadow-[0_0_40px_rgba(0,255,157,0.5)] md:justify-start md:text-[3.5rem] md:leading-none"
-=======
                 className="portfolio-hero-name mb-2.5 flex w-full flex-wrap justify-center text-[clamp(1.65rem,calc(5vw+0.75rem),3.5rem)] font-bold leading-[1.08] drop-shadow-[0_0_40px_rgba(0,255,157,0.5)] md:justify-start md:leading-none"
->>>>>>> d81fb51113eb79fcd5d134b24563352fdd926d15
                 aria-label={HERO_NAME_ARIA_LABEL}
               >
                 <span className="portfolio-hero-chars" aria-hidden="true">
@@ -327,11 +314,7 @@ export default function Portfolio() {
                 </span>
               </h1>
               <p
-<<<<<<< HEAD
-                className="portfolio-hero-tagline mx-auto flex w-full max-w-[860px] flex-wrap justify-center text-[1.2rem] font-medium text-secondary drop-shadow-[0_0_20px_rgba(0,240,255,0.4)] md:mx-0 md:max-w-[36rem] md:justify-start lg:max-w-[40rem]"
-=======
                 className="portfolio-hero-tagline mx-auto flex w-full max-w-[min(860px,100%)] flex-wrap justify-center text-[clamp(0.88rem,calc(0.4vw+0.82rem),1.22rem)] font-medium leading-snug text-secondary drop-shadow-[0_0_20px_rgba(0,240,255,0.4)] md:mx-0 md:max-w-[min(36rem,92vw)] md:justify-start lg:max-w-[min(40rem,94vw)]"
->>>>>>> d81fb51113eb79fcd5d134b24563352fdd926d15
                 aria-label={HERO_TAGLINE_TEXT}
               >
                 <span className="portfolio-hero-chars" aria-hidden="true">
@@ -388,21 +371,13 @@ export default function Portfolio() {
               <i className="fas fa-tools" aria-hidden />
               My Services
             </h2>
-<<<<<<< HEAD
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(210px,1fr))] gap-4">
-=======
             <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,180px),1fr))] gap-[clamp(0.65rem,2vw,1rem)]">
->>>>>>> d81fb51113eb79fcd5d134b24563352fdd926d15
               {SERVICES.map((s, i) => {
                 const corner = MY_SERVICES_ENTRANCE_FROM[i % MY_SERVICES_ENTRANCE_FROM.length]!
                 return (
                   <RippleBox
                     key={s.label}
-<<<<<<< HEAD
-                    className="home-service-card-enter group flex items-center gap-3.5 rounded-[14px] border border-primary/[0.18] bg-white/[0.06] px-5 py-[18px] text-[1.05rem] font-semibold text-portfolio-text transition-all duration-[180ms] ease-in-out hover:-translate-y-1 hover:scale-[1.01] hover:bg-gradient-to-br hover:from-primary hover:to-[#00cc7a] hover:text-[#111] hover:shadow-[0_12px_25px_rgba(0,255,157,0.3)]"
-=======
                     className="home-service-card-enter group flex min-w-0 items-center gap-[clamp(0.5rem,2vw,0.9rem)] rounded-[clamp(10px,1.5vw,14px)] border border-primary/[0.18] bg-white/[0.06] px-[clamp(0.75rem,2.5vw,1.25rem)] py-[clamp(0.65rem,2vw,1.1rem)] text-[clamp(0.88rem,calc(0.45vw+0.8rem),1.05rem)] font-semibold text-portfolio-text transition-all duration-[180ms] ease-in-out hover:-translate-y-1 hover:scale-[1.01] hover:bg-gradient-to-br hover:from-primary hover:to-[#00cc7a] hover:text-[#111] hover:shadow-[0_12px_25px_rgba(0,255,157,0.3)]"
->>>>>>> d81fb51113eb79fcd5d134b24563352fdd926d15
                     style={
                       {
                         '--svc-from-x': corner.x,
@@ -500,6 +475,7 @@ export default function Portfolio() {
             <span className="sr-only">View all projects on a dedicated page</span>
           </a>
         </section>
+        </div>
       </div>
 
       {selectedSkill ? (
