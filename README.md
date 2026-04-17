@@ -12,3 +12,5 @@ This is my personal portfolio website showcasing my skills, projects, and servic
 - HTML
 - CSS
 - JavaScript
+- Ionic Framework
+- Poster Design
