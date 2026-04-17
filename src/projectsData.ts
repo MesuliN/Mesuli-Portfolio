@@ -1,7 +1,27 @@
+import posterScreenshot from './assets/Screenshot 2026-04-17 123710.png'
+import ariseMediaAdvert from './assets/ARISE MEDIA.mp4'
+
+/** Short advert clip + copy for the projects page and full-view dialog */
+export const SHORT_ADVERT = {
+  src: ariseMediaAdvert,
+  title: 'Arise Media',
+  description: 'Short promotional clip for screens and social placements.',
+} as const
+
+export const SHORT_ADVERT_VIDEO_SRC = SHORT_ADVERT.src
+
 export type Project = {
   title: string
   description: string
   href?: string
+}
+
+/** Poster / print-style work shown below mobile apps on the projects page */
+export type PosterDesign = {
+  title: string
+  description: string
+  /** Optional image (e.g. import or `/poster-name.jpg` in `public/`) */
+  imageSrc?: string
 }
 
 export const PROJECTS: Project[] = [
@@ -15,6 +35,14 @@ export const PROJECTS: Project[] = [
     description:
       'A digital attendance system that simplifies tracking and managing attendance, making it faster, more accurate, and easily accessible through a modern interface. The system is currently deployed.',
     href: 'https://mut-stars.web.app/home',
+  },
+]
+
+export const POSTER_DESIGNS: PosterDesign[] = [
+  {
+    title: 'Pest Control Poster',
+    description: 'Targeted poster for pest control services.',
+    imageSrc: posterScreenshot,
   },
 ]
 

@@ -6,7 +6,6 @@ import { getAppRoute, hrefTo, navigate, subscribeAppRoute } from './appRoute'
 import ProjectsPage from './ProjectsPage'
 import { SiteHeader } from './SiteHeader'
 import { RippleBox, setBodyCursorActive } from './RippleBox'
-import { SERVICES } from './servicesData'
 
 const HERO_NAME_ARIA_LABEL = 'Mesuli Nduluko'
 
@@ -38,13 +37,18 @@ function heroLetterOffset(i: number): { x: string; y: string } {
 const HERO_TAGLINE_TEXT =
   'Web Developer focused on building modern, high-performance digital experiences and delivering dependable technical support.'
 
-/** Home “My Services” chips: fly in from four viewport corners (order matches SERVICES). */
-const MY_SERVICES_ENTRANCE_FROM: readonly { x: string; y: string }[] = [
-  { x: '-48vmin', y: '-44vmin' },
-  { x: '48vmin', y: '-44vmin' },
-  { x: '-48vmin', y: '44vmin' },
-  { x: '48vmin', y: '44vmin' },
-]
+/** Word units so the per-letter flex layout cannot wrap mid-word */
+const HERO_TAGLINE_WORDS = HERO_TAGLINE_TEXT.split(' ').filter(Boolean)
+const HERO_TAGLINE_WORD_STARTS: readonly number[] = (() => {
+  const parts = HERO_TAGLINE_TEXT.split(' ')
+  const starts: number[] = []
+  let p = 0
+  for (let i = 0; i < parts.length; i++) {
+    starts.push(p)
+    p += parts[i]!.length + (i < parts.length - 1 ? 1 : 0)
+  }
+  return starts
+})()
 
 type SkillChip = { name: string; description: string; iconClass: string }
 
@@ -94,7 +98,7 @@ const TECHNOLOGIES: SkillChip[] = [
   },
 ]
 
-/** IT operations and hands-on hardware work */
+/** IT operations, design, and hands-on hardware work */
 const IT_SKILLS: SkillChip[] = [
   {
     name: 'Windows Administration',
@@ -107,6 +111,12 @@ const IT_SKILLS: SkillChip[] = [
     iconClass: 'fas fa-microchip',
     description:
       'Hardware troubleshooting means diagnosing physical computer issues: memory, storage, displays, power, and peripherals. It involves testing components, replacing faulty parts, and restoring reliable machines for everyday use.',
+  },
+  {
+    name: 'Poster Designing',
+    iconClass: 'fas fa-palette',
+    description:
+      'Poster designing is the process of creating clear, eye-catching visuals for events, promotions, and campaigns. It balances typography, imagery, hierarchy, and brand guidelines so the message reads quickly at a glance in print or on screens.',
   },
 ]
 
@@ -273,21 +283,10 @@ export default function Portfolio() {
       <div className="page-content">
         <SiteHeader active="home" />
         <div className="mx-auto max-w-[1200px] px-6 pb-28 pt-14 max-md:pb-24 max-md:pt-12">
-        <header className="portfolio-hero-intro mb-[clamp(2.5rem,6vw,4.25rem)] overflow-x-clip max-md:mb-10">
-          <div className="flex flex-col items-center gap-[clamp(1.5rem,4vw,3rem)] md:flex-row md:items-center md:gap-[clamp(1.75rem,3vw,2.75rem)] lg:gap-12">
-            <div className="shrink-0 md:self-center">
-              <img
-                src={mesuliImage}
-                alt="Mesuli Nduluko"
-                width={640}
-                height={640}
-                sizes="(max-width: 768px) min(92vw, 280px), 320px"
-                decoding="async"
-                fetchPriority="high"
-                className="aspect-square h-auto w-[min(92vw,min(280px,85vw))] rounded-full border-2 border-primary/45 object-cover object-center shadow-[0_0_36px_rgba(0,255,157,0.35),0_0_24px_rgba(0,240,255,0.15)] ring-2 ring-secondary/20 sm:w-[min(88vw,300px)] md:w-72 lg:w-80 transform-gpu"
-              />
-            </div>
-            <div className="flex w-full min-w-0 flex-1 flex-col items-center text-center md:items-start md:text-left">
+        <main id="main-content">
+        <header className="portfolio-hero-intro mb-[clamp(2.5rem,6vw,4.25rem)] overflow-x-visible max-md:mb-10">
+          <div className="flex flex-col items-center gap-[clamp(1.5rem,4vw,3rem)] md:flex-row md:items-center md:gap-[clamp(2rem,4vw,3.5rem)] lg:gap-14">
+            <div className="order-2 flex w-full min-w-0 flex-1 flex-col items-center text-center md:order-1 md:items-start md:text-left">
               <h1
                 className="portfolio-hero-name mb-2.5 flex w-full flex-wrap justify-center text-[clamp(1.65rem,calc(5vw+0.75rem),3.5rem)] font-bold leading-[1.08] drop-shadow-[0_0_40px_rgba(0,255,157,0.5)] md:justify-start md:leading-none"
                 aria-label={HERO_NAME_ARIA_LABEL}
@@ -317,100 +316,93 @@ export default function Portfolio() {
                 className="portfolio-hero-tagline mx-auto flex w-full max-w-[min(860px,100%)] flex-wrap justify-center text-[clamp(0.88rem,calc(0.4vw+0.82rem),1.22rem)] font-medium leading-snug text-secondary drop-shadow-[0_0_20px_rgba(0,240,255,0.4)] md:mx-0 md:max-w-[min(36rem,92vw)] md:justify-start lg:max-w-[min(40rem,94vw)]"
                 aria-label={HERO_TAGLINE_TEXT}
               >
-                <span className="portfolio-hero-chars" aria-hidden="true">
-                  {Array.from(HERO_TAGLINE_TEXT).map((ch, i) => {
+                <span className="portfolio-hero-chars portfolio-hero-chars--tagline" aria-hidden="true">
+                  {HERO_TAGLINE_WORDS.map((word, wi) => {
                     const nameLen = HERO_NAME_ARIA_LABEL.length
-                    const o = heroLetterOffset(nameLen + i)
+                    const wordStart = HERO_TAGLINE_WORD_STARTS[wi] ?? 0
                     return (
-                      <span
-                        key={`t-${i}-${ch === ' ' ? 'sp' : ch}`}
-                        className="portfolio-hero-char portfolio-hero-char--tagline inline-block"
-                        style={
-                          {
-                            '--hero-from-x': o.x,
-                            '--hero-from-y': o.y,
-                            '--hero-char-i': i,
-                          } as CSSProperties
-                        }
-                      >
-                        {ch === ' ' ? '\u00a0' : ch}
+                      <span key={`tw-${wi}`} className="portfolio-hero-tagline-word">
+                        {Array.from(word).map((ch, i) => {
+                          const charIdxInTagline = wordStart + i
+                          const o = heroLetterOffset(nameLen + charIdxInTagline)
+                          return (
+                            <span
+                              key={`t-${wi}-${i}-${ch}`}
+                              className="portfolio-hero-char portfolio-hero-char--tagline inline-block"
+                              style={
+                                {
+                                  '--hero-from-x': o.x,
+                                  '--hero-from-y': o.y,
+                                  '--hero-char-i': charIdxInTagline,
+                                } as CSSProperties
+                              }
+                            >
+                              {ch}
+                            </span>
+                          )
+                        })}
                       </span>
                     )
                   })}
                 </span>
               </p>
+              <div className="mt-[clamp(1.25rem,3vw,1.75rem)] flex w-full max-w-[min(36rem,100%)] flex-wrap justify-center gap-3 md:justify-start">
+                <RippleBox
+                  role="button"
+                  tabIndex={0}
+                  aria-label="Learn more on the About page"
+                  className="rounded-xl border border-primary/30 bg-primary px-[clamp(1.1rem,3vw,1.5rem)] py-[clamp(0.55rem,1.5vw,0.75rem)] text-[clamp(0.82rem,calc(0.25vw+0.78rem),0.95rem)] font-semibold uppercase tracking-[0.12em] text-[#111] shadow-[0_10px_28px_rgba(0,255,157,0.22)] transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_32px_rgba(0,255,157,0.28)]"
+                  onClick={() => navigate('/about')}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      navigate('/about')
+                    }
+                  }}
+                >
+                  Learn More
+                </RippleBox>
+                <a
+                  href="mailto:Ndulukomesuli02@gmail.com"
+                  className="interactive ripple relative inline-flex cursor-pointer items-center justify-center rounded-xl border border-primary/45 bg-[rgba(12,14,16,0.45)] px-[clamp(1.1rem,3vw,1.5rem)] py-[clamp(0.55rem,1.5vw,0.75rem)] text-[clamp(0.82rem,calc(0.25vw+0.78rem),0.95rem)] font-semibold uppercase tracking-[0.12em] text-primary backdrop-blur-[6px] transition-[transform,background-color,border-color] duration-200 hover:-translate-y-0.5 hover:border-primary hover:bg-primary/10"
+                  onPointerEnter={() => setBodyCursorActive(true)}
+                  onPointerLeave={() => setBodyCursorActive(false)}
+                >
+                  Contact
+                </a>
+              </div>
+            </div>
+            <div className="order-1 shrink-0 md:order-2 md:self-center">
+              <img
+                src={mesuliImage}
+                alt="Mesuli Nduluko"
+                width={640}
+                height={640}
+                sizes="(max-width: 768px) min(92vw, 280px), 320px"
+                decoding="async"
+                fetchPriority="high"
+                className="aspect-square h-auto w-[min(92vw,min(280px,85vw))] rounded-full border-2 border-primary/45 object-cover object-center shadow-[0_0_36px_rgba(0,255,157,0.35),0_0_24px_rgba(0,240,255,0.15)] ring-2 ring-secondary/20 sm:w-[min(88vw,300px)] md:w-72 lg:w-80 transform-gpu"
+              />
             </div>
           </div>
         </header>
 
-        <div className="grid grid-cols-1 items-stretch gap-[clamp(1.15rem,3vw,2.2rem)] md:grid-cols-2 md:gap-[clamp(1.25rem,3.5vw,2.2rem)]">
-          <RippleBox
-            className="mb-[clamp(1.5rem,4vw,2.5rem)] rounded-[var(--card-radius)] border border-primary/25 bg-[rgba(20,20,20,0.7)] p-[var(--card-pad)] shadow-[0_10px_24px_rgba(0,0,0,0.25)] backdrop-blur-[14px] transition-all duration-[280ms] ease-in-out hover:-translate-y-1.5 hover:scale-[1.01] hover:border-primary hover:shadow-[0_18px_36px_rgba(0,255,157,0.16)] max-md:mb-6"
+        <div className="mt-[clamp(2.25rem,5vw,3.75rem)] grid gap-[clamp(1.5rem,4vw,2.5rem)] lg:grid-cols-2 lg:items-start lg:gap-x-[clamp(1.75rem,4vw,2.75rem)]">
+          <section
+            className="rounded-[var(--card-radius)] border border-primary/20 bg-[rgba(12,16,14,0.42)] p-[clamp(1.15rem,3.2vw,1.85rem)] shadow-[inset_0_1px_0_rgba(0,255,157,0.06)] backdrop-blur-[10px]"
+            aria-labelledby="technologies-heading"
           >
-            <h2 className="mb-5 flex items-center gap-3 text-[var(--text-section-title)] text-primary">
-              <i className="fas fa-user" aria-hidden />
-              About Me
-            </h2>
-            <p className="text-[var(--text-lede)] leading-relaxed text-portfolio-text">
-              I am a website developer and software developer with a strong focus on creating clean, responsive
-              websites and practical web applications. My work combines modern front-end development
-              with reliable back-end integration to deliver solutions that are fast, user-focused, and
-              built for real-world results.
-            </p>
-            <p className="mt-4 text-[var(--text-lede)] leading-relaxed text-portfolio-text">
-              Alongside development, I provide IT support services including system setup, Windows
-              installation, troubleshooting, and user training. This combination allows me to support
-              clients from planning and development through day-to-day technical operations.
-            </p>
-          </RippleBox>
-
-          <RippleBox
-            className="mb-[clamp(1.5rem,4vw,2.5rem)] rounded-[var(--card-radius)] border border-primary/25 bg-[rgba(20,20,20,0.7)] p-[var(--card-pad)] shadow-[0_10px_24px_rgba(0,0,0,0.25)] backdrop-blur-[14px] transition-all duration-[280ms] ease-in-out hover:-translate-y-1.5 hover:scale-[1.01] hover:border-primary hover:shadow-[0_18px_36px_rgba(0,255,157,0.16)] max-md:mb-6"
-          >
-            <h2 className="mb-5 flex items-center gap-3 text-[var(--text-section-title)] text-primary">
-              <i className="fas fa-tools" aria-hidden />
-              My Services
-            </h2>
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,180px),1fr))] gap-[clamp(0.65rem,2vw,1rem)]">
-              {SERVICES.map((s, i) => {
-                const corner = MY_SERVICES_ENTRANCE_FROM[i % MY_SERVICES_ENTRANCE_FROM.length]!
-                return (
-                  <RippleBox
-                    key={s.label}
-                    className="home-service-card-enter group flex min-w-0 items-center gap-[clamp(0.5rem,2vw,0.9rem)] rounded-[clamp(10px,1.5vw,14px)] border border-primary/[0.18] bg-white/[0.06] px-[clamp(0.75rem,2.5vw,1.25rem)] py-[clamp(0.65rem,2vw,1.1rem)] text-[clamp(0.88rem,calc(0.45vw+0.8rem),1.05rem)] font-semibold text-portfolio-text transition-all duration-[180ms] ease-in-out hover:-translate-y-1 hover:scale-[1.01] hover:bg-gradient-to-br hover:from-primary hover:to-[#00cc7a] hover:text-[#111] hover:shadow-[0_12px_25px_rgba(0,255,157,0.3)]"
-                    style={
-                      {
-                        '--svc-from-x': corner.x,
-                        '--svc-from-y': corner.y,
-                        '--svc-enter-i': i,
-                      } as CSSProperties
-                    }
-                  >
-                    <i
-                      className={`fas ${s.icon} text-[1.7rem] text-primary transition-colors duration-[180ms] group-hover:text-[#0b1813]`}
-                      aria-hidden
-                    />
-                    {s.label}
-                  </RippleBox>
-                )
-              })}
-            </div>
-          </RippleBox>
-        </div>
-
-        <div className="mt-[clamp(2.25rem,5vw,3.75rem)] space-y-[clamp(2rem,5vw,3rem)]">
-          <section aria-labelledby="technologies-heading">
             <h2
               id="technologies-heading"
-              className="mb-2 flex items-center justify-center gap-3 text-center text-[var(--text-section-title)] text-primary"
+              className="mb-2 flex items-center justify-center gap-3 text-center text-[var(--text-section-title)] text-primary lg:justify-start lg:text-left"
             >
               <i className="fas fa-code" aria-hidden />
               Technologies
             </h2>
-            <p className="mx-auto mb-6 max-w-[min(640px,92vw)] text-center text-[var(--text-lede)] leading-relaxed text-portfolio-muted">
+            <p className="mx-auto mb-6 max-w-[min(640px,100%)] text-center text-[var(--text-lede)] leading-relaxed text-portfolio-muted lg:mx-0 lg:text-left">
               Languages, libraries, and data tools I use to build and ship web software.
             </p>
-            <div className="flex flex-wrap justify-center gap-3">
+            <div className="flex flex-wrap justify-center gap-3 lg:justify-start">
               {TECHNOLOGIES.map((skill) => (
                 <SkillChipButton
                   key={skill.name}
@@ -422,18 +414,21 @@ export default function Portfolio() {
             </div>
           </section>
 
-          <section aria-labelledby="skills-heading">
+          <section
+            className="rounded-[var(--card-radius)] border border-primary/20 bg-[rgba(12,16,14,0.42)] p-[clamp(1.15rem,3.2vw,1.85rem)] shadow-[inset_0_1px_0_rgba(0,255,157,0.06)] backdrop-blur-[10px]"
+            aria-labelledby="skills-heading"
+          >
             <h2
               id="skills-heading"
-              className="mb-2 flex items-center justify-center gap-3 text-center text-[var(--text-section-title)] text-primary"
+              className="mb-2 flex items-center justify-center gap-3 text-center text-[var(--text-section-title)] text-primary lg:justify-start lg:text-left"
             >
               <i className="fas fa-screwdriver-wrench" aria-hidden />
               Skills
             </h2>
-            <p className="mx-auto mb-6 max-w-[min(640px,92vw)] text-center text-[var(--text-lede)] leading-relaxed text-portfolio-muted">
+            <p className="mx-auto mb-6 max-w-[min(640px,100%)] text-center text-[var(--text-lede)] leading-relaxed text-portfolio-muted lg:mx-0 lg:text-left">
               Systems administration and hardware work I rely on for IT support and client setups.
             </p>
-            <div className="flex flex-wrap justify-center gap-3">
+            <div className="flex flex-wrap justify-center gap-3 lg:justify-start">
               {IT_SKILLS.map((skill) => (
                 <SkillChipButton
                   key={skill.name}
@@ -446,7 +441,10 @@ export default function Portfolio() {
           </section>
         </div>
 
-        <section className="mt-[clamp(2.5rem,6vw,3.75rem)] px-[clamp(0.25rem,1.5vw,0.5rem)]" aria-labelledby="projects-section-title">
+        <section
+          className="mx-auto mt-[clamp(2.5rem,6vw,3.75rem)] max-w-[min(52rem,100%)] px-[clamp(0.25rem,1.5vw,0.5rem)]"
+          aria-labelledby="projects-section-title"
+        >
           <a
             id="projects-section-title"
             href={hrefTo('projects')}
@@ -475,6 +473,7 @@ export default function Portfolio() {
             <span className="sr-only">View all projects on a dedicated page</span>
           </a>
         </section>
+        </main>
         </div>
       </div>
 

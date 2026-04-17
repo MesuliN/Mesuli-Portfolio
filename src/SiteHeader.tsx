@@ -51,6 +51,9 @@ export function SiteHeader({ active, className }: SiteHeaderProps) {
         <NavLink href={hrefTo('about')} to="/about" isActive={active === 'about'}>
           About
         </NavLink>
+        <NavLink href={hrefTo('projects')} to="/projects" isActive={active === 'projects'}>
+          Projects
+        </NavLink>
       </nav>
     </header>
   )

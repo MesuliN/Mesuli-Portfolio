@@ -179,6 +179,18 @@
     max-width: 100%;
   }
 
+  /* Tagline: wrap by whole words only (letters stay inside word spans) */
+  .portfolio-hero-chars--tagline {
+    column-gap: 0.35em;
+    row-gap: 0.35em;
+  }
+
+  .portfolio-hero-tagline-word {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+
   @media (min-width: 768px) {
     .portfolio-hero-intro .portfolio-hero-chars {
       justify-content: flex-start;
@@ -955,6 +967,408 @@
     gap: 1.75rem;
   }
 
+  /* Poster designs + short adverts — side by side from lg, capped width */
+  .projects-page__visual-split {
+    max-width: min(100%, 52rem);
+    margin: 2.25rem auto 0;
+    padding-top: 1.75rem;
+    border-top: 1px solid rgba(30, 58, 138, 0.35);
+  }
+
+  .projects-page__visual-split-inner {
+    display: grid;
+    gap: clamp(1.75rem, 4vw, 2.25rem);
+    align-items: start;
+    justify-items: center;
+    width: 100%;
+  }
+
+  @media (min-width: 1024px) {
+    .projects-page__visual-split-inner {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: clamp(1.25rem, 3vw, 1.75rem);
+      align-items: stretch;
+      justify-items: stretch;
+    }
+  }
+
+  /* Outer frames — cyan (poster) vs primary green (adverts); size capped */
+  .projects-page__split-media-frame {
+    width: 100%;
+    max-width: min(100%, 20rem);
+    margin-left: auto;
+    margin-right: auto;
+    padding: clamp(0.5rem, 1.5vw, 0.65rem);
+    border-radius: 14px;
+  }
+
+  @media (min-width: 1024px) {
+    .projects-page__split-media-frame {
+      max-width: min(100%, 18.5rem);
+    }
+  }
+
+  .projects-page__split-media-frame--poster {
+    border: 1px solid rgba(0, 240, 255, 0.42);
+    background: linear-gradient(
+      155deg,
+      rgba(0, 240, 255, 0.07) 0%,
+      rgba(8, 14, 22, 0.88) 48%,
+      rgba(6, 12, 20, 0.95) 100%
+    );
+    box-shadow:
+      0 0 0 1px rgba(0, 240, 255, 0.12) inset,
+      0 0 32px rgba(0, 240, 255, 0.1),
+      0 12px 28px rgba(0, 0, 0, 0.35);
+  }
+
+  .projects-page__split-media-frame--adverts {
+    max-width: min(100%, 22rem);
+    border: 1px solid rgba(0, 255, 157, 0.42);
+    background: linear-gradient(
+      155deg,
+      rgba(0, 255, 157, 0.08) 0%,
+      rgba(8, 18, 14, 0.88) 48%,
+      rgba(6, 14, 12, 0.95) 100%
+    );
+    box-shadow:
+      0 0 0 1px rgba(0, 255, 157, 0.12) inset,
+      0 0 32px rgba(0, 255, 157, 0.1),
+      0 12px 28px rgba(0, 0, 0, 0.35);
+  }
+
+  @media (min-width: 1024px) {
+    .projects-page__split-media-frame--adverts {
+      max-width: min(100%, 20.5rem);
+    }
+  }
+
+  /* Inner poster image area — no second border; outer frame carries the accent */
+  .projects-page__split-media-frame--poster .projects-page__poster-frame {
+    border: none;
+    box-shadow: none;
+    background: rgba(0, 0, 0, 0.2);
+    max-height: min(52vh, 22rem);
+  }
+
+  .projects-page__split-media-frame--poster .projects-page__poster-card {
+    max-width: 100%;
+  }
+
+  /* Video — 16:9 box, bounded height so neither column dominates */
+  .projects-page__split-media-frame--adverts .projects-page__adverts-video-wrap {
+    border: none;
+    box-shadow: none;
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 10px;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    max-height: min(42vh, 17rem);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .projects-page__split-media-frame--adverts .projects-page__adverts-video {
+    width: 100%;
+    height: 100%;
+    max-height: min(42vh, 17rem);
+    object-fit: contain;
+  }
+
+  .projects-page__visual-split-col {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .projects-page__visual-split-col .projects-page__work--split-sub {
+    width: 100%;
+  }
+
+  @media (min-width: 1024px) {
+    .projects-page__visual-split-col {
+      align-items: stretch;
+    }
+  }
+
+  .projects-page__work--split-sub {
+    border-top: none;
+    max-width: none;
+    margin: 0;
+    padding: 0 0 1rem;
+    text-align: left;
+  }
+
+  .projects-page__work--split-sub .projects-page__work-lede {
+    margin-left: 0;
+    margin-right: 0;
+    max-width: none;
+  }
+
+  @media (max-width: 1023px) {
+    .projects-page__work--split-sub {
+      text-align: center;
+    }
+
+    .projects-page__work--split-sub .projects-page__work-lede {
+      margin-left: auto;
+      margin-right: auto;
+      max-width: 36rem;
+    }
+  }
+
+  .projects-page__poster-grid--split {
+    max-width: none;
+    margin: 0;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .projects-page__adverts-video-wrap {
+    overflow: hidden;
+    border-radius: 12px;
+    border: 1px solid rgba(56, 189, 248, 0.22);
+    background: linear-gradient(165deg, rgba(15, 23, 42, 0.45) 0%, rgba(8, 12, 22, 0.92) 100%);
+    box-shadow:
+      0 0 0 1px rgba(30, 64, 175, 0.15) inset,
+      0 12px 32px rgba(0, 0, 0, 0.35);
+  }
+
+  .projects-page__adverts-video {
+    display: block;
+    width: 100%;
+    height: auto;
+    vertical-align: top;
+  }
+
+  .projects-page__poster-grid {
+    display: grid;
+    max-width: 1100px;
+    margin: 0 auto 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: 1.5rem;
+  }
+
+  .projects-page__poster-card {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    animation: project-dev-card-enter 0.62s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--poster-card-stagger, 0ms);
+  }
+
+  .projects-page__poster-frame {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border-radius: 12px;
+    border: 1px solid rgba(56, 189, 248, 0.22);
+    background: linear-gradient(165deg, rgba(15, 23, 42, 0.55) 0%, rgba(8, 12, 22, 0.88) 100%);
+    box-shadow:
+      0 0 0 1px rgba(30, 64, 175, 0.15) inset,
+      0 12px 32px rgba(0, 0, 0, 0.35);
+  }
+
+  .projects-page__poster-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .projects-page__poster-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 12rem;
+    font-size: clamp(2rem, 6vw, 2.75rem);
+    color: rgba(56, 189, 248, 0.32);
+  }
+
+  .projects-page__poster-caption {
+    text-align: left;
+  }
+
+  .projects-page__poster-title {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #e2e8f0;
+  }
+
+  .projects-page__poster-desc {
+    display: block;
+    margin-top: 0.3rem;
+    font-size: 0.86rem;
+    line-height: 1.45;
+    color: #64748b;
+  }
+
+  .projects-page__poster-frame--zoomable {
+    cursor: zoom-in;
+    transition:
+      transform 0.22s ease,
+      box-shadow 0.22s ease;
+  }
+
+  .projects-page__poster-frame--zoomable:hover {
+    transform: scale(1.02);
+  }
+
+  .projects-page__poster-frame--zoomable:focus {
+    outline: none;
+  }
+
+  .projects-page__poster-frame--zoomable:focus-visible {
+    outline: 2px solid rgba(0, 240, 255, 0.75);
+    outline-offset: 3px;
+  }
+
+  .projects-page__adverts-video-wrap--zoomable {
+    cursor: zoom-in;
+    transition:
+      transform 0.22s ease,
+      box-shadow 0.22s ease;
+  }
+
+  .projects-page__adverts-video-wrap--zoomable:hover {
+    transform: scale(1.02);
+  }
+
+  .projects-page__adverts-video-wrap--zoomable:focus {
+    outline: none;
+  }
+
+  .projects-page__adverts-video-wrap--zoomable:focus-visible {
+    outline: 2px solid rgba(0, 255, 157, 0.75);
+    outline-offset: 3px;
+  }
+
+  .projects-page__split-media-frame--adverts .projects-page__adverts-video--thumb {
+    pointer-events: none;
+    user-select: none;
+  }
+
+  /* Full-size poster lightbox */
+  .projects-page__poster-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(0.65rem, 2.5vw, 1.25rem);
+  }
+
+  .projects-page__poster-lightbox-backdrop {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    background: rgba(2, 4, 10, 0.82);
+    backdrop-filter: blur(6px);
+  }
+
+  .projects-page__poster-lightbox-panel {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    max-width: min(96vw, 56rem);
+    max-height: min(92vh, 900px);
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    pointer-events: auto;
+  }
+
+  .projects-page__poster-lightbox-img {
+    display: block;
+    max-width: min(92vw, 56rem);
+    max-height: min(78vh, 820px);
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 240, 255, 0.28);
+    box-shadow:
+      0 0 0 1px rgba(0, 255, 157, 0.12) inset,
+      0 20px 50px rgba(0, 0, 0, 0.55);
+  }
+
+  .projects-page__poster-lightbox--video .projects-page__poster-lightbox-panel {
+    max-width: min(96vw, 58rem);
+  }
+
+  .projects-page__poster-lightbox-video {
+    display: block;
+    width: 100%;
+    max-width: min(92vw, 58rem);
+    max-height: min(72vh, 800px);
+    border-radius: 10px;
+    border: 1px solid rgba(0, 255, 157, 0.32);
+    background: #000;
+    box-shadow:
+      0 0 0 1px rgba(0, 240, 255, 0.1) inset,
+      0 20px 50px rgba(0, 0, 0, 0.55);
+  }
+
+  .projects-page__poster-lightbox-close {
+    position: absolute;
+    top: -0.25rem;
+    right: -0.25rem;
+    z-index: 2;
+    display: flex;
+    width: 2.5rem;
+    height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 240, 255, 0.35);
+    background: rgba(8, 12, 18, 0.92);
+    color: #e2e8f0;
+    cursor: pointer;
+    transition:
+      border-color 0.18s ease,
+      color 0.18s ease,
+      background 0.18s ease;
+  }
+
+  .projects-page__poster-lightbox-close:hover,
+  .projects-page__poster-lightbox-close:focus-visible {
+    border-color: rgba(0, 255, 157, 0.55);
+    color: #00ff9d;
+    outline: none;
+  }
+
+  .projects-page__poster-lightbox-meta {
+    max-width: 40rem;
+    text-align: center;
+  }
+
+  .projects-page__poster-lightbox-heading {
+    margin: 0;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #f1f5f9;
+  }
+
+  .projects-page__poster-lightbox-text {
+    margin: 0.35rem 0 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #94a3b8;
+  }
+
   .projects-page__footer {
     max-width: 1100px;
     margin: 2.5rem auto 0;
@@ -1301,12 +1715,76 @@
     border-top-color: rgba(22, 101, 52, 0.55);
   }
 
+  .projects-page.projects-page--bottom-zone .projects-page__visual-split {
+    border-top-color: rgba(22, 101, 52, 0.55);
+  }
+
+  .projects-page.projects-page--bottom-zone .projects-page__split-media-frame--poster {
+    border-color: rgba(45, 212, 191, 0.42);
+    background: linear-gradient(
+      155deg,
+      rgba(45, 212, 191, 0.1) 0%,
+      rgba(6, 32, 22, 0.9) 48%,
+      rgba(4, 22, 14, 0.96) 100%
+    );
+    box-shadow:
+      0 0 0 1px rgba(20, 83, 45, 0.35) inset,
+      0 0 28px rgba(45, 212, 191, 0.12),
+      0 12px 28px rgba(0, 0, 0, 0.45);
+  }
+
+  .projects-page.projects-page--bottom-zone .projects-page__split-media-frame--adverts {
+    border-color: rgba(74, 222, 128, 0.45);
+    background: linear-gradient(
+      155deg,
+      rgba(74, 222, 128, 0.1) 0%,
+      rgba(6, 40, 22, 0.9) 48%,
+      rgba(4, 26, 14, 0.96) 100%
+    );
+    box-shadow:
+      0 0 0 1px rgba(22, 101, 52, 0.35) inset,
+      0 0 28px rgba(74, 222, 128, 0.12),
+      0 12px 28px rgba(0, 0, 0, 0.45);
+  }
+
+  .projects-page.projects-page--bottom-zone .projects-page__split-media-frame--adverts .projects-page__adverts-video-wrap {
+    background: rgba(0, 0, 0, 0.4);
+  }
+
   .projects-page.projects-page--bottom-zone .projects-page__work-title {
     color: #ecfdf5;
   }
 
   .projects-page.projects-page--bottom-zone .projects-page__work-lede {
     color: rgba(110, 231, 183, 0.85);
+  }
+
+  .projects-page.projects-page--bottom-zone .projects-page__poster-frame {
+    border-color: rgba(34, 197, 94, 0.32);
+    background: linear-gradient(165deg, rgba(6, 40, 22, 0.55) 0%, rgba(6, 24, 14, 0.92) 100%);
+    box-shadow:
+      0 0 0 1px rgba(22, 101, 52, 0.35) inset,
+      0 12px 32px rgba(0, 0, 0, 0.45);
+  }
+
+  .projects-page.projects-page--bottom-zone
+    .projects-page__split-media-frame--poster
+    .projects-page__poster-frame {
+    border: none;
+    box-shadow: none;
+    background: rgba(0, 0, 0, 0.22);
+  }
+
+  .projects-page.projects-page--bottom-zone .projects-page__poster-placeholder {
+    color: rgba(74, 222, 128, 0.28);
+  }
+
+  .projects-page.projects-page--bottom-zone .projects-page__poster-title {
+    color: #ecfdf5;
+  }
+
+  .projects-page.projects-page--bottom-zone .projects-page__poster-desc {
+    color: rgba(167, 243, 208, 0.78);
   }
 
   .projects-page.projects-page--bottom-zone .projects-page__footer {
