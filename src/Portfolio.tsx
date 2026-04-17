@@ -34,7 +34,15 @@ function heroLetterOffset(i: number): { x: string; y: string } {
 }
 
 const HERO_TAGLINE_TEXT =
-  'Web Developer and IT Specialist focused on building modern, high-performance digital experiences and delivering dependable technical support.'
+  'Web Developer focused on building modern, high-performance digital experiences and delivering dependable technical support.'
+
+/** Home “My Services” chips: fly in from four viewport corners (order matches SERVICES). */
+const MY_SERVICES_ENTRANCE_FROM: readonly { x: string; y: string }[] = [
+  { x: '-48vmin', y: '-44vmin' },
+  { x: '48vmin', y: '-44vmin' },
+  { x: '-48vmin', y: '44vmin' },
+  { x: '48vmin', y: '44vmin' },
+]
 
 type SkillChip = { name: string; description: string; iconClass: string }
 
@@ -212,70 +220,74 @@ export default function Portfolio() {
       />
 
       <div className="mx-auto max-w-[1200px] px-6 pb-28 pt-14 max-md:pb-24 max-md:pt-12">
-        <header className="portfolio-hero-intro mb-[68px] overflow-x-clip text-center max-md:mb-10">
-          <div className="mb-7 flex justify-center max-md:mb-6">
-            <img
-              src={mesuliImage}
-              alt="Mesuli Nduluko"
-              width={640}
-              height={640}
-              sizes="(max-width: 768px) min(92vw, 280px), 320px"
-              decoding="async"
-              fetchPriority="high"
-              className="aspect-square h-auto w-[min(92vw,280px)] rounded-full border-2 border-primary/45 object-cover object-center shadow-[0_0_36px_rgba(0,255,157,0.35),0_0_24px_rgba(0,240,255,0.15)] ring-2 ring-secondary/20 md:w-80 transform-gpu"
-            />
+        <header className="portfolio-hero-intro mb-[68px] overflow-x-clip max-md:mb-10">
+          <div className="flex flex-col items-center gap-8 md:flex-row md:items-center md:gap-10 lg:gap-12">
+            <div className="shrink-0 md:self-center">
+              <img
+                src={mesuliImage}
+                alt="Mesuli Nduluko"
+                width={640}
+                height={640}
+                sizes="(max-width: 768px) min(92vw, 280px), 320px"
+                decoding="async"
+                fetchPriority="high"
+                className="aspect-square h-auto w-[min(92vw,280px)] rounded-full border-2 border-primary/45 object-cover object-center shadow-[0_0_36px_rgba(0,255,157,0.35),0_0_24px_rgba(0,240,255,0.15)] ring-2 ring-secondary/20 md:w-72 lg:w-80 transform-gpu"
+              />
+            </div>
+            <div className="flex w-full min-w-0 flex-1 flex-col items-center text-center md:items-start md:text-left">
+              <h1
+                className="portfolio-hero-name mb-2.5 flex w-full flex-wrap justify-center text-[2.6rem] font-bold leading-tight drop-shadow-[0_0_40px_rgba(0,255,157,0.5)] md:justify-start md:text-[3.5rem] md:leading-none"
+                aria-label={HERO_NAME_ARIA_LABEL}
+              >
+                <span className="portfolio-hero-chars" aria-hidden="true">
+                  {Array.from(HERO_NAME_ARIA_LABEL).map((ch, i) => {
+                    const o = heroLetterOffset(i)
+                    return (
+                      <span
+                        key={`${i}-${ch === ' ' ? 'sp' : ch}`}
+                        className="portfolio-hero-char inline-block bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
+                        style={
+                          {
+                            '--hero-from-x': o.x,
+                            '--hero-from-y': o.y,
+                            '--hero-char-i': i,
+                          } as CSSProperties
+                        }
+                      >
+                        {ch === ' ' ? '\u00a0' : ch}
+                      </span>
+                    )
+                  })}
+                </span>
+              </h1>
+              <p
+                className="portfolio-hero-tagline mx-auto flex w-full max-w-[860px] flex-wrap justify-center text-[1.2rem] font-medium text-secondary drop-shadow-[0_0_20px_rgba(0,240,255,0.4)] md:mx-0 md:max-w-[36rem] md:justify-start lg:max-w-[40rem]"
+                aria-label={HERO_TAGLINE_TEXT}
+              >
+                <span className="portfolio-hero-chars" aria-hidden="true">
+                  {Array.from(HERO_TAGLINE_TEXT).map((ch, i) => {
+                    const nameLen = HERO_NAME_ARIA_LABEL.length
+                    const o = heroLetterOffset(nameLen + i)
+                    return (
+                      <span
+                        key={`t-${i}-${ch === ' ' ? 'sp' : ch}`}
+                        className="portfolio-hero-char portfolio-hero-char--tagline inline-block"
+                        style={
+                          {
+                            '--hero-from-x': o.x,
+                            '--hero-from-y': o.y,
+                            '--hero-char-i': i,
+                          } as CSSProperties
+                        }
+                      >
+                        {ch === ' ' ? '\u00a0' : ch}
+                      </span>
+                    )
+                  })}
+                </span>
+              </p>
+            </div>
           </div>
-          <h1
-            className="portfolio-hero-name mb-2.5 flex flex-wrap justify-center text-center text-[2.6rem] font-bold leading-tight drop-shadow-[0_0_40px_rgba(0,255,157,0.5)] md:text-[3.5rem] md:leading-none"
-            aria-label={HERO_NAME_ARIA_LABEL}
-          >
-            <span className="portfolio-hero-chars" aria-hidden="true">
-              {Array.from(HERO_NAME_ARIA_LABEL).map((ch, i) => {
-                const o = heroLetterOffset(i)
-                return (
-                  <span
-                    key={`${i}-${ch === ' ' ? 'sp' : ch}`}
-                    className="portfolio-hero-char inline-block bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent"
-                    style={
-                      {
-                        '--hero-from-x': o.x,
-                        '--hero-from-y': o.y,
-                        '--hero-char-i': i,
-                      } as CSSProperties
-                    }
-                  >
-                    {ch === ' ' ? '\u00a0' : ch}
-                  </span>
-                )
-              })}
-            </span>
-          </h1>
-          <p
-            className="portfolio-hero-tagline mx-auto flex max-w-[860px] flex-wrap justify-center text-center text-[1.2rem] font-medium text-secondary drop-shadow-[0_0_20px_rgba(0,240,255,0.4)]"
-            aria-label={HERO_TAGLINE_TEXT}
-          >
-            <span className="portfolio-hero-chars" aria-hidden="true">
-              {Array.from(HERO_TAGLINE_TEXT).map((ch, i) => {
-                const nameLen = HERO_NAME_ARIA_LABEL.length
-                const o = heroLetterOffset(nameLen + i)
-                return (
-                  <span
-                    key={`t-${i}-${ch === ' ' ? 'sp' : ch}`}
-                    className="portfolio-hero-char portfolio-hero-char--tagline inline-block"
-                    style={
-                      {
-                        '--hero-from-x': o.x,
-                        '--hero-from-y': o.y,
-                        '--hero-char-i': i,
-                      } as CSSProperties
-                    }
-                  >
-                    {ch === ' ' ? '\u00a0' : ch}
-                  </span>
-                )
-              })}
-            </span>
-          </p>
         </header>
 
         <div className="grid grid-cols-1 items-stretch gap-[25px] md:grid-cols-2 md:gap-[35px]">
@@ -307,18 +319,28 @@ export default function Portfolio() {
               My Services
             </h2>
             <div className="grid grid-cols-[repeat(auto-fit,minmax(210px,1fr))] gap-4">
-              {SERVICES.map((s) => (
-                <RippleBox
-                  key={s.label}
-                  className="group flex items-center gap-3.5 rounded-[14px] border border-primary/[0.18] bg-white/[0.06] px-5 py-[18px] text-[1.05rem] font-semibold text-portfolio-text transition-all duration-[180ms] ease-in-out hover:-translate-y-1 hover:scale-[1.01] hover:bg-gradient-to-br hover:from-primary hover:to-[#00cc7a] hover:text-[#111] hover:shadow-[0_12px_25px_rgba(0,255,157,0.3)]"
-                >
-                  <i
-                    className={`fas ${s.icon} text-[1.7rem] text-primary transition-colors duration-[180ms] group-hover:text-[#0b1813]`}
-                    aria-hidden
-                  />
-                  {s.label}
-                </RippleBox>
-              ))}
+              {SERVICES.map((s, i) => {
+                const corner = MY_SERVICES_ENTRANCE_FROM[i % MY_SERVICES_ENTRANCE_FROM.length]!
+                return (
+                  <RippleBox
+                    key={s.label}
+                    className="home-service-card-enter group flex items-center gap-3.5 rounded-[14px] border border-primary/[0.18] bg-white/[0.06] px-5 py-[18px] text-[1.05rem] font-semibold text-portfolio-text transition-all duration-[180ms] ease-in-out hover:-translate-y-1 hover:scale-[1.01] hover:bg-gradient-to-br hover:from-primary hover:to-[#00cc7a] hover:text-[#111] hover:shadow-[0_12px_25px_rgba(0,255,157,0.3)]"
+                    style={
+                      {
+                        '--svc-from-x': corner.x,
+                        '--svc-from-y': corner.y,
+                        '--svc-enter-i': i,
+                      } as CSSProperties
+                    }
+                  >
+                    <i
+                      className={`fas ${s.icon} text-[1.7rem] text-primary transition-colors duration-[180ms] group-hover:text-[#0b1813]`}
+                      aria-hidden
+                    />
+                    {s.label}
+                  </RippleBox>
+                )
+              })}
             </div>
           </RippleBox>
         </div>

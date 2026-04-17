@@ -28,11 +28,10 @@ export const SERVICES: ServiceOffering[] = [
     label: 'Web Applications',
     tagline: 'Interactive tools and dashboards built for real daily use',
     body:
-      'Beyond static pages, I develop web applications—think internal tools, data entry flows, client portals, and single-page experiences in React. I focus on predictable state, clear validation, and interfaces that stay maintainable as requirements grow. When a backend or database is part of the picture, I wire up APIs and persistence so the app behaves reliably in production, not only in a demo.',
+      'Beyond static pages, I develop web applications—think internal tools, data entry flows, client portals, and single-page experiences in React. I focus on predictable state, clear validation, and interfaces that stay maintainable as requirements grow.',
     includes: [
       'Component-based UI in React for maintainable feature work',
       'Forms, tables, filters, and workflows tailored to your process',
-      'Working with REST-style APIs, PHP, Python, or MySQL as the stack requires',
       'Basic security hygiene: sessions, validation, and safe handling of user input',
       'Handover notes or light documentation so your team can extend the system',
     ],
@@ -42,13 +41,11 @@ export const SERVICES: ServiceOffering[] = [
     label: 'Computer Training',
     tagline: 'Patient, practical sessions so users gain confidence',
     body:
-      'Not everyone learns the same way. I offer one-to-one or small-group training on everyday computing: navigating Windows, using email and browsers safely, file management, and common productivity tasks. Sessions are paced to the learner, with emphasis on repeating the skills you will actually use at work or at home—so knowledge sticks after the lesson ends.',
+      'Not everyone learns the same way. I offer one-on-one or small-group training on everyday computing: navigating Windows, using email and browsers safely, file management, and common productivity tasks. Sessions are paced to the learner, with emphasis on repeating the skills you will actually use at work or at home—so knowledge sticks after the lesson ends.',
     includes: [
       'Windows basics: files, folders, search, and printer setup',
       'Email, calendars, and cloud storage used step by step',
-      'Safe browsing habits and spotting common scams',
-      'Introductory Office-style workflows where relevant',
-      'Short recap notes or checklists you can refer to later',
+      'Safe browsing habits',
     ],
   },
   {

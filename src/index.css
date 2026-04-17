@@ -102,6 +102,38 @@
   .portfolio-hero-intro {
     --hero-anim-dur: 1.58s;
     --hero-anim-ease: cubic-bezier(0.1, 0.82, 0.2, 1);
+    /* Start “live” pulse after letter entrance (~last stagger + entrance duration) */
+    --hero-name-live-delay: 2.25s;
+  }
+
+  /* Lub–dub scale + glow (rest is the long tail so it reads like a heartbeat, not a buzz) */
+  @keyframes portfolio-hero-name-live {
+    0%,
+    100% {
+      transform: scale(1);
+      filter: drop-shadow(0 0 12px rgba(0, 255, 157, 0.32)) drop-shadow(0 0 22px rgba(0, 240, 255, 0.1));
+    }
+    9% {
+      transform: scale(1.075);
+      filter: drop-shadow(0 0 24px rgba(0, 255, 157, 0.62)) drop-shadow(0 0 40px rgba(0, 240, 255, 0.22));
+    }
+    16% {
+      transform: scale(1);
+      filter: drop-shadow(0 0 12px rgba(0, 255, 157, 0.32)) drop-shadow(0 0 22px rgba(0, 240, 255, 0.1));
+    }
+    24% {
+      transform: scale(1.045);
+      filter: drop-shadow(0 0 18px rgba(0, 255, 157, 0.48)) drop-shadow(0 0 34px rgba(0, 240, 255, 0.16));
+    }
+    32% {
+      transform: scale(1);
+      filter: drop-shadow(0 0 12px rgba(0, 255, 157, 0.32)) drop-shadow(0 0 22px rgba(0, 240, 255, 0.1));
+    }
+  }
+
+  .portfolio-hero-name {
+    animation: portfolio-hero-name-live 1.45s cubic-bezier(0.25, 0.1, 0.25, 1) var(--hero-name-live-delay) infinite;
+    transform-origin: center center;
   }
 
   .portfolio-hero-chars {
@@ -111,6 +143,12 @@
     max-width: 100%;
   }
 
+  @media (min-width: 768px) {
+    .portfolio-hero-intro .portfolio-hero-chars {
+      justify-content: flex-start;
+    }
+  }
+
   .portfolio-hero-intro .portfolio-hero-char {
     animation: portfolio-hero-char-meet var(--hero-anim-dur) var(--hero-anim-ease) both;
     animation-delay: calc(var(--hero-char-i) * 42ms);
@@ -118,6 +156,22 @@
 
   .portfolio-hero-char--tagline {
     color: var(--color-secondary);
+  }
+
+  @keyframes home-service-card-from-corner {
+    from {
+      opacity: 0;
+      transform: translate3d(var(--svc-from-x, 0), var(--svc-from-y, 0), 0) scale(0.94);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+
+  .home-service-card-enter {
+    animation: home-service-card-from-corner 1.12s cubic-bezier(0.14, 0.88, 0.24, 1) both;
+    animation-delay: calc(var(--svc-enter-i) * 100ms);
   }
 
   /* Projects — VS Code / GitHub–style cards (layout only; click behavior unchanged in TSX) */
@@ -1807,6 +1861,8 @@
   }
 
   .portfolio-hero-char,
+  .portfolio-hero-name,
+  .home-service-card-enter,
   .project-dev-card__accent,
   .project-dev-card-anim,
   .projects-page__title-glow,
@@ -1816,8 +1872,14 @@
     animation: none !important;
   }
 
-  .portfolio-hero-char {
+  .portfolio-hero-char,
+  .home-service-card-enter {
     opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .portfolio-hero-name {
+    filter: none !important;
     transform: none !important;
   }
 
