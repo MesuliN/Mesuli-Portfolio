@@ -41,6 +41,26 @@ function heroLetterOffset(i: number): { x: string; y: string } {
   return HERO_LETTER_FROM_OFFSETS[i % HERO_LETTER_FROM_OFFSETS.length]!
 }
 
+/** Same fly-in vectors as hero letters; used for post-greeting section slices. */
+function homeRevealSliceStyle(i: number): CSSProperties {
+  const o = heroLetterOffset(20 + i)
+  return {
+    '--slice-i': i,
+    '--hero-from-x': o.x,
+    '--hero-from-y': o.y,
+  } as CSSProperties
+}
+
+/** Horizontal entry: Technologies from the left, Skills from the right. */
+function homeRevealSliceFromSide(side: 'left' | 'right', sliceIndex: number): CSSProperties {
+  const fromLeft = side === 'left'
+  return {
+    '--slice-i': sliceIndex,
+    '--hero-from-x': fromLeft ? '-14vmin' : '14vmin',
+    '--hero-from-y': '0vmin',
+  } as CSSProperties
+}
+
 const HERO_TAGLINE_TEXT =
   'Web Developer focused on building modern, high-performance digital experiences and delivering dependable technical support.'
 
@@ -225,6 +245,10 @@ export default function Portfolio() {
   const prevAppRouteRef = useRef(appRoute)
   const [welcomeEntered, setWelcomeEntered] = useState(false)
   const [welcomeClosing, setWelcomeClosing] = useState(false)
+  const [homeRevealPlaying, setHomeRevealPlaying] = useState(false)
+
+  const homeRevealWaiting =
+    !portfolioWelcomeDismissed || (portfolioWelcomeDismissed && !homeRevealPlaying)
 
   const beginWelcomeDismiss = useCallback(() => {
     setWelcomeClosing(true)
@@ -257,8 +281,24 @@ export default function Portfolio() {
       setPortfolioWelcomeDismissed(false)
       setWelcomeClosing(false)
       setWelcomeEntered(false)
+      setHomeRevealPlaying(false)
     }
   }, [appRoute])
+
+  useEffect(() => {
+    if (!portfolioWelcomeDismissed) {
+      setHomeRevealPlaying(false)
+      return
+    }
+    if (prefersReducedMotion()) {
+      setHomeRevealPlaying(true)
+      return
+    }
+    const id = requestAnimationFrame(() => {
+      requestAnimationFrame(() => setHomeRevealPlaying(true))
+    })
+    return () => cancelAnimationFrame(id)
+  }, [portfolioWelcomeDismissed])
 
   useEffect(() => {
     if (portfolioWelcomeDismissed || appRoute !== 'home') return
@@ -371,16 +411,23 @@ export default function Portfolio() {
           <div className="portfolio-welcome-overlay__aurora" aria-hidden />
           <div className="portfolio-welcome-overlay__vignette" aria-hidden />
           <div className="portfolio-welcome-overlay__grid" aria-hidden />
+          <div className="portfolio-welcome-overlay__beams" aria-hidden />
+          <div className="portfolio-welcome-overlay__particles" aria-hidden />
           <div className="portfolio-welcome-overlay__backdrop" aria-hidden />
 
           <div className="portfolio-welcome-panel" onTransitionEnd={onWelcomePanelTransitionEnd}>
+            <div className="portfolio-welcome-panel__border-glow" aria-hidden />
+            <div className="portfolio-welcome-panel__accent" aria-hidden />
             <div className="portfolio-welcome-panel__edge portfolio-welcome-panel__edge--tl" aria-hidden />
             <div className="portfolio-welcome-panel__edge portfolio-welcome-panel__edge--br" aria-hidden />
             <div className="portfolio-welcome-panel__glow" aria-hidden />
+            <div className="portfolio-welcome-panel__shine" aria-hidden />
 
-            <div className="portfolio-welcome-panel__inner relative z-[1] flex flex-col items-center text-center">
+            <div className="portfolio-welcome-panel__inner flex flex-col items-center text-center">
               <div className="portfolio-welcome-robot-wrap" aria-hidden>
+                <div className="portfolio-welcome-robot-halo" />
                 <div className="portfolio-welcome-robot-ring" />
+                <div className="portfolio-welcome-robot-base" />
                 <div className="portfolio-welcome-robot">
                   <div className="skill-modal-robots-layer pointer-events-none absolute inset-0 overflow-visible">
                     <div className="skill-modal-robot-solo">
@@ -394,12 +441,13 @@ export default function Portfolio() {
                 </div>
               </div>
 
-              <p className="portfolio-welcome-kicker">You&apos;re here</p>
-              <h2
-                id="portfolio-welcome-title"
-                className="portfolio-welcome-title bg-gradient-to-r from-primary via-[#5dffc4] to-secondary bg-clip-text text-transparent"
-              >
-                Hey there!
+              <p className="portfolio-welcome-kicker">
+                <span className="portfolio-welcome-kicker__dot" aria-hidden />
+                You&apos;re here
+                <span className="portfolio-welcome-kicker__dot" aria-hidden />
+              </p>
+              <h2 id="portfolio-welcome-title" className="portfolio-welcome-title">
+                <span className="portfolio-welcome-title__text">Hey there!</span>
               </h2>
               <p
                 id="portfolio-welcome-desc"
@@ -441,8 +489,13 @@ export default function Portfolio() {
         aria-hidden
       />
 
-      <div className="page-content" aria-hidden={!portfolioWelcomeDismissed}>
-        <SiteHeader active="home" />
+      <div
+        className={`page-content portfolio-home-reveal ${homeRevealWaiting ? 'portfolio-home-reveal--waiting' : ''} ${portfolioWelcomeDismissed && homeRevealPlaying ? 'portfolio-home-reveal--playing' : ''}`}
+        aria-hidden={!portfolioWelcomeDismissed}
+      >
+        <div className="portfolio-home-reveal-slice w-full" style={homeRevealSliceStyle(0)}>
+          <SiteHeader active="home" />
+        </div>
         <div className="mx-auto max-w-[1200px] px-6 pb-28 pt-14 max-md:pb-24 max-md:pt-12">
         <main id="main-content">
         <header className="portfolio-hero-intro mb-[clamp(2.5rem,6vw,4.25rem)] overflow-x-visible max-md:mb-10">
@@ -507,7 +560,10 @@ export default function Portfolio() {
                   })}
                 </span>
               </p>
-              <div className="mt-[clamp(1.25rem,3vw,1.75rem)] flex w-full max-w-[min(36rem,100%)] flex-wrap justify-center gap-3 md:justify-start">
+              <div
+                className="portfolio-home-reveal-slice mt-[clamp(1.25rem,3vw,1.75rem)] flex w-full max-w-[min(36rem,100%)] flex-wrap justify-center gap-3 md:justify-start"
+                style={homeRevealSliceStyle(2)}
+              >
                 <RippleBox
                   role="button"
                   tabIndex={0}
@@ -533,7 +589,10 @@ export default function Portfolio() {
                 </a>
               </div>
             </div>
-            <div className="order-1 shrink-0 md:order-2 md:self-center">
+            <div
+              className="portfolio-home-reveal-slice order-1 shrink-0 md:order-2 md:self-center"
+              style={homeRevealSliceStyle(1)}
+            >
               <img
                 src={mesuliImage}
                 alt="Mesuli Nduluko"
@@ -550,8 +609,9 @@ export default function Portfolio() {
 
         <div className="mt-[clamp(2.25rem,5vw,3.75rem)] grid gap-[clamp(1.5rem,4vw,2.5rem)] lg:grid-cols-2 lg:items-start lg:gap-x-[clamp(1.75rem,4vw,2.75rem)]">
           <section
-            className="rounded-[var(--card-radius)] border border-primary/20 bg-[rgba(12,16,14,0.42)] p-[clamp(1.15rem,3.2vw,1.85rem)] shadow-[inset_0_1px_0_rgba(0,255,157,0.06)] backdrop-blur-[10px]"
+            className="portfolio-home-reveal-slice rounded-[var(--card-radius)] border border-primary/20 bg-[rgba(12,16,14,0.42)] p-[clamp(1.15rem,3.2vw,1.85rem)] shadow-[inset_0_1px_0_rgba(0,255,157,0.06)] backdrop-blur-[10px]"
             aria-labelledby="technologies-heading"
+            style={homeRevealSliceFromSide('left', 3)}
           >
             <h2
               id="technologies-heading"
@@ -576,8 +636,9 @@ export default function Portfolio() {
           </section>
 
           <section
-            className="rounded-[var(--card-radius)] border border-primary/20 bg-[rgba(12,16,14,0.42)] p-[clamp(1.15rem,3.2vw,1.85rem)] shadow-[inset_0_1px_0_rgba(0,255,157,0.06)] backdrop-blur-[10px]"
+            className="portfolio-home-reveal-slice rounded-[var(--card-radius)] border border-primary/20 bg-[rgba(12,16,14,0.42)] p-[clamp(1.15rem,3.2vw,1.85rem)] shadow-[inset_0_1px_0_rgba(0,255,157,0.06)] backdrop-blur-[10px]"
             aria-labelledby="skills-heading"
+            style={homeRevealSliceFromSide('right', 4)}
           >
             <h2
               id="skills-heading"
@@ -603,8 +664,9 @@ export default function Portfolio() {
         </div>
 
         <section
-          className="mx-auto mt-[clamp(2.5rem,6vw,3.75rem)] max-w-[min(52rem,100%)] px-[clamp(0.25rem,1.5vw,0.5rem)]"
+          className="portfolio-home-reveal-slice mx-auto mt-[clamp(2.5rem,6vw,3.75rem)] max-w-[min(52rem,100%)] px-[clamp(0.25rem,1.5vw,0.5rem)]"
           aria-labelledby="projects-section-title"
+          style={homeRevealSliceStyle(5)}
         >
           <a
             id="projects-section-title"
@@ -704,9 +766,13 @@ export default function Portfolio() {
       ) : null}
 
       <div
-        className="fixed bottom-6 right-6 z-[100] max-w-[min(100vw-1rem,420px)] rounded-2xl border border-primary bg-[rgba(10,10,10,0.93)] px-[clamp(1rem,3vw,1.5rem)] py-[clamp(0.65rem,2.5vw,1.1rem)] text-[clamp(0.82rem,calc(0.28vw+0.78rem),0.97rem)] leading-[2] shadow-[0_15px_35px_rgba(0,255,157,0.25)] backdrop-blur-[14px] transition-all duration-[180ms] ease-in-out hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,255,157,0.3)] max-md:relative max-md:bottom-auto max-md:right-auto max-md:mx-auto max-md:mt-12 max-md:max-w-[min(360px,92vw)] max-md:text-center max-md:leading-relaxed"
+        className="fixed bottom-6 right-6 z-[100] max-w-[min(100vw-1rem,420px)] rounded-2xl border border-primary bg-[rgba(10,10,10,0.93)] shadow-[0_15px_35px_rgba(0,255,157,0.25)] backdrop-blur-[14px] transition-all duration-[180ms] ease-in-out hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,255,157,0.3)] max-md:relative max-md:bottom-auto max-md:right-auto max-md:mx-auto max-md:mt-12 max-md:max-w-[min(360px,92vw)]"
         aria-hidden={!portfolioWelcomeDismissed}
       >
+        <div
+          className="portfolio-home-reveal-slice px-[clamp(1rem,3vw,1.5rem)] py-[clamp(0.65rem,2.5vw,1.1rem)] text-[clamp(0.82rem,calc(0.28vw+0.78rem),0.97rem)] leading-[2] max-md:text-center max-md:leading-relaxed"
+          style={homeRevealSliceStyle(6)}
+        >
         <span className="inline-flex items-center gap-1.5">
           <i className="fas fa-envelope" aria-hidden />
           <a
@@ -755,6 +821,7 @@ export default function Portfolio() {
             LinkedIn
           </a>
         </span>
+        </div>
       </div>
     </>
   )
