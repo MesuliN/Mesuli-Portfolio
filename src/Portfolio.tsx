@@ -649,7 +649,7 @@ export default function Portfolio() {
 
         <div className="mt-[clamp(2.25rem,5vw,3.75rem)] grid gap-[clamp(1.5rem,4vw,2.5rem)] lg:grid-cols-2 lg:items-start lg:gap-x-[clamp(1.75rem,4vw,2.75rem)]">
           <section
-            className="portfolio-home-reveal-slice rounded-[var(--card-radius)] border border-primary/20 bg-[rgba(12,16,14,0.42)] p-[clamp(1.15rem,3.2vw,1.85rem)] shadow-[inset_0_1px_0_rgba(0,255,157,0.06)] backdrop-blur-[10px]"
+            className="portfolio-home-reveal-slice transform-gpu rounded-[var(--card-radius)] border border-primary/20 bg-[rgba(12,16,14,0.42)] p-[clamp(1.15rem,3.2vw,1.85rem)] shadow-[inset_0_1px_0_rgba(0,255,157,0.06)] backdrop-blur-[10px] transition-[transform,box-shadow,border-color,background-color] duration-300 ease-out motion-reduce:transition-none hover:-translate-y-1 hover:border-primary/45 hover:bg-[rgba(16,22,20,0.58)] hover:shadow-[0_14px_42px_rgba(0,255,157,0.14),inset_0_1px_0_rgba(0,255,157,0.12)] motion-reduce:hover:translate-y-0"
             aria-labelledby="technologies-heading"
             style={homeRevealSliceFromSide('left', 3)}
           >
@@ -676,7 +676,7 @@ export default function Portfolio() {
           </section>
 
           <section
-            className="portfolio-home-reveal-slice rounded-[var(--card-radius)] border border-primary/20 bg-[rgba(12,16,14,0.42)] p-[clamp(1.15rem,3.2vw,1.85rem)] shadow-[inset_0_1px_0_rgba(0,255,157,0.06)] backdrop-blur-[10px]"
+            className="portfolio-home-reveal-slice transform-gpu rounded-[var(--card-radius)] border border-primary/20 bg-[rgba(12,16,14,0.42)] p-[clamp(1.15rem,3.2vw,1.85rem)] shadow-[inset_0_1px_0_rgba(0,255,157,0.06)] backdrop-blur-[10px] transition-[transform,box-shadow,border-color,background-color] duration-300 ease-out motion-reduce:transition-none hover:-translate-y-1 hover:border-primary/45 hover:bg-[rgba(16,22,20,0.58)] hover:shadow-[0_14px_42px_rgba(0,255,157,0.14),inset_0_1px_0_rgba(0,255,157,0.12)] motion-reduce:hover:translate-y-0"
             aria-labelledby="skills-heading"
             style={homeRevealSliceFromSide('right', 4)}
           >
