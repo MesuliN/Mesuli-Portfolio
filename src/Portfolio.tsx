@@ -7,6 +7,7 @@ import {
   type CSSProperties,
 } from 'react'
 import mesuliImage from './assets/Mesuli Image.jpg'
+import welcomeRobotImage from './assets/image_b58214a.png'
 import skillTechModalBg from './assets/skill-tech-modal-bg.png'
 import AboutPage from './AboutPage'
 import { getAppRoute, hrefTo, navigate, subscribeAppRoute } from './appRoute'
@@ -248,16 +249,6 @@ function persistWelcomeSkippedForSession(): void {
   }
 }
 
-const WELCOME_ROBOT_STYLE = {
-  '--robot-w': '72px',
-  '--robot-duration': '22s',
-  '--robot-delay': '0s',
-  '--bob-delay': '0s',
-  '--robot-scale': '1.35',
-  '--robot-opacity': '0.95',
-  '--robot-color': '#00f0ff',
-} as CSSProperties
-
 function prefersReducedMotion(): boolean {
   if (typeof window === 'undefined') return false
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -469,14 +460,15 @@ export default function Portfolio() {
                 <div className="portfolio-welcome-robot-ring" />
                 <div className="portfolio-welcome-robot-base" />
                 <div className="portfolio-welcome-robot">
-                  <div className="skill-modal-robots-layer pointer-events-none absolute inset-0 overflow-visible">
-                    <div className="skill-modal-robot-solo">
-                      <div className="skill-modal-robot-mover" style={WELCOME_ROBOT_STYLE}>
-                        <div className="skill-modal-robot-mover-inner">
-                          <SkillModalRobot3D />
-                        </div>
-                      </div>
-                    </div>
+                  <div className="portfolio-welcome-robot-visual">
+                    <img
+                      src={welcomeRobotImage}
+                      alt=""
+                      className="portfolio-welcome-robot-img pointer-events-none"
+                      decoding="async"
+                      draggable={false}
+                    />
+                    <div className="portfolio-welcome-robot-fx" aria-hidden />
                   </div>
                 </div>
               </div>

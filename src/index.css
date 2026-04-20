@@ -2703,10 +2703,6 @@
     background-position: 50% 50%;
   }
 
-  .portfolio-welcome-overlay .portfolio-welcome-robot .skill-modal-robot-mover {
-    transform: translateX(-50%) scale(var(--robot-scale, 1)) !important;
-  }
-
   .portfolio-welcome-overlay__aurora {
     animation: none !important;
   }
@@ -2723,6 +2719,7 @@
   .portfolio-welcome-overlay__beams,
   .portfolio-welcome-overlay__particles,
   .portfolio-welcome-robot-halo,
+  .portfolio-welcome-robot-visual,
   .portfolio-welcome-panel__border-glow,
   .portfolio-welcome-title__text {
     animation: none !important;
@@ -2733,33 +2730,106 @@
   }
 }
 
-/* Portfolio home welcome: centers the skill-modal robot and stops marquee */
+/* Portfolio home welcome: AI figure — masked + graded to read as hologram UI, not a photo */
 .portfolio-welcome-overlay .portfolio-welcome-robot {
   position: relative;
-  width: min(220px, 52vw);
-  height: 140px;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: min(240px, 56vw);
+  height: min(188px, 46vw);
   margin: 0 auto clamp(1rem, 4vw, 1.5rem);
 }
 
-.portfolio-welcome-overlay .portfolio-welcome-robot .skill-modal-robots-layer {
+@keyframes portfolio-welcome-robot-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -5px, 0);
+  }
+}
+
+.portfolio-welcome-overlay .portfolio-welcome-robot-visual {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  max-height: min(188px, 46vw);
+  align-items: flex-end;
+  justify-content: center;
+  isolation: isolate;
+  /* Single alpha mask: solid opaque core (robot reads clearly), fade only in outer band */
+  -webkit-mask-image: radial-gradient(
+    ellipse 76% 72% at 50% 56%,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 46%,
+    rgba(0, 0, 0, 0.72) 62%,
+    rgba(0, 0, 0, 0.28) 78%,
+    rgba(0, 0, 0, 0.06) 90%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: radial-gradient(
+    ellipse 76% 72% at 50% 56%,
+    rgba(0, 0, 0, 1) 0%,
+    rgba(0, 0, 0, 1) 46%,
+    rgba(0, 0, 0, 0.72) 62%,
+    rgba(0, 0, 0, 0.28) 78%,
+    rgba(0, 0, 0, 0.06) 90%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  animation: portfolio-welcome-robot-float 6.5s ease-in-out infinite;
+}
+
+.portfolio-welcome-overlay .portfolio-welcome-robot-img {
+  width: 100%;
+  height: 100%;
+  max-height: min(188px, 46vw);
+  object-fit: contain;
+  object-position: center bottom;
+  /* Pull palette toward panel neon; lift mids so it reads as lit glass, not print */
+  filter: brightness(1.12) contrast(1.14) saturate(0.82) hue-rotate(10deg)
+    drop-shadow(0 0 28px color-mix(in srgb, #00f0ff 42%, transparent))
+    drop-shadow(0 0 52px color-mix(in srgb, #00ff9d 22%, transparent));
+  user-select: none;
+}
+
+/* Rim light + vignette + micro grid — reads as glass / hologram layer */
+.portfolio-welcome-overlay .portfolio-welcome-robot-fx {
   position: absolute;
-  inset: 0;
-  overflow: visible;
-}
-
-.portfolio-welcome-overlay .portfolio-welcome-robot .skill-modal-robot-solo {
-  bottom: 0;
-  top: auto;
-  left: 0;
-  right: 0;
-  height: 104px;
-}
-
-.portfolio-welcome-overlay .portfolio-welcome-robot .skill-modal-robot-mover {
-  animation: none !important;
-  left: 50% !important;
-  right: auto !important;
-  transform: translateX(-50%) scale(var(--robot-scale, 1)) !important;
+  inset: -4% -6% -2%;
+  pointer-events: none;
+  border-radius: 50%;
+  background:
+    radial-gradient(
+      ellipse 78% 68% at 50% 52%,
+      transparent 0%,
+      transparent 48%,
+      color-mix(in srgb, #040a0c 42%, transparent) 76%,
+      rgba(2, 4, 6, 0.72) 100%
+    ),
+    linear-gradient(
+      155deg,
+      color-mix(in srgb, #00f0ff 22%, transparent) 0%,
+      transparent 38%,
+      transparent 62%,
+      color-mix(in srgb, #00ff9d 10%, transparent) 100%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 2px,
+      color-mix(in srgb, #00f0ff 0.06, transparent) 2px,
+      color-mix(in srgb, #00f0ff 0.06, transparent) 3px
+    );
+  mix-blend-mode: overlay;
+  opacity: 0.72;
 }
 
 /* Welcome overlay — ambient layers & glass panel */
