@@ -68,7 +68,6 @@ export function ProjectCard({ project: p, enterIndex }: ProjectCardProps) {
                   </span>
                   {p.title}
                 </h3>
-                {p.href ? <span className="project-dev-card__badge">deployed</span> : null}
               </div>
               <p className="project-dev-card__desc">{p.description}</p>
               {p.href ? (

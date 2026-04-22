@@ -31,6 +31,11 @@ export const PROJECTS: Project[] = [
       'A smart waste management application designed to help users sort and manage waste efficiently, promoting cleaner environments through an intuitive and user-friendly system.',
   },
   {
+    title: 'TTMS (Timetable Management System)',
+    description:
+      'Team project with MUT Innovation Lab: an Angular / Ionic timetable system for planning and managing schedules, with academic calendar support and database-backed timetable data. Not deployed yet—repo: https://github.com/MUTInnovationLab/TTMS.',
+  },
+  {
     title: 'Attendify App',
     description:
       'A digital attendance system that simplifies tracking and managing attendance, making it faster, more accurate, and easily accessible through a modern interface. The system is currently deployed.',
