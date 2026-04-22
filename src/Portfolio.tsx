@@ -14,6 +14,7 @@ import { getAppRoute, hrefTo, navigate, subscribeAppRoute } from './appRoute'
 import ProjectsPage from './ProjectsPage'
 import { SiteHeader } from './SiteHeader'
 import { RippleBox, setBodyCursorActive } from './RippleBox'
+import { ContactModal } from './ContactModal'
 
 const HERO_NAME_ARIA_LABEL = 'Mesuli Nduluko'
 
@@ -264,6 +265,8 @@ export default function Portfolio() {
   const [welcomeEntered, setWelcomeEntered] = useState(false)
   const [welcomeClosing, setWelcomeClosing] = useState(false)
   const [homeRevealPlaying, setHomeRevealPlaying] = useState(false)
+  const [contactModalOpen, setContactModalOpen] = useState(false)
+  const [contactModalVisible, setContactModalVisible] = useState(false)
 
   const homeRevealWaiting =
     !portfolioWelcomeDismissed || (portfolioWelcomeDismissed && !homeRevealPlaying)
@@ -418,6 +421,48 @@ export default function Portfolio() {
     if (e.propertyName !== 'opacity') return
     if (!skillModalVisible) setSelectedSkill(null)
   }
+
+  useEffect(() => {
+    if (!contactModalOpen) {
+      setContactModalVisible(false)
+      return
+    }
+    if (prefersReducedMotion()) {
+      setContactModalVisible(true)
+    } else {
+      const id = requestAnimationFrame(() => {
+        requestAnimationFrame(() => setContactModalVisible(true))
+      })
+      return () => cancelAnimationFrame(id)
+    }
+  }, [contactModalOpen])
+
+  const closeContactModal = useCallback(() => {
+    setContactModalVisible(false)
+    if (prefersReducedMotion()) {
+      setContactModalOpen(false)
+    }
+  }, [])
+
+  const onContactModalOverlayTransitionEnd = (e: React.TransitionEvent<HTMLDivElement>) => {
+    if (e.target !== e.currentTarget) return
+    if (e.propertyName !== 'opacity') return
+    if (!contactModalVisible) setContactModalOpen(false)
+  }
+
+  useEffect(() => {
+    if (!contactModalOpen) return
+    const onKey = (e: globalThis.KeyboardEvent) => {
+      if (e.key === 'Escape') closeContactModal()
+    }
+    document.addEventListener('keydown', onKey)
+    const prevOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.body.style.overflow = prevOverflow
+    }
+  }, [contactModalOpen, closeContactModal])
 
   if (appRoute === 'projects') {
     return <ProjectsPage />
@@ -611,14 +656,21 @@ export default function Portfolio() {
                 >
                   Learn More
                 </RippleBox>
-                <a
-                  href="mailto:Ndulukomesuli02@gmail.com"
-                  className="interactive ripple relative inline-flex cursor-pointer items-center justify-center rounded-xl border border-primary/45 bg-[rgba(12,14,16,0.45)] px-[clamp(1.1rem,3vw,1.5rem)] py-[clamp(0.55rem,1.5vw,0.75rem)] text-[clamp(0.82rem,calc(0.25vw+0.78rem),0.95rem)] font-semibold uppercase tracking-[0.12em] text-primary backdrop-blur-[6px] transition-[transform,background-color,border-color] duration-200 hover:-translate-y-0.5 hover:border-primary hover:bg-primary/10"
-                  onPointerEnter={() => setBodyCursorActive(true)}
-                  onPointerLeave={() => setBodyCursorActive(false)}
+                <RippleBox
+                  role="button"
+                  tabIndex={0}
+                  aria-label="Open contact form"
+                  className="inline-flex items-center justify-center rounded-xl border border-primary/45 bg-[rgba(12,14,16,0.45)] px-[clamp(1.1rem,3vw,1.5rem)] py-[clamp(0.55rem,1.5vw,0.75rem)] text-[clamp(0.82rem,calc(0.25vw+0.78rem),0.95rem)] font-semibold uppercase tracking-[0.12em] text-primary backdrop-blur-[6px] transition-[transform,background-color,border-color] duration-200 hover:-translate-y-0.5 hover:border-primary hover:bg-primary/10"
+                  onClick={() => setContactModalOpen(true)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      setContactModalOpen(true)
+                    }
+                  }}
                 >
                   Contact
-                </a>
+                </RippleBox>
               </div>
             </div>
             <div
@@ -796,6 +848,13 @@ export default function Portfolio() {
           </div>
         </div>
       ) : null}
+
+      <ContactModal
+        open={contactModalOpen}
+        visible={contactModalVisible}
+        onRequestClose={closeContactModal}
+        onOverlayTransitionEnd={onContactModalOverlayTransitionEnd}
+      />
 
       <div
         className="fixed bottom-6 right-6 z-[100] max-w-[min(100vw-1rem,420px)] rounded-2xl border border-primary bg-[rgba(10,10,10,0.93)] shadow-[0_15px_35px_rgba(0,255,157,0.25)] backdrop-blur-[14px] transition-all duration-[180ms] ease-in-out hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,255,157,0.3)] max-md:relative max-md:bottom-auto max-md:right-auto max-md:mx-auto max-md:mt-12 max-md:max-w-[min(360px,92vw)]"
