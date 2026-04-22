@@ -36,6 +36,12 @@ export const PROJECTS: Project[] = [
       'Team project with MUT Innovation Lab: an Angular / Ionic timetable system for planning and managing schedules, with academic calendar support and database-backed timetable data. Not deployed yet—repo: https://github.com/MUTInnovationLab/TTMS.',
   },
   {
+    title: 'Personal Portfolio',
+    description:
+      'This portfolio site—React, TypeScript, and Vite—with project highlights, skills, and contact. Source and revision history on GitHub.',
+    href: 'https://github.com/MesuliN/Mesuli-Portfolio',
+  },
+  {
     title: 'Attendify App',
     description:
       'A digital attendance system that simplifies tracking and managing attendance, making it faster, more accurate, and easily accessible through a modern interface. The system is currently deployed.',
