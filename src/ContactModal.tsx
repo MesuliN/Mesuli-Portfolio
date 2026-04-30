@@ -70,7 +70,7 @@ export function ContactModal({
 
   return (
     <div
-      className={`fixed inset-0 z-[200] flex items-end justify-center p-[clamp(0.65rem,2.5vw,1rem)] pb-[clamp(1.75rem,5vw,2.5rem)] sm:items-center sm:p-4 sm:pb-4 transition-opacity ease-out motion-reduce:transition-none ${
+      className={`app-dialog-overlay fixed inset-0 z-[200] flex items-end justify-center p-[clamp(0.65rem,2.5vw,1rem)] pb-[clamp(1.75rem,5vw,2.5rem)] sm:items-center sm:p-4 sm:pb-4 transition-opacity ease-out motion-reduce:transition-none ${
         visible ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
       }`}
       style={{ transitionDuration: `${CONTACT_MODAL_MS}ms` }}
@@ -86,7 +86,7 @@ export function ContactModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="contact-dialog-title"
-        className={`relative z-[2] max-h-[min(90vh,560px)] w-full max-w-[min(26rem,calc(100vw-1rem))] overflow-y-auto rounded-2xl border border-primary/40 bg-[rgba(12,14,18,0.92)] p-[clamp(1rem,3vw,1.35rem)] shadow-[0_0_48px_rgba(0,255,157,0.18),0_24px_48px_rgba(0,0,0,0.55)] backdrop-blur-[18px] transition-[transform] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
+        className={`app-dialog-sheet relative z-[2] max-h-[min(90vh,560px)] w-full max-w-[min(26rem,calc(100vw-1rem))] overflow-y-auto rounded-2xl border border-primary/40 bg-[rgba(12,14,18,0.92)] p-[clamp(1rem,3vw,1.35rem)] shadow-[0_0_48px_rgba(0,255,157,0.18),0_24px_48px_rgba(0,0,0,0.55)] backdrop-blur-[18px] transition-[transform] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
           visible ? 'translate-y-0 scale-100' : 'translate-y-5 scale-[0.97]'
         }`}
         style={{ transitionDuration: `${CONTACT_MODAL_MS}ms` }}

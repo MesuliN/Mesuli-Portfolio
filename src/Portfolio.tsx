@@ -476,7 +476,7 @@ export default function Portfolio() {
     <>
       {!portfolioWelcomeDismissed ? (
         <div
-          className={`portfolio-welcome-overlay fixed inset-0 z-[300] flex flex-col items-center justify-center px-5 py-10 sm:px-6 ${
+          className={`portfolio-welcome-overlay fixed inset-0 z-[300] flex flex-col items-center justify-center px-[clamp(0.65rem,4vw,1.25rem)] py-10 sm:px-6 ${
             welcomeEntered && !welcomeClosing ? 'portfolio-welcome-overlay--shown' : ''
           } ${welcomeClosing ? 'portfolio-welcome-overlay--exit' : ''}`}
           role="dialog"
@@ -573,7 +573,7 @@ export default function Portfolio() {
         <div className="portfolio-home-reveal-slice w-full" style={homeRevealSliceStyle(0)}>
           <SiteHeader active="home" />
         </div>
-        <div className="mx-auto max-w-[1200px] px-6 pb-28 pt-14 max-md:pb-24 max-md:pt-12">
+        <div className="mx-auto max-w-[1200px] px-[clamp(0.75rem,4vw,1.5rem)] pb-28 pt-14 max-md:pb-24 max-md:pt-12">
         <main id="main-content">
         <header className="portfolio-hero-intro mb-[clamp(2.5rem,6vw,4.25rem)] overflow-x-visible max-md:mb-10">
           <div className="flex flex-col items-center gap-[clamp(1.5rem,4vw,3rem)] md:flex-row md:items-center md:gap-[clamp(2rem,4vw,3.5rem)] lg:gap-14">
@@ -685,7 +685,7 @@ export default function Portfolio() {
                 sizes="(max-width: 768px) min(92vw, 280px), 320px"
                 decoding="async"
                 fetchPriority="high"
-                className="aspect-square h-auto w-[min(92vw,min(280px,85vw))] rounded-full border-2 border-primary/45 object-cover object-center shadow-[0_0_36px_rgba(0,255,157,0.35),0_0_24px_rgba(0,240,255,0.15)] ring-2 ring-secondary/20 sm:w-[min(88vw,300px)] md:w-72 lg:w-80 transform-gpu"
+                className="aspect-square h-auto w-[min(92vw,min(280px,85vw))] max-[374px]:w-full max-[374px]:max-w-[min(15.5rem,calc(100vw-2.25rem))] rounded-full border-2 border-primary/45 object-cover object-center shadow-[0_0_36px_rgba(0,255,157,0.35),0_0_24px_rgba(0,240,255,0.15)] ring-2 ring-secondary/20 sm:w-[min(88vw,300px)] md:w-72 lg:w-80 transform-gpu mx-auto md:mx-0"
               />
             </div>
           </div>
@@ -786,7 +786,7 @@ export default function Portfolio() {
 
       {selectedSkill ? (
         <div
-          className={`fixed inset-0 z-[200] flex items-end justify-center p-[clamp(0.65rem,2.5vw,1rem)] pb-[clamp(1.75rem,5vw,2.5rem)] sm:items-center sm:p-4 sm:pb-4 transition-opacity ease-out motion-reduce:transition-none ${
+          className={`app-dialog-overlay fixed inset-0 z-[200] flex items-end justify-center p-[clamp(0.65rem,2.5vw,1rem)] pb-[clamp(1.75rem,5vw,2.5rem)] sm:items-center sm:p-4 sm:pb-4 transition-opacity ease-out motion-reduce:transition-none ${
             skillModalVisible ? 'pointer-events-auto opacity-100' : 'pointer-events-none opacity-0'
           }`}
           style={{ transitionDuration: `${SKILL_MODAL_MS}ms` }}
@@ -819,7 +819,7 @@ export default function Portfolio() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="skill-dialog-title"
-            className={`relative z-[2] max-h-[min(85vh,520px)] w-full max-w-[min(32rem,calc(100vw-1rem))] overflow-y-auto rounded-2xl border border-primary/40 bg-[rgba(12,14,18,0.92)] p-[clamp(1rem,3vw,1.5rem)] shadow-[0_0_48px_rgba(0,255,157,0.18),0_24px_48px_rgba(0,0,0,0.55)] backdrop-blur-[18px] transition-[transform] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
+            className={`app-dialog-sheet relative z-[2] max-h-[min(85vh,520px)] w-full max-w-[min(32rem,calc(100vw-1rem))] overflow-y-auto rounded-2xl border border-primary/40 bg-[rgba(12,14,18,0.92)] p-[clamp(1rem,3vw,1.5rem)] shadow-[0_0_48px_rgba(0,255,157,0.18),0_24px_48px_rgba(0,0,0,0.55)] backdrop-blur-[18px] transition-[transform] ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
               skillModalVisible ? 'translate-y-0 scale-100' : 'translate-y-5 scale-[0.97]'
             }`}
             style={{ transitionDuration: `${SKILL_MODAL_MS}ms` }}
@@ -857,7 +857,7 @@ export default function Portfolio() {
       />
 
       <div
-        className="fixed bottom-6 right-6 z-[100] max-w-[min(100vw-1rem,420px)] rounded-2xl border border-primary bg-[rgba(10,10,10,0.93)] shadow-[0_15px_35px_rgba(0,255,157,0.25)] backdrop-blur-[14px] transition-all duration-[180ms] ease-in-out hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,255,157,0.3)] max-md:relative max-md:bottom-auto max-md:right-auto max-md:mx-auto max-md:mt-12 max-md:max-w-[min(360px,92vw)]"
+        className="portfolio-contact-rail fixed bottom-6 right-6 z-[100] max-w-[min(100vw-1rem,420px)] rounded-2xl border border-primary bg-[rgba(10,10,10,0.93)] shadow-[0_15px_35px_rgba(0,255,157,0.25)] backdrop-blur-[14px] transition-all duration-[180ms] ease-in-out hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,255,157,0.3)] max-md:relative max-md:bottom-auto max-md:right-auto max-md:mx-auto max-md:mt-12 max-md:max-w-[min(360px,92vw)]"
         aria-hidden={!portfolioWelcomeDismissed}
       >
         <div

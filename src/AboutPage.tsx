@@ -126,7 +126,7 @@ export default function AboutPage() {
                   alt="Mesuli Nduluko"
                   width={400}
                   height={400}
-                  className="about-page__portrait aspect-square h-auto w-[min(88vw,260px)] rounded-full object-cover object-center md:w-64"
+                  className="about-page__portrait aspect-square h-auto w-[min(88vw,260px)] max-[374px]:max-w-[min(15rem,calc(100vw-2.25rem))] rounded-full object-cover object-center md:w-64"
                   decoding="async"
                 />
               </div>
