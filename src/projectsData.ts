@@ -36,10 +36,10 @@ export const PROJECTS: Project[] = [
       'Team project with MUT Innovation Lab: an Angular / Ionic timetable system for planning and managing schedules, with academic calendar support and database-backed timetable data. Not deployed yet—repo: https://github.com/MUTInnovationLab/TTMS.',
   },
   {
-    title: 'Personal Portfolio',
+    title: 'CYPHO Agent',
     description:
-      'This portfolio site—React, TypeScript, and Vite—with project highlights, skills, and contact. Source and revision history on GitHub.',
-    href: 'https://github.com/MesuliN/Mesuli-Portfolio',
+      'An AI agent built to tackle user tasks that go beyond chat-style replies—it can carry out workflows such as e-commerce actions, not only respond. Repository and docs on GitHub.',
+    href: 'https://github.com/MesuliN/CYPHO-Agent',
   },
   {
     title: 'Attendify App',
