@@ -26,18 +26,19 @@
 
   html {
     overflow-x: clip;
+    -webkit-text-size-adjust: 100%;
   }
 
-  /* Fluid scale — content and rhythm track viewport width (320px–1200px+). */
+  /* Fluid tokens: smooth from small phones to wide screens — same design, scaled size. */
   :root {
-    --page-pad-x: clamp(0.65rem, 2.6vw + 0.2rem, 1.5rem);
-    --page-pad-y-top: clamp(1.35rem, 3.2vw, 2.5rem);
-    --page-pad-y-bottom: clamp(4.5rem, 10vw, 7rem);
-    --section-gap-y: clamp(2rem, 5vw, 3rem);
-    --card-radius: clamp(14px, 1.8vw, 20px);
-    --card-pad: clamp(1rem, 2.8vw, 2rem);
-    --text-lede: clamp(0.92rem, 0.35vw + 0.86rem, 1.06rem);
-    --text-section-title: clamp(1.35rem, 2.2vw + 0.85rem, 1.85rem);
+    --page-pad-x: clamp(0.52rem, 2.8vw + 0.38rem, 1.5rem);
+    --page-pad-y-top: clamp(1.1rem, 3vw + 0.45rem, 2.5rem);
+    --page-pad-y-bottom: clamp(3.65rem, 9vw + 1.65rem, 7rem);
+    --section-gap-y: clamp(1.35rem, 4.2vw + 0.5rem, 3rem);
+    --card-radius: clamp(14px, 1.8vw + 10px, 20px);
+    --card-pad: clamp(0.82rem, 2.6vw + 0.52rem, 2rem);
+    --text-lede: clamp(0.84rem, 0.42vw + 0.74rem, 1.06rem);
+    --text-section-title: clamp(1.2rem, 2.1vw + 0.78rem, 1.85rem);
   }
 
   body {
@@ -52,22 +53,6 @@
       linear-gradient(rgba(10, 10, 10, 0.62), rgba(8, 8, 8, 0.75)),
       url('https://images.unsplash.com/photo-1518770660439-4636190af475') center /
         cover no-repeat fixed;
-  }
-
-  /* iPhone SE / ~320px: slightly tighter rails so content fits inside padded shell */
-  @media (max-width: 374px) {
-    :root {
-      --page-pad-x: clamp(0.5rem, 1.8vw + 0.42rem, 0.72rem);
-      --page-pad-y-top: clamp(1.05rem, 2.8vw, 1.35rem);
-      --page-pad-y-bottom: clamp(3.75rem, 9vw, 5rem);
-      --section-gap-y: clamp(1.35rem, 4vw, 2rem);
-      --card-pad: clamp(0.8rem, 2.4vw, 1.05rem);
-      --text-section-title: clamp(1.2rem, 1.8vw + 0.95rem, 1.55rem);
-    }
-
-    html {
-      -webkit-text-size-adjust: 100%;
-    }
   }
 }
 
@@ -280,7 +265,7 @@
     width: 100%;
     max-width: 100%;
     overflow: hidden;
-    border-radius: 12px;
+    border-radius: clamp(10px, 0.85vw + 8px, 12px);
     border: 1px solid rgba(48, 54, 61, 0.85);
     background-color: var(--project-card-bg0);
     background-image:
@@ -289,8 +274,8 @@
       radial-gradient(ellipse 100% 70% at 50% -30%, rgba(0, 255, 157, 0.14), transparent 52%),
       linear-gradient(175deg, rgba(22, 27, 34, 0.98) 0%, rgba(13, 17, 23, 1) 55%, rgba(10, 13, 18, 0.98) 100%);
     background-size:
-      100% 11px,
-      11px 100%,
+      100% clamp(8px, 1.8vw + 5px, 11px),
+      clamp(8px, 1.8vw + 5px, 11px) 100%,
       auto,
       auto;
     box-shadow:
@@ -321,6 +306,7 @@
       0 0 0 1px rgba(0, 240, 255, 0.12) inset,
       0 22px 48px rgba(0, 0, 0, 0.55),
       0 0 40px rgba(0, 255, 157, 0.1);
+    filter: saturate(1.08) brightness(1.03);
   }
 
   .project-dev-card:hover::after {
@@ -328,7 +314,7 @@
   }
 
   .project-dev-card__accent {
-    height: 3px;
+    height: clamp(2px, 0.35vw + 1px, 3px);
     flex-shrink: 0;
     background: linear-gradient(90deg, #00ff9d, #00f0ff, #a78bfa 70%, transparent);
     opacity: 0.95;
@@ -338,12 +324,13 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.5rem 0.75rem;
-    padding: 0.55rem 0.85rem 0.6rem;
+    gap: clamp(0.32rem, 1.8vw + 0.08rem, 0.5rem) clamp(0.42rem, 2vw + 0.12rem, 0.75rem);
+    padding: clamp(0.38rem, 2.2vw + 0.1rem, 0.55rem) clamp(0.48rem, 3vw + 0.12rem, 0.85rem)
+      clamp(0.42rem, 2.2vw + 0.14rem, 0.6rem);
     border-bottom: 1px solid rgba(48, 54, 61, 0.95);
     background: linear-gradient(180deg, rgba(22, 27, 34, 0.98), rgba(13, 17, 23, 0.99));
     font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
-    font-size: 0.7rem;
+    font-size: clamp(0.54rem, 0.42vw + 0.52rem, 0.7rem);
     letter-spacing: 0.03em;
     color: #8b949e;
   }
@@ -353,20 +340,20 @@
     min-width: 0;
     flex: 1 1 auto;
     align-items: center;
-    gap: 0.55rem;
+    gap: clamp(0.32rem, 1.5vw + 0.08rem, 0.55rem);
   }
 
   .project-dev-card__dots {
     display: inline-flex;
     flex-shrink: 0;
-    gap: 5px;
+    gap: clamp(3px, 0.6vw + 2px, 5px);
     align-items: center;
   }
 
   .project-dev-card__dot {
     display: block;
-    width: 7px;
-    height: 7px;
+    width: clamp(5px, 0.95vw + 3px, 7px);
+    height: clamp(5px, 0.95vw + 3px, 7px);
     border-radius: 50%;
     box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45);
   }
@@ -424,15 +411,15 @@
     border: 1px solid rgba(63, 185, 80, 0.35);
     background: rgba(46, 160, 67, 0.12);
     color: #3fb950;
-    font-size: 0.65rem;
+    font-size: clamp(0.54rem, 0.42vw + 0.52rem, 0.65rem);
     font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
   }
 
   .project-dev-card__branch-dot {
-    width: 6px;
-    height: 6px;
+    width: clamp(5px, 0.85vw + 3px, 6px);
+    height: clamp(5px, 0.85vw + 3px, 6px);
     border-radius: 50%;
     background: #3fb950;
     box-shadow: 0 0 8px rgba(63, 185, 80, 0.75);
@@ -446,7 +433,7 @@
 
   .project-dev-card__editor {
     display: grid;
-    grid-template-columns: 2.35rem 1fr;
+    grid-template-columns: clamp(1.6rem, 5vw + 0.95rem, 2.35rem) minmax(0, 1fr);
     align-items: stretch;
   }
 
@@ -454,12 +441,13 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 0.35rem;
-    padding: 1rem 0.45rem 1rem 0.35rem;
+    gap: clamp(0.18rem, 1.2vw + 0.02rem, 0.35rem);
+    padding: clamp(0.55rem, 4vw + 0.08rem, 1rem) clamp(0.22rem, 1.8vw + 0.08rem, 0.45rem)
+      clamp(0.55rem, 4vw + 0.08rem, 1rem) clamp(0.16rem, 1.6vw + 0.06rem, 0.35rem);
     border-right: 1px solid rgba(48, 54, 61, 0.75);
     background: rgba(1, 4, 9, 0.35);
     font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
-    font-size: 0.68rem;
+    font-size: clamp(0.54rem, 0.55vw + 0.52rem, 0.68rem);
     line-height: 1.45;
     color: #484f58;
     user-select: none;
@@ -468,7 +456,8 @@
   .project-dev-card__editor-main {
     position: relative;
     min-width: 0;
-    padding: 1rem 1.1rem 1.25rem 1rem;
+    padding: clamp(0.55rem, 4.2vw + 0.1rem, 1rem) clamp(0.5rem, 4.5vw + 0.1rem, 1.1rem)
+      clamp(0.65rem, 5vw + 0.08rem, 1.25rem) clamp(0.48rem, 4vw + 0.06rem, 1rem);
     border-left: 2px solid rgba(0, 255, 157, 0.22);
   }
 
@@ -477,13 +466,13 @@
     flex-wrap: wrap;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 0.5rem 0.75rem;
-    margin-bottom: 0.75rem;
+    gap: clamp(0.38rem, 2vw + 0.06rem, 0.5rem) clamp(0.45rem, 2.8vw + 0.06rem, 0.75rem);
+    margin-bottom: clamp(0.38rem, 2vw + 0.12rem, 0.75rem);
   }
 
   .project-dev-card__title {
     margin: 0;
-    font-size: 1.22rem;
+    font-size: clamp(0.95rem, 1.2vw + 0.74rem, 1.22rem);
     font-weight: 700;
     letter-spacing: -0.025em;
     line-height: 1.3;
@@ -504,7 +493,7 @@
 
   .project-dev-card__desc {
     margin: 0;
-    font-size: 0.93rem;
+    font-size: clamp(0.78rem, 0.55vw + 0.68rem, 0.93rem);
     line-height: 1.68;
     letter-spacing: 0.01em;
     color: #adbac7;
@@ -513,9 +502,9 @@
   }
 
   .project-dev-card__hint {
-    margin: 0.85rem 0 0;
+    margin: clamp(0.45rem, 3.5vw + 0.08rem, 0.85rem) 0 0;
     font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
-    font-size: 0.68rem;
+    font-size: clamp(0.54rem, 0.45vw + 0.52rem, 0.68rem);
     letter-spacing: 0.02em;
     color: rgba(0, 240, 255, 0.72);
   }
@@ -527,7 +516,7 @@
     border-radius: 4px;
     border: 1px solid rgba(48, 54, 61, 0.9);
     background: rgba(22, 27, 34, 0.95);
-    font-size: 0.62rem;
+    font-size: clamp(0.52rem, 0.35vw + 0.5rem, 0.62rem);
     color: #8b949e;
     box-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
   }
@@ -547,10 +536,6 @@
       border-color 320ms ease,
       box-shadow 320ms ease,
       filter 320ms ease;
-  }
-
-  .project-dev-card:hover {
-    filter: saturate(1.08) brightness(1.03);
   }
 
   .project-dev-card:active {
@@ -668,11 +653,11 @@
   .projects-page__code-rail {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 0.4rem 0 0.9rem;
+    padding: clamp(0.2rem, 1.8vw + 0.05rem, 0.4rem) 0 clamp(0.5rem, 4vw + 0.06rem, 0.9rem);
     overflow: hidden;
     border-bottom: 1px solid rgba(56, 189, 248, 0.14);
     font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
-    font-size: 0.72rem;
+    font-size: clamp(0.58rem, 0.5vw + 0.54rem, 0.72rem);
     letter-spacing: 0.05em;
     color: rgba(125, 211, 252, 0.78);
   }
@@ -716,7 +701,8 @@
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 0;
-    padding: 1.15rem 0 1.5rem;
+    padding: clamp(0.65rem, 2.8vw + 0.15rem, 1.15rem) 0
+      clamp(0.8rem, 3.8vw + 0.08rem, 1.5rem);
   }
 
   .projects-page__back {
@@ -776,18 +762,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.55rem;
-    margin: 0 0 0.65rem;
-    font-size: 0.78rem;
+    gap: clamp(0.32rem, 2.8vw + 0.06rem, 0.55rem);
+    margin: 0 0 clamp(0.38rem, 3vw + 0.06rem, 0.65rem);
+    font-size: clamp(0.64rem, 0.52vw + 0.54rem, 0.78rem);
     font-weight: 600;
-    letter-spacing: 0.2em;
+    letter-spacing: clamp(0.1em, 0.08vw + 0.075em, 0.2em);
     text-transform: uppercase;
     color: rgba(56, 189, 248, 0.85);
   }
 
   .projects-page__title {
-    margin: 0 0 1rem;
-    font-size: clamp(2rem, 5vw, 2.75rem);
+    margin: 0 0 clamp(0.55rem, 5vw + 0.06rem, 1rem);
+    font-size: clamp(1.45rem, 4.2vw + 0.75rem, 2.75rem);
     font-weight: 800;
     letter-spacing: -0.03em;
     line-height: 1.1;
@@ -823,12 +809,12 @@
   .projects-page__services {
     max-width: 1100px;
     margin: 0 auto;
-    padding: 0.5rem 0 2.5rem;
+    padding: clamp(0.35rem, 2vw + 0.05rem, 0.5rem) 0 clamp(1.25rem, 5vw + 0.25rem, 2.5rem);
     border-top: 1px solid rgba(30, 58, 138, 0.35);
   }
 
   .projects-page__services-inner {
-    padding-top: 2rem;
+    padding-top: clamp(1.05rem, 4.5vw + 0.35rem, 2rem);
   }
 
   .projects-page__services-title {
@@ -836,9 +822,9 @@
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 0.65rem;
-    margin: 0 0 1rem;
-    font-size: clamp(1.35rem, 3vw, 1.65rem);
+    gap: clamp(0.45rem, 2.2vw + 0.1rem, 0.65rem);
+    margin: 0 0 clamp(0.55rem, 3vw + 0.08rem, 1rem);
+    font-size: clamp(1.2rem, 2.8vw + 0.58rem, 1.65rem);
     font-weight: 800;
     letter-spacing: -0.02em;
     color: #e2e8f0;
@@ -850,28 +836,30 @@
   }
 
   .projects-page__services-lede {
-    margin: 0 auto 2rem;
+    margin: 0 auto clamp(1.05rem, 4.5vw + 0.2rem, 2rem);
     max-width: 52rem;
     text-align: center;
-    font-size: 1rem;
+    font-size: clamp(0.86rem, 0.45vw + 0.78rem, 1rem);
     line-height: 1.65;
     color: #94a3b8;
   }
 
-  /* Auto-wrap: stacks to one column when the row can’t fit two comfortable tracks (~17.5rem each) */
+  /* Column count tracks width smoothly — same card design at every size */
   .projects-page__services-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17.5rem), 1fr));
-    gap: clamp(0.9rem, 2.2vw, 1.35rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, clamp(13.25rem, 38vw + 7rem, 17.5rem)), 1fr));
+    gap: clamp(0.55rem, 2.8vw + 0.06rem, 1.35rem);
   }
 
   .projects-page__service-card {
     display: flex;
     min-width: 0;
     flex-direction: column;
-    gap: 0.85rem;
-    padding: 1.35rem 1.35rem 1.45rem;
-    border-radius: 16px;
+    gap: clamp(0.45rem, 2.4vw + 0.06rem, 0.85rem);
+    padding: clamp(0.75rem, 3.8vw + 0.08rem, 1.35rem)
+      clamp(0.82rem, 4vw + 0.06rem, 1.35rem)
+      clamp(0.78rem, 4vw + 0.12rem, 1.45rem);
+    border-radius: clamp(12px, 1.6vw + 8px, 16px);
     border: 1px solid rgba(56, 189, 248, 0.2);
     background: linear-gradient(165deg, rgba(15, 23, 42, 0.65) 0%, rgba(8, 12, 22, 0.85) 100%);
     box-shadow:
@@ -896,7 +884,7 @@
   .projects-page__service-head {
     display: flex;
     align-items: flex-start;
-    gap: 1rem;
+    gap: clamp(0.52rem, 3vw + 0.06rem, 1rem);
     min-width: 0;
   }
 
@@ -909,18 +897,18 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    width: 3rem;
-    height: 3rem;
-    border-radius: 12px;
+    width: clamp(2.35rem, 6vw + 1.05rem, 3rem);
+    height: clamp(2.35rem, 6vw + 1.05rem, 3rem);
+    border-radius: clamp(8px, 1.6vw + 4px, 12px);
     background: rgba(0, 255, 157, 0.1);
     border: 1px solid rgba(0, 255, 157, 0.28);
     color: #00ff9d;
-    font-size: 1.35rem;
+    font-size: clamp(1rem, 1.4vw + 0.74rem, 1.35rem);
   }
 
   .projects-page__service-name {
     margin: 0 0 0.25rem;
-    font-size: 1.12rem;
+    font-size: clamp(0.92rem, 0.55vw + 0.78rem, 1.12rem);
     font-weight: 700;
     color: #f1f5f9;
     line-height: 1.25;
@@ -929,7 +917,7 @@
 
   .projects-page__service-tagline {
     margin: 0;
-    font-size: 0.88rem;
+    font-size: clamp(0.76rem, 0.35vw + 0.7rem, 0.88rem);
     font-weight: 600;
     line-height: 1.45;
     color: #7dd3fc;
@@ -937,7 +925,7 @@
 
   .projects-page__service-body {
     margin: 0;
-    font-size: 0.92rem;
+    font-size: clamp(0.8rem, 0.45vw + 0.72rem, 0.92rem);
     line-height: 1.62;
     color: #cbd5e1;
     overflow-wrap: break-word;
@@ -945,23 +933,23 @@
 
   .projects-page__service-includes-heading {
     margin: 0.15rem 0 0;
-    font-size: 0.72rem;
+    font-size: clamp(0.58rem, 0.42vw + 0.54rem, 0.72rem);
     font-weight: 700;
-    letter-spacing: 0.14em;
+    letter-spacing: clamp(0.08em, 0.02vw + 0.07em, 0.14em);
     text-transform: uppercase;
     color: rgba(125, 211, 252, 0.75);
   }
 
   .projects-page__service-list {
     margin: 0;
-    padding-left: 1.15rem;
-    font-size: 0.88rem;
+    padding-left: clamp(0.92rem, 4vw + 0.08rem, 1.15rem);
+    font-size: clamp(0.76rem, 0.32vw + 0.71rem, 0.88rem);
     line-height: 1.55;
     color: #94a3b8;
   }
 
   .projects-page__service-list li {
-    margin-bottom: 0.35rem;
+    margin-bottom: clamp(0.15rem, 1vw + 0.02rem, 0.35rem);
   }
 
   .projects-page__service-list li:last-child {
@@ -969,9 +957,9 @@
   }
 
   .projects-page__services-foot {
-    margin: 2rem 0 0;
+    margin: clamp(1.1rem, 5vw + 0.08rem, 2rem) 0 0;
     text-align: center;
-    font-size: 0.95rem;
+    font-size: clamp(0.82rem, 0.35vw + 0.74rem, 0.95rem);
     line-height: 1.6;
     color: #94a3b8;
   }
@@ -1016,16 +1004,9 @@
     display: grid;
     max-width: 1100px;
     margin: 0 auto 1.5rem;
-    grid-template-columns: 1fr;
-    gap: 1.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, clamp(15.5rem, 42vw + 9rem, 26rem)), 1fr));
+    gap: clamp(0.85rem, 3.5vw + 0.1rem, 1.75rem);
     align-items: start;
-  }
-
-  /* Four project cards: two per row (2×2) from tablet up */
-  @media (min-width: 700px) {
-    .projects-page__grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
   }
 
   /* Poster designs + short adverts — side by side from lg, capped width */
@@ -1038,35 +1019,21 @@
 
   .projects-page__visual-split-inner {
     display: grid;
-    gap: clamp(1.75rem, 4vw, 2.25rem);
-    align-items: start;
-    justify-items: center;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, clamp(17rem, 52vw, 28rem)), 1fr));
+    gap: clamp(1.2rem, 3.5vw + 0.2rem, 2.25rem);
+    align-items: stretch;
+    justify-items: stretch;
     width: 100%;
-  }
-
-  @media (min-width: 1024px) {
-    .projects-page__visual-split-inner {
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-      gap: clamp(1.25rem, 3vw, 1.75rem);
-      align-items: stretch;
-      justify-items: stretch;
-    }
   }
 
   /* Outer frames — cyan (poster) vs primary green (adverts); size capped */
   .projects-page__split-media-frame {
     width: 100%;
-    max-width: min(100%, 20rem);
+    max-width: min(100%, clamp(16rem, 28vw + 9rem, 20rem));
     margin-left: auto;
     margin-right: auto;
     padding: clamp(0.5rem, 1.5vw, 0.65rem);
     border-radius: 14px;
-  }
-
-  @media (min-width: 1024px) {
-    .projects-page__split-media-frame {
-      max-width: min(100%, 18.5rem);
-    }
   }
 
   .projects-page__split-media-frame--poster {
@@ -1084,7 +1051,7 @@
   }
 
   .projects-page__split-media-frame--adverts {
-    max-width: min(100%, 22rem);
+    max-width: min(100%, clamp(17.5rem, 32vw + 9rem, 22rem));
     border: 1px solid rgba(0, 255, 157, 0.42);
     background: linear-gradient(
       155deg,
@@ -1096,12 +1063,6 @@
       0 0 0 1px rgba(0, 255, 157, 0.12) inset,
       0 0 32px rgba(0, 255, 157, 0.1),
       0 12px 28px rgba(0, 0, 0, 0.35);
-  }
-
-  @media (min-width: 1024px) {
-    .projects-page__split-media-frame--adverts {
-      max-width: min(100%, 20.5rem);
-    }
   }
 
   /* Inner poster image area — no second border; outer frame carries the accent */
@@ -1142,18 +1103,12 @@
     display: flex;
     min-width: 0;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     width: 100%;
   }
 
   .projects-page__visual-split-col .projects-page__work--split-sub {
     width: 100%;
-  }
-
-  @media (min-width: 1024px) {
-    .projects-page__visual-split-col {
-      align-items: stretch;
-    }
   }
 
   .projects-page__work--split-sub {
@@ -1168,18 +1123,6 @@
     margin-left: 0;
     margin-right: 0;
     max-width: none;
-  }
-
-  @media (max-width: 1023px) {
-    .projects-page__work--split-sub {
-      text-align: center;
-    }
-
-    .projects-page__work--split-sub .projects-page__work-lede {
-      margin-left: auto;
-      margin-right: auto;
-      max-width: 36rem;
-    }
   }
 
   .projects-page__poster-grid--split {
@@ -1210,8 +1153,8 @@
     display: grid;
     max-width: 1100px;
     margin: 0 auto 1.5rem;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, clamp(12.5rem, 38vw + 4rem, 220px)), 1fr));
+    gap: clamp(0.72rem, 4.2vw + 0.06rem, 1.5rem);
   }
 
   .projects-page__poster-card {
@@ -1258,7 +1201,7 @@
 
   .projects-page__poster-title {
     display: block;
-    font-size: 0.95rem;
+    font-size: clamp(0.82rem, 0.52vw + 0.71rem, 0.95rem);
     font-weight: 800;
     letter-spacing: -0.02em;
     color: #e2e8f0;
@@ -1266,8 +1209,8 @@
 
   .projects-page__poster-desc {
     display: block;
-    margin-top: 0.3rem;
-    font-size: 0.86rem;
+    margin-top: clamp(0.15rem, 2vw + 0.03rem, 0.3rem);
+    font-size: clamp(0.76rem, 0.4vw + 0.69rem, 0.86rem);
     line-height: 1.45;
     color: #64748b;
   }
@@ -1325,7 +1268,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: clamp(0.65rem, 2.5vw, 1.25rem);
+    padding-top: max(env(safe-area-inset-top, 0px), clamp(0.5rem, 4.2vw + 0.1rem, 1.25rem));
+    padding-right: max(env(safe-area-inset-right, 0px), clamp(0.5rem, 4.2vw + 0.1rem, 1.25rem));
+    padding-bottom: max(env(safe-area-inset-bottom, 0px), clamp(0.5rem, 4.2vw + 0.1rem, 1.25rem));
+    padding-left: max(env(safe-area-inset-left, 0px), clamp(0.5rem, 4.2vw + 0.1rem, 1.25rem));
   }
 
   .projects-page__poster-lightbox-backdrop {
@@ -1384,8 +1330,8 @@
 
   .projects-page__poster-lightbox-close {
     position: absolute;
-    top: -0.25rem;
-    right: -0.25rem;
+    top: max(env(safe-area-inset-top, 0px), -0.25rem);
+    right: max(env(safe-area-inset-right, 0px), -0.25rem);
     z-index: 2;
     display: flex;
     width: 2.5rem;
@@ -1439,10 +1385,13 @@
   }
 
   .projects-page__footer-link {
-    font-size: 0.9rem;
+    font-size: clamp(0.78rem, 0.42vw + 0.68rem, 0.9rem);
     font-weight: 600;
     color: #38bdf8;
     text-decoration: none;
+    display: inline-block;
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
 
   .projects-page__footer-link:hover,
@@ -1981,10 +1930,10 @@
   .projects-cta {
     position: relative;
     display: block;
-    max-width: 480px;
+    max-width: min(480px, 100%);
     margin: 0 auto;
     padding: 2px;
-    border-radius: 20px;
+    border-radius: clamp(14px, 2.8vw + 6px, 20px);
     text-decoration: none;
     background: linear-gradient(
       125deg,
@@ -2017,10 +1966,12 @@
     position: relative;
     z-index: 1;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 1rem;
-    padding: 1.05rem 1.2rem 1.05rem 1.05rem;
-    border-radius: 18px;
+    gap: clamp(0.55rem, 3.8vw + 0.06rem, 1rem);
+    padding: clamp(0.75rem, 4.2vw + 0.06rem, 1.05rem) clamp(0.78rem, 5vw + 0.04rem, 1.2rem)
+      clamp(0.75rem, 4.2vw + 0.06rem, 1.05rem) clamp(0.72rem, 4.6vw + 0.04rem, 1.05rem);
+    border-radius: clamp(13px, 2.6vw + 6px, 18px);
     background: linear-gradient(165deg, rgba(14, 18, 24, 0.96) 0%, rgba(6, 8, 12, 0.98) 100%);
     border: 1px solid rgba(0, 255, 157, 0.18);
     backdrop-filter: blur(14px);
@@ -2046,11 +1997,11 @@
   .projects-cta__icon-wrap {
     display: flex;
     flex-shrink: 0;
-    width: 3.5rem;
-    height: 3.5rem;
+    width: clamp(2.75rem, 9vw + 1.05rem, 3.5rem);
+    height: clamp(2.75rem, 9vw + 1.05rem, 3.5rem);
     align-items: center;
     justify-content: center;
-    border-radius: 14px;
+    border-radius: clamp(11px, 2vw + 6px, 14px);
     background: linear-gradient(145deg, rgba(0, 255, 157, 0.14), rgba(0, 240, 255, 0.06));
     border: 1px solid rgba(0, 255, 157, 0.32);
     transition:
@@ -2066,7 +2017,7 @@
   }
 
   .projects-cta__icon {
-    font-size: 1.6rem;
+    font-size: clamp(1.25rem, 3.8vw + 0.72rem, 1.6rem);
     background: linear-gradient(135deg, #86efac, #00ff9d, #22d3ee);
     -webkit-background-clip: text;
     background-clip: text;
@@ -2082,7 +2033,7 @@
 
   .projects-cta__title {
     display: block;
-    font-size: clamp(1.45rem, 4vw, 1.75rem);
+    font-size: clamp(1.15rem, 4.5vw + 0.72rem, 1.75rem);
     font-weight: 800;
     letter-spacing: -0.03em;
     line-height: 1.15;
@@ -2097,9 +2048,9 @@
   .projects-cta__sub {
     display: block;
     margin-top: 0.35rem;
-    font-size: 0.68rem;
+    font-size: clamp(0.56rem, 0.35vw + 0.53rem, 0.68rem);
     font-weight: 700;
-    letter-spacing: 0.16em;
+    letter-spacing: clamp(0.08em, 0.06vw + 0.065em, 0.16em);
     text-transform: uppercase;
     color: rgba(125, 211, 252, 0.88);
   }
@@ -2107,7 +2058,7 @@
   .projects-cta__hint {
     display: block;
     margin-top: 0.25rem;
-    font-size: 0.78rem;
+    font-size: clamp(0.68rem, 0.35vw + 0.62rem, 0.78rem);
     font-weight: 600;
     color: rgba(226, 232, 240, 0.82);
   }
@@ -2137,243 +2088,19 @@
     color: #00ff9d;
   }
 
-  /* Viewports under 375px: keep layout single-column where needed and prevent horizontal spill */
-  @media (max-width: 374px) {
-    .projects-page .projects-page__site-header {
-      padding: 0.85rem 0 1.1rem;
-    }
+  /* Global fluid helpers — no breakpoint “alternate layouts”; long URLs/links wrap */
+  .portfolio-contact-rail a {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
 
-    .projects-page__code-rail {
-      padding-left: 0;
-      padding-right: 0;
-      font-size: 0.62rem;
-    }
+  .portfolio-contact-rail .inline-flex {
+    max-width: 100%;
+  }
 
-    .projects-page__hero {
-      margin-bottom: 1.25rem;
-      padding-left: 0;
-      padding-right: 0;
-    }
-
-    .projects-page__eyebrow {
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
-      gap: 0.42rem;
-    }
-
-    .projects-page__title {
-      font-size: clamp(1.2rem, 8.5vw, 1.5rem);
-    }
-
-    .projects-page__lede {
-      font-size: 0.9rem;
-      line-height: 1.55;
-    }
-
-    .projects-page__services-title {
-      font-size: clamp(1.18rem, 4.5vw, 1.4rem);
-    }
-
-    .projects-page__services-lede {
-      font-size: 0.92rem;
-      line-height: 1.58;
-    }
-
-    .projects-page__services-grid {
-      grid-template-columns: 1fr;
-      gap: 1rem;
-    }
-
-    .projects-page__service-card {
-      padding: 1rem 1rem 1.1rem;
-    }
-
-    .projects-page__service-head {
-      gap: 0.75rem;
-    }
-
-    .projects-page__work-lede {
-      font-size: 0.86rem;
-    }
-
-    .projects-page__poster-grid {
-      gap: 1rem;
-      grid-template-columns: 1fr;
-    }
-
-    .projects-page__footer {
-      padding-left: 0;
-      padding-right: 0;
-      margin-top: 2rem;
-    }
-
-    .projects-page__footer-link {
-      display: inline-block;
-      max-width: 100%;
-      font-size: 0.86rem;
-      line-height: 1.45;
-      overflow-wrap: anywhere;
-    }
-
-    .site-header {
-      margin-bottom: 1.25rem;
-      padding-bottom: 0.65rem;
-    }
-
-    .site-header nav {
-      column-gap: 0.85rem;
-      row-gap: 0.35rem;
-    }
-
-    .site-header nav a {
-      padding: 0.3rem 0.45rem;
-      font-size: 0.8rem;
-    }
-
-    .about-page__panel {
-      padding: 1.1rem !important;
-      border-radius: 16px;
-    }
-
-    .portfolio-hero-intro .portfolio-hero-name {
-      font-size: clamp(1.35rem, 6.8vw + 0.65rem, 2.15rem);
-    }
-
-    .portfolio-hero-intro .portfolio-hero-chars--tagline {
-      font-size: clamp(0.8rem, 2vw + 0.72rem, 0.95rem);
-      column-gap: 0.28em;
-    }
-
-    .projects-cta {
-      max-width: 100%;
-    }
-
-    .projects-cta__panel {
-      flex-wrap: wrap;
-      gap: 0.65rem;
-      padding: 0.85rem 0.75rem;
-    }
-
-    .projects-cta__icon-wrap {
-      width: 2.85rem;
-      height: 2.85rem;
-    }
-
-    .projects-cta__icon {
-      font-size: 1.35rem;
-    }
-
-    .projects-cta__title {
-      font-size: clamp(1.2rem, 6vw, 1.45rem);
-    }
-
-    .projects-cta__sub {
-      font-size: 0.6rem;
-      letter-spacing: 0.12em;
-    }
-
-    .projects-cta__hint {
-      font-size: 0.72rem;
-    }
-
-    .projects-page__grid {
-      gap: 1.15rem;
-    }
-
-    .project-dev-card__editor {
-      grid-template-columns: minmax(0, 1.75rem) minmax(0, 1fr);
-    }
-
-    .project-dev-card__gutter {
-      padding: 0.8rem 0.28rem 0.8rem 0.22rem;
-      font-size: 0.58rem;
-    }
-
-    .project-dev-card__editor-main {
-      padding: 0.82rem 0.62rem 1rem;
-    }
-
-    .project-dev-card__title {
-      font-size: 1.06rem;
-    }
-
-    .project-dev-card__desc {
-      font-size: 0.86rem;
-    }
-
-    .project-dev-card__chrome {
-      flex-wrap: wrap;
-      row-gap: 0.35rem;
-      padding: 0.48rem 0.65rem 0.52rem;
-    }
-
-    .project-dev-card__path {
-      font-size: 0.68rem;
-      word-break: break-all;
-    }
-
-    .project-dev-card__tab {
-      font-size: 0.65rem;
-      padding: 0.15rem 0.35rem;
-    }
-
-    .project-dev-card__branch {
-      font-size: 0.58rem;
-    }
-
-    /* Welcome + modals share the viewport — keep panels inside safe edges */
-    .portfolio-welcome-panel {
-      width: min(26rem, calc(100vw - 0.75rem));
-      max-width: 100%;
-      padding: 1.35rem clamp(0.85rem, 3.5vw, 1.15rem) 1.45rem;
-    }
-
-    .portfolio-welcome-kicker {
-      font-size: clamp(0.58rem, 1.2vw + 0.52rem, 0.68rem);
-      letter-spacing: 0.18em;
-      gap: 0.45rem;
-    }
-
-    .portfolio-welcome-title {
-      font-size: clamp(1.28rem, 5vw + 0.75rem, 1.72rem);
-    }
-
-    .portfolio-welcome-desc {
-      font-size: clamp(0.86rem, 1.5vw + 0.78rem, 0.98rem);
-    }
-
-    .app-dialog-sheet {
-      max-width: min(26rem, calc(100vw - 0.75rem)) !important;
-      padding: 0.85rem !important;
-    }
-
-    .app-dialog-overlay {
-      padding-left: max(0.5rem, env(safe-area-inset-left, 0px)) !important;
-      padding-right: max(0.5rem, env(safe-area-inset-right, 0px)) !important;
-    }
-
-    .portfolio-contact-rail {
-      max-width: min(100%, calc(100vw - 0.75rem));
-    }
-
-    .portfolio-contact-rail a {
-      overflow-wrap: anywhere;
-      word-break: break-word;
-    }
-
-    .portfolio-contact-rail .inline-flex {
-      max-width: 100%;
-    }
-
-    .projects-page__poster-lightbox {
-      padding: max(0.45rem, env(safe-area-inset-top, 0px)) max(0.45rem, env(safe-area-inset-right, 0px))
-        max(0.45rem, env(safe-area-inset-bottom, 0px)) max(0.45rem, env(safe-area-inset-left, 0px));
-    }
-
-    .projects-page__poster-lightbox-close {
-      top: max(0.35rem, env(safe-area-inset-top, 0px));
-      right: max(0.35rem, env(safe-area-inset-right, 0px));
-    }
+  .app-dialog-overlay {
+    padding-left: max(var(--page-pad-x), env(safe-area-inset-left, 0px)) !important;
+    padding-right: max(var(--page-pad-x), env(safe-area-inset-right, 0px)) !important;
   }
 }
 
@@ -3160,7 +2887,8 @@
 .portfolio-welcome-panel {
   position: relative;
   z-index: 1;
-  width: min(26rem, calc(100vw - 2.5rem));
+  width: min(26rem, calc(100vw - clamp(0.85rem, 9vw, 2.5rem)));
+  max-width: 100%;
   padding: clamp(1.75rem, 4.5vw, 2.35rem) clamp(1.35rem, 4vw, 2rem) clamp(1.85rem, 4.5vw, 2.5rem);
   border-radius: clamp(18px, 2.5vw, 24px);
   border: 1px solid color-mix(in srgb, #00ff9d 32%, transparent);
@@ -3397,7 +3125,7 @@
   margin: 0 0 0.4rem;
   font-size: clamp(0.68rem, 0.2vw + 0.62rem, 0.78rem);
   font-weight: 600;
-  letter-spacing: 0.38em;
+  letter-spacing: clamp(0.14em, 0.12vw + 0.1em, 0.38em);
   text-transform: uppercase;
   color: color-mix(in srgb, #00f0ff 88%, #b5bdc8);
   text-shadow:
