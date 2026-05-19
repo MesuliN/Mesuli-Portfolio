@@ -5,16 +5,19 @@ import {
   useRef,
   useState,
   type CSSProperties,
+  Suspense,
+  lazy,
 } from 'react'
 import mesuliImage from './assets/Mesuli Image.jpg'
 import welcomeRobotImage from './assets/image_b58214a.png'
 import skillTechModalBg from './assets/skill-tech-modal-bg.png'
-import AboutPage from './AboutPage'
 import { getAppRoute, hrefTo, navigate, subscribeAppRoute } from './appRoute'
-import ProjectsPage from './ProjectsPage'
 import { SiteHeader } from './SiteHeader'
 import { RippleBox, setBodyCursorActive } from './RippleBox'
-import { ContactModal } from './ContactModal'
+
+const AboutPage = lazy(() => import('./AboutPage'))
+const ProjectsPage = lazy(() => import('./ProjectsPage'))
+const ContactModal = lazy(() => import('./ContactModal').then((m) => ({ default: m.ContactModal })))
 
 const HERO_NAME_ARIA_LABEL = 'Mesuli Nduluko'
 
@@ -268,6 +271,7 @@ export default function Portfolio() {
   const [contactModalOpen, setContactModalOpen] = useState(false)
   const [contactModalVisible, setContactModalVisible] = useState(false)
 
+
   const homeRevealWaiting =
     !portfolioWelcomeDismissed || (portfolioWelcomeDismissed && !homeRevealPlaying)
 
@@ -444,6 +448,7 @@ export default function Portfolio() {
     }
   }, [])
 
+
   const onContactModalOverlayTransitionEnd = (e: React.TransitionEvent<HTMLDivElement>) => {
     if (e.target !== e.currentTarget) return
     if (e.propertyName !== 'opacity') return
@@ -465,12 +470,21 @@ export default function Portfolio() {
   }, [contactModalOpen, closeContactModal])
 
   if (appRoute === 'projects') {
-    return <ProjectsPage />
+    return (
+      <Suspense fallback={null}>
+        <ProjectsPage />
+      </Suspense>
+    )
   }
 
   if (appRoute === 'about') {
-    return <AboutPage />
+    return (
+      <Suspense fallback={null}>
+        <AboutPage />
+      </Suspense>
+    )
   }
+
 
   return (
     <>
@@ -849,12 +863,16 @@ export default function Portfolio() {
         </div>
       ) : null}
 
-      <ContactModal
-        open={contactModalOpen}
-        visible={contactModalVisible}
-        onRequestClose={closeContactModal}
-        onOverlayTransitionEnd={onContactModalOverlayTransitionEnd}
-      />
+      {contactModalOpen ? (
+        <Suspense fallback={null}>
+          <ContactModal
+            open={contactModalOpen}
+            visible={contactModalVisible}
+            onRequestClose={closeContactModal}
+            onOverlayTransitionEnd={onContactModalOverlayTransitionEnd}
+          />
+        </Suspense>
+      ) : null}
 
       <div
         className="portfolio-contact-rail fixed bottom-6 right-6 z-[100] max-w-[min(100vw-1rem,420px)] rounded-2xl border border-primary bg-[rgba(10,10,10,0.93)] shadow-[0_15px_35px_rgba(0,255,157,0.25)] backdrop-blur-[14px] transition-all duration-[180ms] ease-in-out hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,255,157,0.3)] max-md:relative max-md:bottom-auto max-md:right-auto max-md:mx-auto max-md:mt-12 max-md:max-w-[min(360px,92vw)]"
