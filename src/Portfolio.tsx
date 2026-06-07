@@ -64,7 +64,7 @@ function homeRevealSliceFromSide(side: 'left' | 'right', sliceIndex: number): CS
 }
 
 const HERO_TAGLINE_TEXT =
-  'Web Developer focused on building modern, high-performance digital experiences and delivering dependable technical support.'
+  'Web developer building responsive sites, polished front-end work, and dependable support for businesses and clients on the web.'
 
 /** Word units so the per-letter flex layout cannot wrap mid-word */
 const HERO_TAGLINE_WORDS = HERO_TAGLINE_TEXT.split(' ').filter(Boolean)
@@ -520,23 +520,23 @@ export default function Portfolio() {
 
               <p className="portfolio-welcome-kicker">
                 <span className="portfolio-welcome-kicker__dot" aria-hidden />
-                You&apos;re here
+                Personal website
                 <span className="portfolio-welcome-kicker__dot" aria-hidden />
               </p>
               <h2 id="portfolio-welcome-title" className="portfolio-welcome-title">
-                <span className="portfolio-welcome-title__text">Hey there!</span>
+                <span className="portfolio-welcome-title__text">Welcome</span>
               </h2>
               <p
                 id="portfolio-welcome-desc"
                 className="portfolio-welcome-desc mt-3 max-w-[min(22rem,100%)] text-[clamp(0.92rem,calc(0.35vw+0.86rem),1.06rem)] leading-relaxed text-portfolio-muted"
               >
-                Welcome to my corner of the web — I&apos;m glad you&apos;re here. Take a look around
-                when you&apos;re ready.
+                This is my online home—portfolio, projects, and ways to reach me. Browse the pages
+                below whenever you like.
               </p>
               <RippleBox
                 role="button"
                 tabIndex={0}
-                aria-label="Continue to portfolio"
+                aria-label="Enter the homepage"
                 className={`portfolio-welcome-cta mt-8 rounded-xl border border-primary/40 bg-primary px-[clamp(1.25rem,3.5vw,1.75rem)] py-[clamp(0.65rem,2vw,0.85rem)] text-[clamp(0.85rem,calc(0.28vw+0.8rem),0.98rem)] font-semibold uppercase tracking-[0.14em] text-[#111] shadow-[0_12px_36px_rgba(0,255,157,0.32)] transition-[transform,box-shadow,opacity] duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_44px_rgba(0,255,157,0.38)] ${welcomeClosing ? 'pointer-events-none opacity-60' : ''}`}
                 onClick={beginWelcomeDismiss}
                 onKeyDown={(e) => {
@@ -546,14 +546,14 @@ export default function Portfolio() {
                   }
                 }}
               >
-                Let&apos;s go
+                Enter site
               </RippleBox>
               <button
                 type="button"
                 className={`portfolio-welcome-skip mt-4 text-[0.82rem] text-portfolio-muted underline decoration-primary/45 underline-offset-[5px] transition-[color,text-decoration-color,opacity] duration-200 hover:text-primary ${welcomeClosing ? 'pointer-events-none opacity-50' : ''}`}
                 onClick={beginWelcomeDismiss}
               >
-                Skip intro
+                Go to homepage
               </button>
             </div>
           </div>
@@ -604,7 +604,7 @@ export default function Portfolio() {
                 </span>
               </h1>
               <p
-                className="portfolio-hero-tagline mx-auto flex w-full max-w-[min(860px,100%)] flex-wrap justify-center text-[clamp(0.88rem,calc(0.4vw+0.82rem),1.22rem)] font-medium leading-snug text-secondary drop-shadow-[0_0_20px_rgba(0,240,255,0.4)] md:mx-0 md:max-w-[min(36rem,92vw)] md:justify-start lg:max-w-[min(40rem,94vw)]"
+                className="portfolio-hero-tagline mx-auto flex w-full max-w-[min(860px,100%)] flex-wrap justify-center text-[clamp(0.9rem,calc(2.5vw+0.7rem),1.1rem)] font-medium leading-[1.4] text-secondary drop-shadow-[0_0_20px_rgba(0,240,255,0.4)] md:mx-0 md:max-w-[min(36rem,92vw)] md:justify-start md:text-[clamp(1.12rem,calc(0.5vw+0.98rem),1.48rem)] md:leading-snug lg:max-w-[min(44rem,94vw)] lg:text-[clamp(1.28rem,calc(0.7vw+1.02rem),1.82rem)] xl:max-w-[min(50rem,96vw)] xl:text-[clamp(1.38rem,calc(0.8vw+1.08rem),2.05rem)]"
                 aria-label={HERO_TAGLINE_TEXT}
               >
                 <span className="portfolio-hero-chars portfolio-hero-chars--tagline" aria-hidden="true">
@@ -644,7 +644,7 @@ export default function Portfolio() {
                 <RippleBox
                   role="button"
                   tabIndex={0}
-                  aria-label="Learn more on the About page"
+                  aria-label="About this site and Mesuli Nduluko"
                   className="rounded-xl border border-primary/30 bg-primary px-[clamp(1.1rem,3vw,1.5rem)] py-[clamp(0.55rem,1.5vw,0.75rem)] text-[clamp(0.82rem,calc(0.25vw+0.78rem),0.95rem)] font-semibold uppercase tracking-[0.12em] text-[#111] shadow-[0_10px_28px_rgba(0,255,157,0.22)] transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_32px_rgba(0,255,157,0.28)]"
                   onClick={() => navigate('/about')}
                   onKeyDown={(e) => {
@@ -654,12 +654,12 @@ export default function Portfolio() {
                     }
                   }}
                 >
-                  Learn More
+                  About Me
                 </RippleBox>
                 <RippleBox
                   role="button"
                   tabIndex={0}
-                  aria-label="Open contact form"
+                  aria-label="Get in touch by email"
                   className="inline-flex items-center justify-center rounded-xl border border-primary/45 bg-[rgba(12,14,16,0.45)] px-[clamp(1.1rem,3vw,1.5rem)] py-[clamp(0.55rem,1.5vw,0.75rem)] text-[clamp(0.82rem,calc(0.25vw+0.78rem),0.95rem)] font-semibold uppercase tracking-[0.12em] text-primary backdrop-blur-[6px] transition-[transform,background-color,border-color] duration-200 hover:-translate-y-0.5 hover:border-primary hover:bg-primary/10"
                   onClick={() => setContactModalOpen(true)}
                   onKeyDown={(e) => {
@@ -669,7 +669,7 @@ export default function Portfolio() {
                     }
                   }}
                 >
-                  Contact
+                  Get in Touch
                 </RippleBox>
               </div>
             </div>
@@ -705,7 +705,7 @@ export default function Portfolio() {
               Technologies
             </h2>
             <p className="mx-auto mb-6 max-w-[min(640px,100%)] text-center text-[var(--text-lede)] leading-relaxed text-portfolio-muted lg:mx-0 lg:text-left">
-              Languages, libraries, and data tools I use to build and ship web software.
+              Markup, frameworks, and databases behind the sites and pages I design and maintain.
             </p>
             <div className="flex flex-wrap justify-center gap-3 lg:justify-start">
               {TECHNOLOGIES.map((skill) => (
@@ -732,7 +732,7 @@ export default function Portfolio() {
               Skills
             </h2>
             <p className="mx-auto mb-6 max-w-[min(640px,100%)] text-center text-[var(--text-lede)] leading-relaxed text-portfolio-muted lg:mx-0 lg:text-left">
-              Systems administration and hardware work I rely on for IT support and client setups.
+              IT support, hardware repair, and design work I offer alongside web development.
             </p>
             <div className="flex flex-wrap justify-center gap-3 lg:justify-start">
               {IT_SKILLS.map((skill) => (
@@ -768,16 +768,14 @@ export default function Portfolio() {
               </span>
               <span className="projects-cta__text">
                 <span className="projects-cta__title">Projects</span>
-                <span className="projects-cta__sub">Featured work &amp; builds</span>
-                <span className="projects-cta__hint">
-                  <kbd>Click</kbd> or tap to open the full gallery
-                </span>
+                <span className="projects-cta__sub">Selected sites &amp; recent work</span>
+                <span className="projects-cta__hint">View the full portfolio page →</span>
               </span>
               <span className="projects-cta__chevron" aria-hidden>
                 <i className="fas fa-arrow-right" />
               </span>
             </span>
-            <span className="sr-only">View all projects on a dedicated page</span>
+            <span className="sr-only">Open the projects page with all featured work</span>
           </a>
         </section>
         </main>

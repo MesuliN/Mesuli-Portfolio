@@ -2167,7 +2167,8 @@
     }
 
     .portfolio-hero-intro .portfolio-hero-tagline {
-      font-size: clamp(0.78rem, 3.2vw + 0.58rem, 1.02rem) !important;
+      font-size: clamp(0.86rem, 2.6vw + 0.6rem, 1rem) !important;
+      line-height: 1.42 !important;
     }
 
     .portfolio-hero-intro img {

@@ -26,6 +26,24 @@ export type PosterDesign = {
 
 export const PROJECTS: Project[] = [
   {
+    title: 'Attendify App',
+    description:
+      'A digital attendance system that simplifies tracking and managing attendance, making it faster, more accurate, and easily accessible through a modern interface. The system is currently deployed.',
+    href: 'https://mut-stars.web.app/home',
+  },
+  {
+    title: 'CYPHO Agent',
+    description:
+      'An AI agent built to tackle user tasks that go beyond chat-style replies—it can carry out workflows such as e-commerce actions, not only respond. Repository and docs on GitHub.',
+    href: 'https://github.com/MesuliN/CYPHO-Agent',
+  },
+  {
+    title: 'Nova Agent',
+    description:
+      'An AI agent for agriculture that helps detect crop diseases from plant imagery and guidance—aimed at faster diagnosis and more informed decisions in the field. Repository on GitHub.',
+    href: 'https://github.com/MesuliN/Nova-Agent',
+  },
+  {
     title: 'SortiFy App',
     description:
       'A smart waste management application designed to help users sort and manage waste efficiently, promoting cleaner environments through an intuitive and user-friendly system.',
@@ -36,16 +54,10 @@ export const PROJECTS: Project[] = [
       'Team project with MUT Innovation Lab: an Angular / Ionic timetable system for planning and managing schedules, with academic calendar support and database-backed timetable data. Not deployed yet—repo: https://github.com/MUTInnovationLab/TTMS.',
   },
   {
-    title: 'CYPHO Agent',
+    title: 'Business Website',
     description:
-      'An AI agent built to tackle user tasks that go beyond chat-style replies—it can carry out workflows such as e-commerce actions, not only respond. Repository and docs on GitHub.',
-    href: 'https://github.com/MesuliN/CYPHO-Agent',
-  },
-  {
-    title: 'Attendify App',
-    description:
-      'A digital attendance system that simplifies tracking and managing attendance, making it faster, more accurate, and easily accessible through a modern interface. The system is currently deployed.',
-    href: 'https://mut-stars.web.app/home',
+      'Professional Business website for a business called BuildOnDev.',
+    href: 'https://github.com/MesuliN/BuildOnDev-Website',
   },
 ]
 
