@@ -28,36 +28,40 @@ export const PROJECTS: Project[] = [
   {
     title: 'Attendify App',
     description:
-      'A digital attendance system that simplifies tracking and managing attendance, making it faster, more accurate, and easily accessible through a modern interface. The system is currently deployed.',
+      'A digital attendance system that simplifies tracking and managing attendance, making it faster, more accurate, and easily accessible through a modern interface. The system is currently deployed. For more project information, contact me.',
     href: 'https://mut-stars.web.app/home',
   },
   {
-    title: 'CYPHO Agent',
+    title: 'Soil Sensor App',
     description:
-      'An AI agent built to tackle user tasks that go beyond chat-style replies—it can carry out workflows such as e-commerce actions, not only respond. Repository and docs on GitHub.',
-    href: 'https://github.com/MesuliN/CYPHO-Agent',
-  },
-  {
-    title: 'Nova Agent',
-    description:
-      'An AI agent for agriculture that helps detect crop diseases from plant imagery and guidance—aimed at faster diagnosis and more informed decisions in the field. Repository on GitHub.',
-    href: 'https://github.com/MesuliN/Nova-Agent',
-  },
-  {
-    title: 'SortiFy App',
-    description:
-      'A smart waste management application designed to help users sort and manage waste efficiently, promoting cleaner environments through an intuitive and user-friendly system.',
-  },
-  {
-    title: 'TTMS (Timetable Management System)',
-    description:
-      'Team project with MUT Innovation Lab: an Angular / Ionic timetable system for planning and managing schedules, with academic calendar support and database-backed timetable data. Not deployed yet—repo: https://github.com/MUTInnovationLab/TTMS.',
+      'Soil monitoring dashboard for tracking soil conditions and field insights in real time. Live site: https://soilsensor-theta.vercel.app/. For more project information, contact me.',
+    href: 'https://soilsensor-theta.vercel.app/',
   },
   {
     title: 'Business Website',
     description:
-      'Professional Business website for a business called BuildOnDev.',
-    href: 'https://github.com/MesuliN/BuildOnDev-Website',
+      'Professional business website for BuildOnDev. Visit the live site: http://jagengineering.co.za/. For more project information, contact me.',
+    href: 'http://jagengineering.co.za/',
+  },
+  {
+    title: 'CYPHO Agent',
+    description:
+      'An AI agent built to tackle user tasks that go beyond chat-style replies—it can carry out workflows such as e-commerce actions, not only respond. For more project information, contact me.',
+  },
+  {
+    title: 'Nova Agent',
+    description:
+      'An AI agent for agriculture that helps detect crop diseases from plant imagery and guidance—aimed at faster diagnosis and more informed decisions in the field. For more project information, contact me.',
+  },
+  {
+    title: 'SortiFy App',
+    description:
+      'A smart waste management application designed to help users sort and manage waste efficiently, promoting cleaner environments through an intuitive and user-friendly system. For more project information, contact me.',
+  },
+  {
+    title: 'TTMS (Timetable Management System)',
+    description:
+      'Team project with MUT Innovation Lab: an Angular / Ionic timetable system for planning and managing schedules, with academic calendar support and database-backed timetable data. Not deployed yet. For more project information, contact me.',
   },
 ]
 
